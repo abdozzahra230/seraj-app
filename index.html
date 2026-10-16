@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>سلسله مسابقات کتابخوانی سراج</title>
-    <!-- لود فونت اصیل و زیبای ساحل و وزیرمتن -->
+    <!-- لود فونت ساحل و وزیرمتن -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v3.4.0/dist/font-face.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
@@ -54,7 +54,6 @@
             position: relative;
         }
 
-        /* هدر مسابقه با پس‌زمینه کتاب‌های نفیس */
         .header-card {
             background: linear-gradient(145deg, var(--seraj-dark) 0%, var(--seraj-purple) 60%, #4a135e 100%);
             border-radius: 26px;
@@ -67,7 +66,6 @@
             overflow: hidden;
         }
 
-        /* روبان نشانک کتاب (Bookmark Ribbon) آویزان از گوشه */
         .bookmark-ribbon {
             position: absolute;
             top: 0;
@@ -80,7 +78,6 @@
             z-index: 2;
         }
 
-        /* بافت کتاب در پس‌زمینه */
         .book-watermark {
             position: absolute;
             right: -20px;
@@ -133,7 +130,6 @@
             margin-top: 6px;
         }
 
-        /* کارت ماشین‌تحریر واقعی (حرف‌به‌حرف) */
         .typewriter-card {
             background: rgba(255, 255, 255, 0.08);
             border: 1.5px solid rgba(253, 230, 138, 0.35);
@@ -171,7 +167,6 @@
             50% { opacity: 0; }
         }
 
-        /* فرم ثبت‌نام */
         .form-card {
             background: rgba(255, 255, 255, 0.94);
             backdrop-filter: blur(14px);
@@ -296,7 +291,6 @@
 
         .submit-btn:active { transform: scale(0.98); }
 
-        /* مرحله دوم: گیت عضویت */
         .gate-card {
             background: #ffffff;
             border-radius: 26px;
@@ -398,7 +392,6 @@
         }
 
         .join-btn:active { transform: scale(0.98); }
-
         .join-btn.visited { background: #10b981; }
 
         .confirm-btn {
@@ -416,7 +409,6 @@
             margin-top: 10px;
         }
 
-        /* کارت داوطلب شبیه به پاسپورت کتابخوانی */
         .ticket-card {
             background: #ffffff;
             border-radius: 26px;
@@ -464,7 +456,6 @@
             direction: ltr;
         }
 
-        /* بارکد زینتی دیجیتال */
         .ticket-barcode {
             display: flex;
             justify-content: center;
@@ -560,10 +551,7 @@
 
 <div class="container">
     <div class="header-card">
-        <!-- روبان نشانک کتاب -->
         <div class="bookmark-ribbon"></div>
-
-        <!-- واترمارک وکتور کتاب -->
         <svg class="book-watermark" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5">
             <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
@@ -583,7 +571,6 @@
             <span id="ui-book-title">کتاب محور: «خون دلی که لعل شد» (دوره چهارم)</span>
         </div>
 
-        <!-- باکس ماشین‌تحریر واقعی -->
         <div class="typewriter-card">
             <span id="typewriter-text" class="typewriter-content"></span>
             <span class="typewriter-cursor"></span>
@@ -694,7 +681,7 @@
         </form>
     </div>
 
-    <!-- مرحله ۲: گیت عضویت (ثبت در اکسل صرفاً پس از این مرحله انجام می‌شود) -->
+    <!-- مرحله ۲: گیت عضویت -->
     <div id="gate-section" class="gate-card" style="display: none;">
         <span class="gate-header-badge">مرحله نهایی: تأیید عضویت</span>
         <h3 class="gate-title">یک قدم تا صدور کارت شرکت</h3>
@@ -748,7 +735,6 @@
             <span style="font-size: 0.78rem; color: #64748b; display: block; font-weight: 700;">کد پیگیری اختصاصی داوطلب:</span>
             <div id="ticket-code" class="ticket-code">---</div>
             
-            <!-- بارکد زینتی -->
             <div class="ticket-barcode">
                 <div class="bar" style="width: 2px;"></div>
                 <div class="bar" style="width: 4px;"></div>
@@ -802,7 +788,6 @@
 <div id="toast-msg" class="toast">پیام سیستم</div>
 
 <script>
-    // تنظیمات ماهانه دوره مسابقات (هر ماه فقط این بخش را تغییر دهید)
     const CONTEST_CONFIG = {
         roundNumber: "دوره چهارم",
         bookTitle: "خون دلی که لعل شد",
@@ -813,7 +798,6 @@
 
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzHjsAvRMmjZ_NaCrgXG6-qumHzlTfwEFq17gZmKuZVUXw6M-36HH0FRse3LAZil6G2/exec";
 
-    // جملات متناوب ماشین‌تحریر
     const SLOGANS = [
         "مسابقه بزرگ کتابخوانی سراج 📚",
         "فرصتی ناب برای انس با کتاب‌های تحول‌آفرین ✨",
@@ -850,10 +834,10 @@
         const toast = document.getElementById('toast-msg');
         toast.textContent = text;
         toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
+        setTimeout(() => toast.classList.remove('show'), 3200);
     }
 
-    // منطق تایپ حرف‌به‌حرف و پاک کردن (ماشین‌تحریر واقعی)
+    // ماشین‌تحریر واقعی
     let sloganIdx = 0;
     let charIdx = 0;
     let isDeleting = false;
@@ -861,7 +845,6 @@
 
     function typeWriterLoop() {
         const currentSentence = SLOGANS[sloganIdx];
-        
         if (isDeleting) {
             typewriterEl.textContent = currentSentence.substring(0, charIdx - 1);
             charIdx--;
@@ -871,22 +854,20 @@
         }
 
         let typeSpeed = isDeleting ? 25 : 55;
-
         if (!isDeleting && charIdx === currentSentence.length) {
-            typeSpeed = 2200; // مکث بعد از اتمام جمله
+            typeSpeed = 2200;
             isDeleting = true;
         } else if (isDeleting && charIdx === 0) {
             isDeleting = false;
             sloganIdx = (sloganIdx + 1) % SLOGANS.length;
-            typeSpeed = 400; // مکث کوتاه قبل از شروع جمله بعدی
+            typeSpeed = 400;
         }
-
         setTimeout(typeWriterLoop, typeSpeed);
     }
     typeWriterLoop();
 
     function checkPreviousRegistration() {
-        const finalSaved = localStorage.getItem('seraj_reg_final_v6');
+        const finalSaved = localStorage.getItem('seraj_reg_final_v7');
         if (finalSaved) {
             try {
                 renderTicket(JSON.parse(finalSaved));
@@ -894,7 +875,7 @@
             } catch(e) {}
         }
 
-        const tempSaved = localStorage.getItem('seraj_temp_reg_v6');
+        const tempSaved = localStorage.getItem('seraj_temp_reg_v7');
         if (tempSaved) {
             try {
                 tempRegistrationData = JSON.parse(tempSaved);
@@ -918,13 +899,12 @@
         document.getElementById('ticket-round-name').textContent = data.roundName || CONTEST_CONFIG.roundFullName;
 
         if (data.participationCount > 1) {
-            document.getElementById('ticket-loyalty').textContent = `★ داوطلب وفادار (حضور در ${data.participationCount} دوره مسابقات)`;
+            document.getElementById('ticket-loyalty').textContent = `★ داوطلب وفادار مسابقات سراج`;
         } else {
             document.getElementById('ticket-loyalty').textContent = 'داوطلب جدید مسابقات سراج';
         }
     }
 
-    // مرحله ۱: ذخیره محلی موقت بدون ارسال به اکسل
     function handleInitialStep(e) {
         e.preventDefault();
 
@@ -934,13 +914,24 @@
         const province = document.getElementById('inp-province').value;
         const city = document.getElementById('inp-city').value.trim();
 
-        if (phone.length === 10 && phone.startsWith('9')) {
-            phone = '0' + phone;
-        }
+        if (phone.length === 10 && phone.startsWith('9')) phone = '0' + phone;
 
         if (!/^09[0-9]{9}$/.test(phone)) {
             alert('لطفاً شماره همراه معتبر ۱۱ رقمی (شروع با ۰۹) وارد کنید.');
             return;
+        }
+
+        // بررسی ثبت‌نام قبلی همین شماره در گوشی کاربر
+        const savedData = localStorage.getItem('seraj_reg_final_v7');
+        if (savedData) {
+            try {
+                const parsed = JSON.parse(savedData);
+                if (parsed.phone === phone) {
+                    showToast("⚠️ شما قبلاً با این شماره ثبت‌نام کرده‌اید!");
+                    renderTicket(parsed);
+                    return;
+                }
+            } catch(err) {}
         }
 
         tempRegistrationData = {
@@ -955,7 +946,7 @@
             userId: tg?.initDataUnsafe?.user?.id || 'مستقیم'
         };
 
-        localStorage.setItem('seraj_temp_reg_v6', JSON.stringify(tempRegistrationData));
+        localStorage.setItem('seraj_temp_reg_v7', JSON.stringify(tempRegistrationData));
         showGateStep();
     }
 
@@ -1008,8 +999,8 @@
         }
     }
 
-    // مرحله ۲: صدور آنی کارت (زیر ۰٫۲ ثانیه) و ارسال پس‌زمینه به اکسل
-    function finalizeRegistration() {
+    // مرحله ۲: استعلام تکراری و ثبت قطعی
+    async function finalizeRegistration() {
         if (!tempRegistrationData) {
             checkPreviousRegistration();
             return;
@@ -1024,31 +1015,49 @@
             return;
         }
 
-        // ۱. تولید فوری کد رهگیری در کسری از ثانیه
-        const uniqueId = Math.floor(1000 + Math.random() * 9000);
-        const instantCode = "SRJ-4-" + uniqueId;
-        
-        tempRegistrationData.trackingCode = instantCode;
-        tempRegistrationData.participationCount = 1;
+        const confirmBtn = document.getElementById('btn-confirm-final');
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'در حال استعلام و صدور کارت داوطلب...';
 
-        // ۲. نمایش بلادرنگ کارت ورود بدون کوچک‌ترین وقفه
-        localStorage.setItem('seraj_reg_final_v6', JSON.stringify(tempRegistrationData));
-        localStorage.removeItem('seraj_temp_reg_v6');
-        renderTicket(tempRegistrationData);
-        showToast("✓ ثبت‌نام قطعی شد و کارت ورود صادر گردید.");
+        try {
+            const response = await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(tempRegistrationData)
+            });
 
-        // ۳. ارسال موازی به اکسل در پس‌زمینه بدون درگیر کردن کاربر
-        fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(tempRegistrationData)
-        }).catch(err => console.log('ارسال پس‌زمینه انجام شد'));
+            const resJson = await response.json();
 
-        if (tg && tg.sendData) {
-            try {
-                tg.sendData(`ثبت‌نام قطعی مسابقه سراج\nداوطلب: ${tempRegistrationData.firstName} ${tempRegistrationData.lastName}\nکد پیگیری: ${instantCode}`);
-            } catch(e) {}
+            // در صورتی که کاربر قبلاً با این شماره ثبت‌نام کرده باشد:
+            if (resJson.status === 'already_registered') {
+                showToast("⚠️ شما قبلاً با این شماره در مسابقه ثبت‌نام کرده‌اید!");
+                localStorage.setItem('seraj_reg_final_v7', JSON.stringify(resJson));
+                localStorage.removeItem('seraj_temp_reg_v7');
+                renderTicket(resJson);
+                return;
+            }
+
+            if (resJson.status === 'success') {
+                tempRegistrationData.trackingCode = resJson.trackingCode;
+                tempRegistrationData.participationCount = resJson.participationCount;
+
+                localStorage.setItem('seraj_reg_final_v7', JSON.stringify(tempRegistrationData));
+                localStorage.removeItem('seraj_temp_reg_v7');
+                renderTicket(tempRegistrationData);
+                showToast("✓ ثبت‌نام با موفقیت قطعی شد و کارت ورود صادر گردید.");
+
+                if (tg && tg.sendData) {
+                    try {
+                        tg.sendData(`ثبت‌نام قطعی مسابقه سراج\nداوطلب: ${tempRegistrationData.firstName} ${tempRegistrationData.lastName}\nکد پیگیری: ${resJson.trackingCode}`);
+                    } catch(e) {}
+                }
+            } else {
+                throw new Error("API Error");
+            }
+        } catch(err) {
+            alert("خطا در ارتباط با سرور. لطفاً مجدداً دکمه را لمس کنید.");
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = '✓ عضو شدم؛ ثبت‌نام نهایی و صدور کارت';
         }
     }
 
@@ -1078,9 +1087,9 @@
     }
 
     function resetFormForNewUser() {
-        if (confirm("آیا قصد دارید داوطلب جدیدی را ثبت‌نام کنید؟")) {
-            localStorage.removeItem('seraj_reg_final_v6');
-            localStorage.removeItem('seraj_temp_reg_v6');
+        if (confirm("آیا قصد دارید داوطلب دیگری را ثبت‌نام کنید؟")) {
+            localStorage.removeItem('seraj_reg_final_v7');
+            localStorage.removeItem('seraj_temp_reg_v7');
             localStorage.removeItem('seraj_visited_channel');
             localStorage.removeItem('seraj_visited_group');
             document.getElementById('reg-form').reset();
@@ -1091,6 +1100,8 @@
             document.getElementById('ticket-section').style.display = 'none';
             document.getElementById('gate-section').style.display = 'none';
             document.getElementById('form-section').style.display = 'block';
+            document.getElementById('btn-confirm-final').disabled = false;
+            document.getElementById('btn-confirm-final').textContent = '✓ عضو شدم؛ ثبت‌نام نهایی و صدور کارت';
         }
     }
 
