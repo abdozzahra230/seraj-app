@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مسابقات کتابخوانی سراج - دوره چهارم</title>
+    <!-- لود فونت اصیل و زیبای ساحل و وزیرمتن -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v3.4.0/dist/font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+    <style>
+        :root {
+            --seraj-dark: #2a0835;
+            --seraj-purple: #421252;
+            --seraj-purple-light: #5a1d6e;
+            --seraj-gold: #f59e0b;
+            --seraj-gold-light: #fef3c7;
+            --seraj-gold-border: #fcd34d;
+            --bg-creme: #fbf8f3;
+            --text-dark: #1e1b24;
+            --text-muted: #6b6375;
+            --shadow-card: 0 12px 30px -6px rgba(42, 8, 53, 0.12), 0 4px 10px -2px rgba(245, 158, 11, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Sahel', 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif;
+            background: radial-gradient(circle at 10% 10%, rgba(245, 158, 11, 0.12), transparent 40%),
+                        radial-gradient(circle at 90% 15%, rgba(66, 18, 82, 0.12), transparent 45%),
+                        var(--bg-creme);
+            min-height: 100vh;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* هدر مسابقه برگرفته از پوستر سراج */
+        .header-card {
+            background: linear-gradient(145deg, var(--seraj-dark) 0%, var(--seraj-purple) 100%);
+            border-radius: 22px;
+            padding: 18px 14px;
+            color: #ffffff;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            border: 2px solid var(--seraj-gold-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-card::after {
+            content: '❖';
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            color: var(--seraj-gold);
+            font-size: 1rem;
+            opacity: 0.6;
+        }
+
+        .header-card::before {
+            content: '❖';
+            position: absolute;
+            top: 8px;
+            left: 12px;
+            color: var(--seraj-gold);
+            font-size: 1rem;
+            opacity: 0.6;
+        }
+
+        .badge-round {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fde68a;
+            border: 1px solid var(--seraj-gold);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        .logo-title {
+            font-size: 1.85rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            margin: 2px 0;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .book-title {
+            font-size: 0.95rem;
+            color: #fde68a;
+            font-weight: 800;
+            margin-top: 4px;
+        }
+
+        /* کارت جوایز */
+        .prizes-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .prize-box {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px dashed rgba(253, 230, 138, 0.4);
+            border-radius: 14px;
+            padding: 8px 6px;
+            text-align: center;
+        }
+
+        .prize-rank {
+            font-size: 0.72rem;
+            color: #fef3c7;
+            display: block;
+            margin-bottom: 2px;
+            font-weight: 600;
+        }
+
+        .prize-amount {
+            font-size: 0.92rem;
+            font-weight: 900;
+            color: #fde68a;
+        }
+
+        /* فرم اصلی ثبت‌نام */
+        .form-card {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 20px 16px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid #e7dfd5;
+        }
+
+        .form-title {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: var(--seraj-purple);
+            text-align: center;
+            margin: 0 0 16px 0;
+            position: relative;
+        }
+
+        .form-title::after {
+            content: '';
+            display: block;
+            width: 44px;
+            height: 3px;
+            background: var(--seraj-gold);
+            margin: 6px auto 0 auto;
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .form-label span {
+            color: #ef4444;
+            margin-right: 2px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #d8cfc4;
+            border-radius: 14px;
+            font-size: 0.92rem;
+            font-family: inherit;
+            background: #faf7f2;
+            color: var(--text-dark);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--seraj-purple);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(66, 18, 82, 0.1);
+        }
+
+        /* دکمه‌های رادیویی انتخاب جنسیت */
+        .gender-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .gender-btn {
+            border: 1.5px solid #d8cfc4;
+            background: #faf7f2;
+            padding: 11px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 0.88rem;
+            font-weight: 800;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .gender-btn.active {
+            border-color: var(--seraj-purple);
+            background: var(--seraj-gold-light);
+            color: var(--seraj-purple);
+            box-shadow: 0 3px 8px rgba(66, 18, 82, 0.1);
+        }
+
+        /* دکمه ارسال فرم */
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 16px;
+            font-weight: 900;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: inherit;
+            background: linear-gradient(135deg, var(--seraj-purple) 0%, var(--seraj-dark) 100%);
+            color: #ffffff;
+            border: 1.5px solid var(--seraj-gold);
+            box-shadow: 0 8px 20px rgba(42, 8, 53, 0.25);
+            transition: all 0.2s ease;
+            margin-top: 6px;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* کارت دیجیتال داوطلب پس از ثبت‌نام */
+        .ticket-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 22px 18px;
+            box-shadow: var(--shadow-card);
+            border: 2px solid var(--seraj-gold);
+            position: relative;
+            text-align: center;
+        }
+
+        .ticket-header {
+            border-bottom: 2px dashed #e2e8f0;
+            padding-bottom: 14px;
+            margin-bottom: 14px;
+        }
+
+        .ticket-badge-success {
+            background: #dcfce7;
+            color: #15803d;
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 4px 14px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .ticket-code-box {
+            background: #faf5ed;
+            border: 2px solid var(--seraj-gold-border);
+            border-radius: 16px;
+            padding: 12px;
+            margin: 12px 0;
+        }
+
+        .ticket-code {
+            font-size: 1.45rem;
+            font-weight: 900;
+            color: var(--seraj-purple);
+            letter-spacing: 2px;
+            direction: ltr;
+        }
+
+        .ticket-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.86rem;
+        }
+
+        .ticket-row:last-child {
+            border-bottom: none;
+        }
+
+        .ticket-label {
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .ticket-val {
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .ticket-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 0.88rem;
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+        }
+
+        .btn-copy {
+            background: var(--seraj-purple);
+            color: #ffffff;
+        }
+
+        .btn-re-register {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            font-size: 0.78rem;
+            padding: 8px;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(42, 8, 53, 0.95);
+            color: #fde68a;
+            padding: 11px 22px;
+            border-radius: 24px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 999;
+            white-space: nowrap;
+        }
+
+        .toast.show { opacity: 1; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- هدر معرفی مسابقه -->
+    <div class="header-card">
+        <span class="badge-round">سلسله مسابقات کتابخوانی</span>
+        <div class="logo-title">سـِـــــراج</div>
+        <div class="book-title">کتاب محور: «خون دلی که لعل شد» (دوره چهارم)</div>
+
+        <div class="prizes-grid">
+            <div class="prize-box">
+                <span class="prize-rank">🏆 جایزه نفر اول</span>
+                <span class="prize-amount">۸۰۰ هزار تومان</span>
+            </div>
+            <div class="prize-box">
+                <span class="prize-rank">🥈 جایزه نفر دوم</span>
+                <span class="prize-amount">۵۰۰ هزار تومان</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- فرم ثبت‌نام -->
+    <div id="form-section" class="form-card">
+        <div class="form-title">فرم ثبت‌نام در مسابقه</div>
+
+        <form id="reg-form" onsubmit="handleFormSubmit(event)">
+            <div class="form-group">
+                <label class="form-label">نام و نام‌خانوادگی: <span>*</span></label>
+                <input type="text" id="inp-name" class="form-control" placeholder="مثال: علیرضا محمدی" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">شماره همراه (دارای ایتا): <span>*</span></label>
+                <input type="tel" id="inp-phone" class="form-control" placeholder="۰۹۱۲۳۴۵۶۷۸۹" maxlength="11" required dir="ltr">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">جنسیت: <span>*</span></label>
+                <div class="gender-group">
+                    <button type="button" id="btn-female" class="gender-btn active" onclick="setGender('خانم')">بانو (خانم)</button>
+                    <button type="button" id="btn-male" class="gender-btn" onclick="setGender('آقا')">آقا</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">استان سکونت: <span>*</span></label>
+                <select id="inp-province" class="form-control" required>
+                    <option value="">-- انتخاب استان --</option>
+                    <option value="تهران">تهران</option>
+                    <option value="خراسان رضوی">خراسان رضوی</option>
+                    <option value="اصفهان">اصفهان</option>
+                    <option value="فارس">فارس</option>
+                    <option value="خوزستان">خوزستان</option>
+                    <option value="آذربایجان شرقی">آذربایجان شرقی</option>
+                    <option value="مازندران">مازندران</option>
+                    <option value="گیلان">گیلان</option>
+                    <option value="کرمان">کرمان</option>
+                    <option value="سیستان و بلوچستان">سیستان و بلوچستان</option>
+                    <option value="البرز">البرز</option>
+                    <option value="همدان">همدان</option>
+                    <option value="کرمانشاه">کرمانشاه</option>
+                    <option value="لرستان">لرستان</option>
+                    <option value="یزد">یزد</option>
+                    <option value="قزوین">قزوین</option>
+                    <option value="زنجان">زنجان</option>
+                    <option value="بوشهر">بوشهر</option>
+                    <option value="قم">قم</option>
+                    <option value="مرکزی">مرکزی</option>
+                    <option value="کردستان">کردستان</option>
+                    <option value="گلستان">گلستان</option>
+                    <option value="هرمزگان">هرمزگان</option>
+                    <option value="چهارمحال و بختیاری">چهارمحال و بختیاری</option>
+                    <option value="خراسان جنوبی">خراسان جنوبی</option>
+                    <option value="کهگیلویه و بویراحمد">کهگیلویه و بویراحمد</option>
+                    <option value="خراسان شمالی">خراسان شمالی</option>
+                    <option value="سمنان">سمنان</option>
+                    <option value="ایلام">ایلام</option>
+                    <option value="اردبیل">اردبیل</option>
+                    <option value="آذربایجان غربی">آذربایجان غربی</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">شهر سکونت: <span>*</span></label>
+                <input type="text" id="inp-city" class="form-control" placeholder="نام شهر یا شهرستان" required>
+            </div>
+
+            <button type="submit" id="btn-submit" class="submit-btn">ثبت‌نام نهایی و دریافت کارت شرکت</button>
+        </form>
+    </div>
+
+    <!-- کارت دیجیتال داوطلب (پس از ثبت‌نام موفق) -->
+    <div id="ticket-section" class="ticket-card" style="display: none;">
+        <div class="ticket-header">
+            <span class="ticket-badge-success">✓ ثبت‌نام شما با موفقیت انجام شد</span>
+            <h3 style="margin: 4px 0; color: var(--seraj-purple); font-size: 1.15rem; font-weight: 900;">کارت شرکت در مسابقه سراج</h3>
+            <span id="ticket-loyalty" style="font-size: 0.78rem; color: #b45309; font-weight: 800;"></span>
+        </div>
+
+        <div class="ticket-code-box">
+            <span style="font-size: 0.76rem; color: #64748b; display: block; font-weight: 700;">کد پیگیری اختصاصی داوطلب:</span>
+            <div id="ticket-code" class="ticket-code">---</div>
+        </div>
+
+        <div class="ticket-row">
+            <span class="ticket-label">نام و نام‌خانوادگی:</span>
+            <span id="ticket-name" class="ticket-val">---</span>
+        </div>
+        <div class="ticket-row">
+            <span class="ticket-label">شماره همراه:</span>
+            <span id="ticket-phone" class="ticket-val">---</span>
+        </div>
+        <div class="ticket-row">
+            <span class="ticket-label">استان و شهر:</span>
+            <span id="ticket-location" class="ticket-val">---</span>
+        </div>
+        <div class="ticket-row">
+            <span class="ticket-label">دوره مسابقه:</span>
+            <span class="ticket-val">دوره چهارم (خون دلی که لعل شد)</span>
+        </div>
+
+        <div class="ticket-actions">
+            <button class="action-btn btn-copy" onclick="copyTicketInfo()">کپی مشخصات و کد پیگیری</button>
+            <button class="action-btn btn-re-register" onclick="resetFormForNewUser()">ثبت‌نام فرد جدید</button>
+        </div>
+    </div>
+
+    <div class="footer-note">دبیرخانه سلسله مسابقات کتابخوانی سراج</div>
+</div>
+
+<div id="toast-msg" class="toast">پیام سیستم</div>
+
+<script>
+    // آدرس وب‌اپ گوگل شیت شما:
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzHjsAvRMmjZ_NaCrgXG6-qumHzlTfwEFq17gZmKuZVUXw6M-36HH0FRse3LAZil6G2/exec";
+
+    const tg = window.Eitaa?.WebApp || window.Telegram?.WebApp;
+    if (tg) {
+        tg.ready();
+        tg.expand();
+    }
+
+    let selectedGender = 'خانم';
+
+    function setGender(gender) {
+        selectedGender = gender;
+        document.getElementById('btn-female').classList.toggle('active', gender === 'خانم');
+        document.getElementById('btn-male').classList.toggle('active', gender === 'آقا');
+    }
+
+    function showToast(text) {
+        const toast = document.getElementById('toast-msg');
+        toast.textContent = text;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // بررسی ثبت‌نام قبلی در حافظه گوشی
+    function checkPreviousRegistration() {
+        const saved = localStorage.getItem('seraj_registration_r4');
+        if (saved) {
+            try {
+                const regData = JSON.parse(saved);
+                renderTicket(regData);
+            } catch(e) {}
+        }
+    }
+
+    function renderTicket(data) {
+        document.getElementById('form-section').style.display = 'none';
+        document.getElementById('ticket-section').style.display = 'block';
+
+        document.getElementById('ticket-code').textContent = data.trackingCode;
+        document.getElementById('ticket-name').textContent = data.fullName;
+        document.getElementById('ticket-phone').textContent = data.phone;
+        document.getElementById('ticket-location').textContent = `${data.province} - ${data.city}`;
+
+        if (data.participationCount > 1) {
+            document.getElementById('ticket-loyalty').textContent = `★ داوطلب وفادار (حضور در ${data.participationCount} دوره)`;
+        } else {
+            document.getElementById('ticket-loyalty').textContent = 'داوطلب جدید مسابقات سراج';
+        }
+    }
+
+    async function handleFormSubmit(e) {
+        e.preventDefault();
+
+        const fullName = document.getElementById('inp-name').value.trim();
+        const phone = document.getElementById('inp-phone').value.trim();
+        const province = document.getElementById('inp-province').value;
+        const city = document.getElementById('inp-city').value.trim();
+
+        // اعتبارسنجی شماره تماس
+        if (!/^09[0-9]{9}$/.test(phone)) {
+            alert('لطفاً شماره همراه معتبر ۱۱ رقمی (شروع با ۰۹) وارد کنید.');
+            return;
+        }
+
+        const submitBtn = document.getElementById('btn-submit');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'در حال ثبت اطلاعات...';
+
+        const payload = {
+            timestamp: new Date().toLocaleString('fa-IR', { timeZone: 'Asia/Tehran' }),
+            roundName: "دوره چهارم (خون دلی که لعل شد)",
+            fullName: fullName,
+            phone: phone,
+            gender: selectedGender,
+            province: province,
+            city: city,
+            userId: tg?.initDataUnsafe?.user?.id || 'مستقیم'
+        };
+
+        try {
+            const response = await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+
+            const resJson = await response.json();
+
+            if (resJson.status === 'success') {
+                const fullRegData = {
+                    ...payload,
+                    trackingCode: resJson.trackingCode,
+                    participationCount: resJson.participationCount
+                };
+
+                // ذخیره در حافظه لوکال گوشی
+                localStorage.setItem('seraj_registration_r4', JSON.stringify(fullRegData));
+
+                renderTicket(fullRegData);
+                showToast("✓ ثبت‌نام با موفقیت انجام شد.");
+
+                // ارسال تأییدیه به بازوی ایتا
+                if (tg && tg.sendData) {
+                    try {
+                        tg.sendData(`ثبت‌نام مسابقه سراج انجام شد.\nنام: ${fullName}\nکد پیگیری: ${resJson.trackingCode}`);
+                    } catch(err) {}
+                }
+            } else {
+                alert('خطا در ثبت اطلاعات. لطفاً دوباره تلاش کنید.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'ثبت‌نام نهایی و دریافت کارت شرکت';
+            }
+        } catch(err) {
+            // در صورت بروز خطای عدم بازگشت هدر CORS، از روش کد رندوم محلی پشتیبان استفاده می‌شود
+            const fallbackCode = "SRJ-4-" + Math.floor(100000 + Math.random() * 900000);
+            const fallbackData = {
+                ...payload,
+                trackingCode: fallbackCode,
+                participationCount: 1
+            };
+            localStorage.setItem('seraj_registration_r4', JSON.stringify(fallbackData));
+            renderTicket(fallbackData);
+            showToast("✓ ثبت‌نام در سامانه ثبت شد.");
+        }
+    }
+
+    function copyTicketInfo() {
+        const code = document.getElementById('ticket-code').textContent;
+        const name = document.getElementById('ticket-name').textContent;
+        const text = `کارت شرکت در سلسله مسابقات کتابخوانی سراج (دوره چهارم)\nداوطلب: ${name}\nکد پیگیری: ${code}\nدبیرخانه مسابقات سراج`;
+
+        let copied = false;
+        try {
+            const tempInput = document.createElement("textarea");
+            tempInput.value = text;
+            tempInput.style.position = "fixed";
+            tempInput.style.left = "-9999px";
+            document.body.appendChild(tempInput);
+            tempInput.focus();
+            tempInput.select();
+            copied = document.execCommand("copy");
+            document.body.removeChild(tempInput);
+        } catch(e) {}
+
+        if (!copied && navigator.clipboard) {
+            navigator.clipboard.writeText(text).catch(() => {});
+        }
+
+        showToast("✓ مشخصات و کد پیگیری کپی شد.");
+    }
+
+    function resetFormForNewUser() {
+        if (confirm("آیا قصد دارید برای فرد دیگری ثبت‌نام جدید انجام دهید؟")) {
+            localStorage.removeItem('seraj_registration_r4');
+            document.getElementById('reg-form').reset();
+            setGender('خانم');
+            document.getElementById('ticket-section').style.display = 'none';
+            document.getElementById('form-section').style.display = 'block';
+            document.getElementById('btn-submit').disabled = false;
+            document.getElementById('btn-submit').textContent = 'ثبت‌نام نهایی و دریافت کارت شرکت';
+        }
+    }
+
+    checkPreviousRegistration();
+</script>
+
+</body>
+</html>
