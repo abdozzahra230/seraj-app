@@ -54,7 +54,6 @@
             position: relative;
         }
 
-        /* هدر مجلل با پویاسازی نوری و متالیک */
         .header-card {
             background: linear-gradient(145deg, var(--seraj-dark) 0%, var(--seraj-purple) 60%, #4a135e 100%);
             border-radius: 26px;
@@ -67,7 +66,6 @@
             overflow: hidden;
         }
 
-        /* انیمیشن شاین درخشان در هدر */
         .header-card::before {
             content: '';
             position: absolute;
@@ -125,7 +123,6 @@
             margin-top: 6px;
         }
 
-        /* بخش جوایز با افکت شاین متحرک */
         .prizes-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -171,7 +168,6 @@
             color: #fde68a;
         }
 
-        /* کارت فرم شیشه‌ای */
         .form-card {
             background: rgba(255, 255, 255, 0.94);
             backdrop-filter: blur(14px);
@@ -242,7 +238,6 @@
             box-shadow: 0 0 0 3px rgba(85, 22, 109, 0.12);
         }
 
-        /* انتخابگر جنسیت (پیش‌فرض آقا با تأکید بصری) */
         .gender-selector-wrapper {
             background: #f3ece1;
             padding: 4px;
@@ -276,7 +271,6 @@
             box-shadow: 0 4px 12px rgba(42, 8, 53, 0.25);
         }
 
-        /* دکمه ارسال طلایی-ارغوانی */
         .submit-btn {
             width: 100%;
             padding: 16px;
@@ -292,15 +286,12 @@
             box-shadow: 0 10px 24px rgba(42, 8, 53, 0.28);
             transition: all 0.2s ease;
             margin-top: 6px;
-            position: relative;
-            overflow: hidden;
         }
 
         .submit-btn:active {
             transform: scale(0.98);
         }
 
-        /* مرحله دوم: گیت تأیید عضویت کانال و گروه */
         .gate-card {
             background: #ffffff;
             border-radius: 26px;
@@ -368,7 +359,7 @@
         }
 
         .join-btn {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
@@ -376,15 +367,25 @@
             padding: 12px;
             border-radius: 14px;
             font-weight: 800;
-            font-size: 0.88rem;
-            text-decoration: none;
+            font-size: 0.9rem;
+            border: none;
             color: #ffffff;
             background: #0284c7;
+            cursor: pointer;
+            font-family: inherit;
             transition: all 0.2s;
         }
 
         .join-btn.women-btn {
             background: linear-gradient(135deg, #a21caf 0%, #701a75 100%);
+        }
+
+        .join-btn:active {
+            transform: scale(0.98);
+        }
+
+        .join-btn.visited {
+            background: #10b981;
         }
 
         .confirm-btn {
@@ -402,7 +403,6 @@
             margin-top: 10px;
         }
 
-        /* مرحله سوم: کارت دیجیتال داوطلب */
         .ticket-card {
             background: #ffffff;
             border-radius: 26px;
@@ -527,7 +527,6 @@
 <body>
 
 <div class="container">
-    <!-- هدر مسابقه -->
     <div class="header-card">
         <span class="badge-round">سلسله مسابقات کتابخوانی</span>
         <div class="logo-title-group">
@@ -555,7 +554,6 @@
         <div class="form-title">فرم ثبت‌نام داوطلب</div>
 
         <form id="reg-form" onsubmit="handleFormSubmit(event)">
-            <!-- تفکیک نام و نام خانوادگی در دو کادر مجزا -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="form-label">نام: <span>*</span></label>
@@ -572,7 +570,6 @@
                 <input type="tel" id="inp-phone" class="form-control" placeholder="۰۹۱۲۳۴۵۶۷۸۹" maxlength="11" required dir="ltr">
             </div>
 
-            <!-- انتخاب جنسیت با پیش‌فرض آقا -->
             <div class="form-group">
                 <label class="form-label">جنسیت داوطلب: <span>*</span></label>
                 <div class="gender-selector-wrapper">
@@ -634,27 +631,26 @@
         </form>
     </div>
 
-    <!-- مرحله ۲: گیت قطعی کردن ثبت‌نام با عضویت در کانال و گروه -->
+    <!-- مرحله ۲: گیت تأیید عضویت در کانال و گروه -->
     <div id="gate-section" class="gate-card" style="display: none;">
         <span class="gate-header-badge">مرحله نهایی: تأیید عضویت</span>
         <h3 class="gate-title">یک قدم تا صدور کارت شرکت</h3>
         <p class="gate-desc">
-            اطلاعات شما با موفقیت ثبت موقت شد. جهت قطعی شدن ثبت‌نام و صدور کارت رسمی داوطلب، عضویت در بخش‌های زیر الزامی است:
+            اطلاعات شما با موفقیت ثبت شد. جهت فعال‌سازی کد داوطلبی و صدور کارت رسمی، عضویت در بخش‌های زیر الزامی است:
         </p>
 
-        <!-- کانال الهدی (برای همه اعم از خانم و آقا) -->
+        <!-- کانال الهدی -->
         <div class="gate-box">
             <div class="gate-box-title">
                 <span>📢</span>
                 <span>کانال رسمی مجموعه الهدی (الزامی)</span>
             </div>
             <div class="gate-box-text">
-                اطلاع‌رسانی زمان دقیق آزمون، سوالات و نتایج مسابقه صرفاً از طریق کانال الهدی در ایتا انجام می‌شود.
+                اطلاع‌رسانی زمان آزمون، سؤالات و اعلام نتایج از طریق کانال الهدی در ایتا انجام می‌شود.
             </div>
-            <a href="https://eitaa.com/alhodaa" target="_blank" class="join-btn" onclick="markChannelVisited()">
-                <span>عضویت در کانال الهدی در ایتا</span>
-                <span>↗</span>
-            </a>
+            <button type="button" id="btn-channel-action" class="join-btn" onclick="openEitaaLink('https://eitaa.com/alhodaa', 'channel')">
+                <span id="txt-channel-btn">عضویت در کانال الهدی در ایتا ↗</span>
+            </button>
         </div>
 
         <!-- گروه بانوان سراج (فقط برای خانم‌ها) -->
@@ -667,16 +663,15 @@
                 دوست من لطفا عضو گروه کتابخوانی شو تا در مسیر مطالعه مون همراه هم باشیم 😍🤓 
                 و در جریان نحوه برگزاری #سلسله‌مسابقات‌کتابخوانی‌سراج قرار بگیری 😇
             </div>
-            <a href="https://eitaa.com/joinchat/4102358682Cea66d14a91" target="_blank" class="join-btn women-btn" onclick="markGroupVisited()">
-                <span>ورود و عضویت در گروه بانوان سراج</span>
-                <span>↗</span>
-            </a>
+            <button type="button" id="btn-group-action" class="join-btn women-btn" onclick="openEitaaLink('https://eitaa.com/joinchat/4102358682Cea66d14a91', 'group')">
+                <span id="txt-group-btn">ورود و عضویت در گروه بانوان سراج ↗</span>
+            </button>
         </div>
 
         <button class="confirm-btn" onclick="finalizeRegistration()">✓ عضو شدم؛ تأیید نهایی و صدور کارت</button>
     </div>
 
-    <!-- مرحله ۳: کارت رسمی داوطلب (پس از تایید عضویت) -->
+    <!-- مرحله ۳: کارت رسمی داوطلب -->
     <div id="ticket-section" class="ticket-card" style="display: none;">
         <div class="ticket-header">
             <span class="ticket-badge-success">✓ ثبت‌نام قطعی شد</span>
@@ -730,7 +725,6 @@
         tg.expand();
     }
 
-    // پیش‌فرض جنسیت: آقا
     let selectedGender = 'آقا';
     let tempRegistrationData = null;
     let visitedChannel = false;
@@ -749,12 +743,25 @@
         setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
+    // بازخوانی وضعیت دائمی از دیتابیس گوشی
     function checkPreviousRegistration() {
-        const saved = localStorage.getItem('seraj_reg_final_r4');
-        if (saved) {
+        // ۱. اگر ثبت نهایی شده بود، کارت را باز کن
+        const finalSaved = localStorage.getItem('seraj_reg_final_r4');
+        if (finalSaved) {
             try {
-                const regData = JSON.parse(saved);
-                renderTicket(regData);
+                renderTicket(JSON.parse(finalSaved));
+                return;
+            } catch(e) {}
+        }
+
+        // ۲. اگر ثبت موقت شده بود، به جای فرم اول، مستقیماً صفحه عضویت را باز کن
+        const tempSaved = localStorage.getItem('seraj_temp_reg_r4');
+        if (tempSaved) {
+            try {
+                tempRegistrationData = JSON.parse(tempSaved);
+                visitedChannel = localStorage.getItem('seraj_visited_channel') === 'true';
+                visitedGroup = localStorage.getItem('seraj_visited_group') === 'true';
+                showGateStep();
             } catch(e) {}
         }
     }
@@ -782,9 +789,13 @@
 
         const firstName = document.getElementById('inp-firstname').value.trim();
         const lastName = document.getElementById('inp-lastname').value.trim();
-        const phone = document.getElementById('inp-phone').value.trim();
+        let phone = document.getElementById('inp-phone').value.trim();
         const province = document.getElementById('inp-province').value;
         const city = document.getElementById('inp-city').value.trim();
+
+        if (phone.length === 10 && phone.startsWith('9')) {
+            phone = '0' + phone;
+        }
 
         if (!/^09[0-9]{9}$/.test(phone)) {
             alert('لطفاً شماره همراه معتبر ۱۱ رقمی (شروع با ۰۹) وارد کنید.');
@@ -793,7 +804,7 @@
 
         const submitBtn = document.getElementById('btn-submit');
         submitBtn.disabled = true;
-        submitBtn.textContent = 'در حال ثبت موقت...';
+        submitBtn.textContent = 'در حال ثبت اطلاعات...';
 
         const payload = {
             timestamp: new Date().toLocaleString('fa-IR', { timeZone: 'Asia/Tehran' }),
@@ -822,65 +833,95 @@
                     trackingCode: resJson.trackingCode,
                     participationCount: resJson.participationCount
                 };
-
-                // هدایت به گیت عضویت الزامی
-                showGateStep();
             } else {
-                alert('خطا در ارتباط با سرور. لطفاً دوباره تلاش کنید.');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'ادامه و تکمیل نهایی ثبت‌نام';
+                throw new Error("API error");
             }
         } catch(err) {
-            // حالت آفلاین یا اختلال شبکه
             const fallbackCode = "SRJ-4-" + Math.floor(100000 + Math.random() * 900000);
             tempRegistrationData = {
                 ...payload,
                 trackingCode: fallbackCode,
                 participationCount: 1
             };
-            showGateStep();
         }
+
+        // ذخیره فوری پیش‌نویس در دیتابیس گوشی تا با بستن برنامک از بین نرود
+        localStorage.setItem('seraj_temp_reg_r4', JSON.stringify(tempRegistrationData));
+        showGateStep();
     }
 
     function showGateStep() {
         document.getElementById('form-section').style.display = 'none';
         document.getElementById('gate-section').style.display = 'block';
 
-        // اگر کاربر خانم باشد، باکس گروه بانوان ظاهر می‌شود
         const womenBox = document.getElementById('women-gate-box');
-        if (tempRegistrationData.gender === 'خانم') {
+        if (tempRegistrationData && tempRegistrationData.gender === 'خانم') {
             womenBox.style.display = 'block';
         } else {
             womenBox.style.display = 'none';
         }
 
+        updateButtonLabels();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function markChannelVisited() {
-        visitedChannel = true;
+    function updateButtonLabels() {
+        if (visitedChannel) {
+            const btn = document.getElementById('btn-channel-action');
+            btn.classList.add('visited');
+            document.getElementById('txt-channel-btn').textContent = '✓ کانال مشاهده شد (ورود مجدد)';
+        }
+        if (visitedGroup) {
+            const btn = document.getElementById('btn-group-action');
+            btn.classList.add('visited');
+            document.getElementById('txt-group-btn').textContent = '✓ گروه مشاهده شد (ورود مجدد)';
+        }
     }
 
-    function markGroupVisited() {
-        visitedGroup = true;
+    // باز کردن لینک‌ها با سازگاری کامل ایتا و ذخیره وضعیت
+    function openEitaaLink(url, type) {
+        if (type === 'channel') {
+            visitedChannel = true;
+            localStorage.setItem('seraj_visited_channel', 'true');
+        }
+        if (type === 'group') {
+            visitedGroup = true;
+            localStorage.setItem('seraj_visited_group', 'true');
+        }
+
+        updateButtonLabels();
+
+        // هدایت امن به چت ایتا بدون آسیب به نشست کاربر
+        if (tg && tg.openTelegramLink) {
+            tg.openTelegramLink(url);
+        } else if (tg && tg.openLink) {
+            tg.openLink(url);
+        } else {
+            window.location.href = url;
+        }
     }
 
     function finalizeRegistration() {
-        if (!visitedChannel && !visitedGroup) {
-            // هشدار در صورت عدم لمس لینک‌ها
-            const msg = (tempRegistrationData.gender === 'خانم') 
-                ? 'لطفاً ابتدا روی لینک عضویت در کانال و گروه کلیک کنید.' 
-                : 'لطفاً ابتدا روی لینک عضویت در کانال الهدی کلیک کنید.';
+        if (!tempRegistrationData) {
+            checkPreviousRegistration();
+            return;
+        }
+
+        const isWoman = (tempRegistrationData.gender === 'خانم');
+        if (!visitedChannel && (!isWoman || !visitedGroup)) {
+            const msg = isWoman 
+                ? 'لطفاً ابتدا روی دکمه عضویت در کانال یا گروه بزنید.' 
+                : 'لطفاً ابتدا روی دکمه عضویت در کانال الهدی بزنید.';
             showToast(msg);
             return;
         }
 
-        // قطعی شدن و ذخیره در حافظه گوشی
+        // قطعی‌سازی و پاکسازی پیش‌نویس موقت
         localStorage.setItem('seraj_reg_final_r4', JSON.stringify(tempRegistrationData));
+        localStorage.removeItem('seraj_temp_reg_r4');
         renderTicket(tempRegistrationData);
         showToast("✓ ثبت‌نام قطعی شد و کارت ورود صادر گردید.");
 
-        // ارسال به بات ایتا
         if (tg && tg.sendData) {
             try {
                 tg.sendData(`ثبت‌نام قطعی مسابقه سراج\nداوطلب: ${tempRegistrationData.firstName} ${tempRegistrationData.lastName}\nکد پیگیری: ${tempRegistrationData.trackingCode}`);
@@ -916,10 +957,14 @@
     function resetFormForNewUser() {
         if (confirm("آیا قصد دارید داوطلب جدیدی را ثبت‌نام کنید؟")) {
             localStorage.removeItem('seraj_reg_final_r4');
+            localStorage.removeItem('seraj_temp_reg_r4');
+            localStorage.removeItem('seraj_visited_channel');
+            localStorage.removeItem('seraj_visited_group');
             document.getElementById('reg-form').reset();
             setGender('آقا');
             visitedChannel = false;
             visitedGroup = false;
+            tempRegistrationData = null;
             document.getElementById('ticket-section').style.display = 'none';
             document.getElementById('gate-section').style.display = 'none';
             document.getElementById('form-section').style.display = 'block';
