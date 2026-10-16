@@ -54,6 +54,7 @@
             position: relative;
         }
 
+        /* هدر مسابقه */
         .header-card {
             background: linear-gradient(145deg, var(--seraj-dark) 0%, var(--seraj-purple) 60%, #4a135e 100%);
             border-radius: 26px;
@@ -69,10 +70,7 @@
         .header-card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
+            top: -50%; left: -50%; width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(254, 240, 138, 0.08) 0%, transparent 60%);
             animation: rotateGlow 14s linear infinite;
             pointer-events: none;
@@ -123,51 +121,45 @@
             margin-top: 6px;
         }
 
-        .prizes-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 14px;
-        }
-
-        .prize-box {
+        /* کارت متحرک شعارها و پیام‌های انگیزشی */
+        .slogan-card {
             background: rgba(255, 255, 255, 0.08);
-            border: 1.5px dashed rgba(253, 230, 138, 0.5);
-            border-radius: 16px;
-            padding: 10px 8px;
+            border: 1.5px solid rgba(253, 230, 138, 0.35);
+            border-radius: 18px;
+            padding: 12px 14px;
+            margin-top: 14px;
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
             position: relative;
-            overflow: hidden;
         }
 
-        .prize-box::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            animation: prizeShine 4s infinite;
+        .slogan-text {
+            color: #ffffff;
+            font-size: 0.88rem;
+            font-weight: 800;
+            line-height: 1.6;
+            transition: opacity 0.4s ease;
         }
 
-        @keyframes prizeShine {
-            0% { left: -100%; }
-            20% { left: 100%; }
-            100% { left: 100%; }
+        .slogan-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 14px;
+            background: var(--seraj-gold);
+            margin-right: 4px;
+            animation: blinkCursor 0.8s infinite;
+            vertical-align: middle;
         }
 
-        .prize-rank {
-            font-size: 0.74rem;
-            color: #fef3c7;
-            display: block;
-            margin-bottom: 2px;
-            font-weight: 700;
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
-        .prize-amount {
-            font-size: 1rem;
-            font-weight: 900;
-            color: #fde68a;
-        }
-
+        /* فرم ثبت‌نام */
         .form-card {
             background: rgba(255, 255, 255, 0.94);
             backdrop-filter: blur(14px);
@@ -292,6 +284,7 @@
             transform: scale(0.98);
         }
 
+        /* گیت تأیید عضویت */
         .gate-card {
             background: #ffffff;
             border-radius: 26px;
@@ -324,7 +317,20 @@
             font-size: 0.85rem;
             color: #475569;
             line-height: 1.6;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
+        }
+
+        /* باکس راهنمای بازگشت در ایتا */
+        .eitaa-guide-tip {
+            background: #eff6ff;
+            border: 1px dashed #60a5fa;
+            border-radius: 14px;
+            padding: 10px 12px;
+            font-size: 0.78rem;
+            color: #1e40af;
+            line-height: 1.6;
+            text-align: right;
+            margin-bottom: 14px;
         }
 
         .gate-box {
@@ -403,6 +409,7 @@
             margin-top: 10px;
         }
 
+        /* کارت داوطلب */
         .ticket-card {
             background: #ffffff;
             border-radius: 26px;
@@ -534,26 +541,21 @@
         </div>
         <div class="book-pill">
             <span>📖</span>
-            <span>کتاب محور: «خون دلی که لعل شد» (دوره چهارم)</span>
+            <span id="ui-book-title">کتاب محور: «خون دلی که لعل شد» (دوره چهارم)</span>
         </div>
 
-        <div class="prizes-grid">
-            <div class="prize-box">
-                <span class="prize-rank">🏆 جایزه نفر اول</span>
-                <span class="prize-amount">۸۰۰ هزار تومان</span>
-            </div>
-            <div class="prize-box">
-                <span class="prize-rank">🥈 جایزه نفر دوم</span>
-                <span class="prize-amount">۵۰۰ هزار تومان</span>
-            </div>
+        <!-- کارت انیمیشنی شعارهای دوره‌ای -->
+        <div class="slogan-card">
+            <span id="slogan-target" class="slogan-text">مسابقه بزرگ کتابخوانی سراج 📚</span>
+            <span class="slogan-cursor"></span>
         </div>
     </div>
 
-    <!-- مرحله ۱: فرم ثبت‌نام -->
+    <!-- مرحله ۱: فرم مشخصات -->
     <div id="form-section" class="form-card">
         <div class="form-title">فرم ثبت‌نام داوطلب</div>
 
-        <form id="reg-form" onsubmit="handleFormSubmit(event)">
+        <form id="reg-form" onsubmit="handleInitialStep(event)">
             <div class="form-row">
                 <div class="form-group">
                     <label class="form-label">نام: <span>*</span></label>
@@ -631,15 +633,19 @@
         </form>
     </div>
 
-    <!-- مرحله ۲: گیت تأیید عضویت در کانال و گروه -->
+    <!-- مرحله ۲: گیت عضویت (ثبت نهایی فقط در این مرحله انجام می‌شود) -->
     <div id="gate-section" class="gate-card" style="display: none;">
         <span class="gate-header-badge">مرحله نهایی: تأیید عضویت</span>
         <h3 class="gate-title">یک قدم تا صدور کارت شرکت</h3>
         <p class="gate-desc">
-            اطلاعات شما با موفقیت ثبت شد. جهت فعال‌سازی کد داوطلبی و صدور کارت رسمی، عضویت در بخش‌های زیر الزامی است:
+            مشخصات شما ذخیره شد. <b>ثبت‌نام نهایی در مسابقه</b> صرفاً پس از عضویت در بخش‌های زیر و فشردن دکمه تأیید انجام می‌پذیرد:
         </p>
 
-        <!-- کانال الهدی -->
+        <!-- پیام راهنمای بازگشت در ایتا -->
+        <div class="eitaa-guide-tip">
+            💡 <b>راهنمای بازگشت:</b> با زدن دکمه عضویت، ایتا صفحه کانال/گروه را باز می‌کند و برنامک به نوار پایین منتقل می‌شود. پس از عضویت، کافی است <b>نوار پایین صفحه</b> را لمس کنید تا دوباره همین صفحه باز شود و دکمه تایید نهایی را بزنید.
+        </div>
+
         <div class="gate-box">
             <div class="gate-box-title">
                 <span>📢</span>
@@ -648,12 +654,11 @@
             <div class="gate-box-text">
                 اطلاع‌رسانی زمان آزمون، سؤالات و اعلام نتایج از طریق کانال الهدی در ایتا انجام می‌شود.
             </div>
-            <button type="button" id="btn-channel-action" class="join-btn" onclick="openEitaaLink('https://eitaa.com/alhodaa', 'channel')">
+            <button type="button" id="btn-channel-action" class="join-btn" onclick="openEitaaLink(CONTEST_CONFIG.channelUrl, 'channel')">
                 <span id="txt-channel-btn">عضویت در کانال الهدی در ایتا ↗</span>
             </button>
         </div>
 
-        <!-- گروه بانوان سراج (فقط برای خانم‌ها) -->
         <div id="women-gate-box" class="gate-box women" style="display: none;">
             <div class="gate-box-title">
                 <span>🌸</span>
@@ -663,12 +668,12 @@
                 دوست من لطفا عضو گروه کتابخوانی شو تا در مسیر مطالعه مون همراه هم باشیم 😍🤓 
                 و در جریان نحوه برگزاری #سلسله‌مسابقات‌کتابخوانی‌سراج قرار بگیری 😇
             </div>
-            <button type="button" id="btn-group-action" class="join-btn women-btn" onclick="openEitaaLink('https://eitaa.com/joinchat/4102358682Cea66d14a91', 'group')">
+            <button type="button" id="btn-group-action" class="join-btn women-btn" onclick="openEitaaLink(CONTEST_CONFIG.womenGroupUrl, 'group')">
                 <span id="txt-group-btn">ورود و عضویت در گروه بانوان سراج ↗</span>
             </button>
         </div>
 
-        <button class="confirm-btn" onclick="finalizeRegistration()">✓ عضو شدم؛ تأیید نهایی و صدور کارت</button>
+        <button id="btn-confirm-final" class="confirm-btn" onclick="finalizeRegistration()">✓ عضو شدم؛ ثبت‌نام نهایی و صدور کارت</button>
     </div>
 
     <!-- مرحله ۳: کارت رسمی داوطلب -->
@@ -702,7 +707,7 @@
         </div>
         <div class="ticket-row">
             <span class="ticket-label">دوره مسابقه:</span>
-            <span class="ticket-val">دوره چهارم (خون دلی که لعل شد)</span>
+            <span id="ticket-round-name" class="ticket-val">---</span>
         </div>
 
         <div class="ticket-actions" style="margin-top: 14px;">
@@ -717,7 +722,33 @@
 <div id="toast-msg" class="toast">پیام سیستم</div>
 
 <script>
+    // ==========================================
+    // تنظیمات ماهانه دوره مسابقات (فقط این بخش را هر ماه تغییر دهید)
+    // ==========================================
+    const CONTEST_CONFIG = {
+        roundNumber: "دوره چهارم",
+        bookTitle: "خون دلی که لعل شد",
+        roundFullName: "دوره چهارم (خون دلی که لعل شد)",
+        channelUrl: "https://eitaa.com/alhodaa",
+        womenGroupUrl: "https://eitaa.com/joinchat/4102358682Cea66d14a91"
+    };
+
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzHjsAvRMmjZ_NaCrgXG6-qumHzlTfwEFq17gZmKuZVUXw6M-36HH0FRse3LAZil6G2/exec";
+
+    // فهرست شعارها و پیام‌های انگیزشی متناوب
+    const SLOGANS = [
+        "مسابقه بزرگ کتابخوانی سراج 📚",
+        "فرصتی برای انس با کتاب‌های ناب و تحول‌آفرین ✨",
+        "همراه با جوایز نقدی ارزنده برای برگزیدگان 🏆",
+        "مطالعه هدفمند و تقویت دانایی و خودآگاهی 🌱",
+        "کتابی از جنس استقامت، امید و پیروزی 🕊️",
+        "آزمون آنلاین، آسان و در دسترس از سراسر کشور 📱",
+        "صدور آنی کارت رسمی داوطلبی و کد پیگیری 🎫",
+        "حضور پرشور کتابخوانان از تمام استان‌های ایران 🇮🇷",
+        "همراهی و گفت‌وگو در جمع فرهیختگان سراج 🌿",
+        "رقابتی سالم، جذاب و الهام‌بخش در کنار هم 🌟",
+        "گامی مؤثر در ارتقای سرانه مطالعه کشور 📖"
+    ];
 
     const tg = window.Eitaa?.WebApp || window.Telegram?.WebApp;
     if (tg) {
@@ -729,6 +760,9 @@
     let tempRegistrationData = null;
     let visitedChannel = false;
     let visitedGroup = false;
+
+    // اعمال خودکار مشخصات دوره از کانفیگ
+    document.getElementById('ui-book-title').textContent = `کتاب محور: «${CONTEST_CONFIG.bookTitle}» (${CONTEST_CONFIG.roundNumber})`;
 
     function setGender(gender) {
         selectedGender = gender;
@@ -743,10 +777,22 @@
         setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // بازخوانی وضعیت دائمی از دیتابیس گوشی
+    // چرخش انیمیشنی شعارها
+    let sloganIndex = 0;
+    function cycleSlogans() {
+        const el = document.getElementById('slogan-target');
+        if (!el) return;
+        el.style.opacity = '0';
+        setTimeout(() => {
+            sloganIndex = (sloganIndex + 1) % SLOGANS.length;
+            el.textContent = SLOGANS[sloganIndex];
+            el.style.opacity = '1';
+        }, 400);
+    }
+    setInterval(cycleSlogans, 3800);
+
     function checkPreviousRegistration() {
-        // ۱. اگر ثبت نهایی شده بود، کارت را باز کن
-        const finalSaved = localStorage.getItem('seraj_reg_final_r4');
+        const finalSaved = localStorage.getItem('seraj_reg_final_v5');
         if (finalSaved) {
             try {
                 renderTicket(JSON.parse(finalSaved));
@@ -754,8 +800,7 @@
             } catch(e) {}
         }
 
-        // ۲. اگر ثبت موقت شده بود، به جای فرم اول، مستقیماً صفحه عضویت را باز کن
-        const tempSaved = localStorage.getItem('seraj_temp_reg_r4');
+        const tempSaved = localStorage.getItem('seraj_temp_reg_v5');
         if (tempSaved) {
             try {
                 tempRegistrationData = JSON.parse(tempSaved);
@@ -776,6 +821,7 @@
         document.getElementById('ticket-phone').textContent = data.phone;
         document.getElementById('ticket-gender').textContent = data.gender;
         document.getElementById('ticket-location').textContent = `${data.province} - ${data.city}`;
+        document.getElementById('ticket-round-name').textContent = data.roundName || CONTEST_CONFIG.roundFullName;
 
         if (data.participationCount > 1) {
             document.getElementById('ticket-loyalty').textContent = `★ داوطلب وفادار (حضور در ${data.participationCount} دوره مسابقات)`;
@@ -784,7 +830,8 @@
         }
     }
 
-    async function handleFormSubmit(e) {
+    // مرحله ۱: فقط ذخیره محلی پیش‌نویس (هیچ چیزی به اکسل فرستاده نمی‌شود)
+    function handleInitialStep(e) {
         e.preventDefault();
 
         const firstName = document.getElementById('inp-firstname').value.trim();
@@ -802,13 +849,9 @@
             return;
         }
 
-        const submitBtn = document.getElementById('btn-submit');
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'در حال ثبت اطلاعات...';
-
-        const payload = {
+        tempRegistrationData = {
             timestamp: new Date().toLocaleString('fa-IR', { timeZone: 'Asia/Tehran' }),
-            roundName: "دوره چهارم (خون دلی که لعل شد)",
+            roundName: CONTEST_CONFIG.roundFullName,
             firstName: firstName,
             lastName: lastName,
             phone: phone,
@@ -818,35 +861,7 @@
             userId: tg?.initDataUnsafe?.user?.id || 'مستقیم'
         };
 
-        try {
-            const response = await fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(payload)
-            });
-
-            const resJson = await response.json();
-
-            if (resJson.status === 'success') {
-                tempRegistrationData = {
-                    ...payload,
-                    trackingCode: resJson.trackingCode,
-                    participationCount: resJson.participationCount
-                };
-            } else {
-                throw new Error("API error");
-            }
-        } catch(err) {
-            const fallbackCode = "SRJ-4-" + Math.floor(100000 + Math.random() * 900000);
-            tempRegistrationData = {
-                ...payload,
-                trackingCode: fallbackCode,
-                participationCount: 1
-            };
-        }
-
-        // ذخیره فوری پیش‌نویس در دیتابیس گوشی تا با بستن برنامک از بین نرود
-        localStorage.setItem('seraj_temp_reg_r4', JSON.stringify(tempRegistrationData));
+        localStorage.setItem('seraj_temp_reg_v5', JSON.stringify(tempRegistrationData));
         showGateStep();
     }
 
@@ -878,7 +893,6 @@
         }
     }
 
-    // باز کردن لینک‌ها با سازگاری کامل ایتا و ذخیره وضعیت
     function openEitaaLink(url, type) {
         if (type === 'channel') {
             visitedChannel = true;
@@ -891,7 +905,6 @@
 
         updateButtonLabels();
 
-        // هدایت امن به چت ایتا بدون آسیب به نشست کاربر
         if (tg && tg.openTelegramLink) {
             tg.openTelegramLink(url);
         } else if (tg && tg.openLink) {
@@ -901,7 +914,8 @@
         }
     }
 
-    function finalizeRegistration() {
+    // مرحله ۲: ارسال قطعی اطلاعات به اکسل فقط پس از تایید عضویت
+    async function finalizeRegistration() {
         if (!tempRegistrationData) {
             checkPreviousRegistration();
             return;
@@ -916,11 +930,38 @@
             return;
         }
 
-        // قطعی‌سازی و پاکسازی پیش‌نویس موقت
-        localStorage.setItem('seraj_reg_final_r4', JSON.stringify(tempRegistrationData));
-        localStorage.removeItem('seraj_temp_reg_r4');
+        const confirmBtn = document.getElementById('btn-confirm-final');
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'در حال ثبت نهایی در سامانه مسابقات...';
+
+        try {
+            const response = await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(tempRegistrationData)
+            });
+
+            const resJson = await response.json();
+
+            if (resJson.status === 'success') {
+                tempRegistrationData.trackingCode = resJson.trackingCode;
+                tempRegistrationData.participationCount = resJson.participationCount;
+            } else {
+                throw new Error("API error");
+            }
+        } catch(err) {
+            // کد پشتیبان در صورت بروز قطعی اینترنت
+            const fallbackCode = "SRJ-" + Math.floor(100 + Math.random() * 900) + "-" + Math.floor(10 + Math.random() * 90);
+            tempRegistrationData.trackingCode = fallbackCode;
+            tempRegistrationData.participationCount = 1;
+        }
+
+        // قطعی‌سازی و پاکسازی پیش‌نویس
+        localStorage.setItem('seraj_reg_final_v5', JSON.stringify(tempRegistrationData));
+        localStorage.removeItem('seraj_temp_reg_v5');
+
         renderTicket(tempRegistrationData);
-        showToast("✓ ثبت‌نام قطعی شد و کارت ورود صادر گردید.");
+        showToast("✓ ثبت‌نام با موفقیت قطعی شد و کارت ورود صادر گردید.");
 
         if (tg && tg.sendData) {
             try {
@@ -932,7 +973,7 @@
     function copyTicketInfo() {
         const code = document.getElementById('ticket-code').textContent;
         const name = document.getElementById('ticket-name').textContent;
-        const text = `کارت شرکت در مسابقه کتابخوانی سراج (دوره چهارم)\nداوطلب: ${name}\nکد پیگیری: ${code}\nدبیرخانه مسابقات سراج • مجموعه الهدی`;
+        const text = `کارت شرکت در مسابقه کتابخوانی سراج (${CONTEST_CONFIG.roundNumber})\nداوطلب: ${name}\nکد پیگیری: ${code}\nدبیرخانه مسابقات سراج • مجموعه الهدی`;
 
         let copied = false;
         try {
@@ -956,8 +997,8 @@
 
     function resetFormForNewUser() {
         if (confirm("آیا قصد دارید داوطلب جدیدی را ثبت‌نام کنید؟")) {
-            localStorage.removeItem('seraj_reg_final_r4');
-            localStorage.removeItem('seraj_temp_reg_r4');
+            localStorage.removeItem('seraj_reg_final_v5');
+            localStorage.removeItem('seraj_temp_reg_v5');
             localStorage.removeItem('seraj_visited_channel');
             localStorage.removeItem('seraj_visited_group');
             document.getElementById('reg-form').reset();
@@ -968,8 +1009,8 @@
             document.getElementById('ticket-section').style.display = 'none';
             document.getElementById('gate-section').style.display = 'none';
             document.getElementById('form-section').style.display = 'block';
-            document.getElementById('btn-submit').disabled = false;
-            document.getElementById('btn-submit').textContent = 'ادامه و تکمیل نهایی ثبت‌نام';
+            document.getElementById('btn-confirm-final').disabled = false;
+            document.getElementById('btn-confirm-final').textContent = '✓ عضو شدم؛ ثبت‌نام نهایی و صدور کارت';
         }
     }
 
