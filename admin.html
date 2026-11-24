@@ -71,29 +71,31 @@
             cursor: pointer;
         }
 
-        /* تب‌های ناوبری */
+ /* تب‌های ناوبری (چیدمان دو ستونه بدون نیاز به اسکرول افقی) */
         .nav-tabs {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 6px;
-            overflow-x: auto;
-            padding: 4px 2px 8px 2px;
-            scrollbar-width: none;
+            padding: 4px 0 8px 0;
         }
-        .nav-tabs::-webkit-scrollbar { display: none; }
 
         .tab-btn {
-            flex: 0 0 auto;
+            width: 100%;
             background: #fff;
             border: 1.5px solid #e2d9c8;
             color: var(--text-dark);
-            padding: 9px 14px;
-            border-radius: 14px;
+            padding: 9px 6px;
+            border-radius: 13px;
             font-family: inherit;
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.2s;
-            white-space: nowrap;
+            text-align: center;
+        }
+
+        .tab-btn:last-child {
+            grid-column: span 2;
         }
 
         .tab-btn.active {
