@@ -13,7 +13,6 @@
             --seraj-purple: #3d0e4f;
             --seraj-purple-mid: #5b1774;
             --seraj-gold: #f59e0b;
-            --seraj-gold-light: #fef3c7;
             --seraj-gold-border: #fcd34d;
             --bg-color: #f4f1ea;
             --card-bg: #ffffff;
@@ -32,7 +31,7 @@
             background: var(--bg-color);
             color: var(--text-dark);
             margin: 0;
-            padding: 12px 12px 40px 12px;
+            padding: 12px 12px 48px 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -40,7 +39,6 @@
 
         .container { width: 100%; max-width: 680px; display: flex; flex-direction: column; gap: 12px; }
 
-        /* هدر مدیریتی */
         .admin-header {
             background: linear-gradient(135deg, var(--seraj-dark) 0%, var(--seraj-purple) 100%);
             color: #fff;
@@ -55,7 +53,7 @@
             gap: 10px;
         }
 
-        .admin-header h1 { margin: 0; font-size: 1.15rem; font-weight: 900; color: #fde68a; }
+        .admin-header h1 { margin: 0; font-size: 1.12rem; font-weight: 900; color: #fde68a; }
         .admin-header p { margin: 3px 0 0 0; font-size: 0.78rem; color: #e2e8f0; }
 
         .header-actions { display: flex; gap: 6px; }
@@ -71,12 +69,12 @@
             cursor: pointer;
         }
 
- /* تب‌های ناوبری (چیدمان دو ستونه بدون نیاز به اسکرول افقی) */
+        /* منوی دو ستونه بدون نیاز به اسکرول افقی */
         .nav-tabs {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 6px;
-            padding: 4px 0 8px 0;
+            padding: 4px 0 6px 0;
         }
 
         .tab-btn {
@@ -93,10 +91,7 @@
             transition: all 0.2s;
             text-align: center;
         }
-
-        .tab-btn:last-child {
-            grid-column: span 2;
-        }
+        .tab-btn:last-child { grid-column: span 2; }
 
         .tab-btn.active {
             background: linear-gradient(135deg, var(--seraj-purple) 0%, var(--seraj-dark) 100%);
@@ -105,25 +100,95 @@
             box-shadow: 0 4px 12px rgba(42, 8, 53, 0.2);
         }
 
-        /* کارت‌ها و فرم‌ها */
         .card {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 18px;
+            padding: 16px;
             box-shadow: var(--shadow);
             border: 1px solid #ece5d8;
         }
 
         .card-title {
-            font-size: 1rem;
+            font-size: 0.98rem;
             font-weight: 900;
             color: var(--seraj-purple);
-            margin: 0 0 14px 0;
+            margin: 0 0 12px 0;
             padding-bottom: 8px;
             border-bottom: 2px solid #f3ece1;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 8px;
+        }
+
+        /* سیستم راهنمای تعاملی (?) */
+        .help-trigger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+            font-size: 0.74rem;
+            font-weight: 900;
+            cursor: pointer;
+            margin-right: 5px;
+            vertical-align: middle;
+            padding: 0;
+            font-family: inherit;
+        }
+        .help-trigger:active { transform: scale(0.92); }
+
+        .help-popover {
+            display: none;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-right: 3.5px solid #0284c7;
+            color: #0c4a6e;
+            border-radius: 10px;
+            padding: 8px 11px;
+            font-size: 0.77rem;
+            line-height: 1.6;
+            margin: 5px 0 8px 0;
+            font-weight: 600;
+        }
+        .help-popover.open { display: block; animation: fadeIn 0.18s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* انتخابگر تاریخ و ساعت شمسی */
+        .shamsi-picker-box {
+            background: #faf7f2;
+            border: 1.5px solid #dfd5c7;
+            border-radius: 14px;
+            padding: 8px;
+        }
+        .shamsi-row {
+            display: grid;
+            grid-template-columns: 1.1fr 1.3fr 0.9fr;
+            gap: 5px;
+            margin-bottom: 6px;
+        }
+        .shamsi-time-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 5px;
+            align-items: center;
+        }
+        .shamsi-select {
+            width: 100%;
+            padding: 7px 6px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: #fff;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            outline: none;
         }
 
         .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -131,7 +196,7 @@
         @media (max-width: 480px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
 
         .form-group { margin-bottom: 12px; }
-        .form-label { display: block; font-size: 0.8rem; font-weight: 800; margin-bottom: 5px; color: #334155; }
+        .form-label { display: flex; align-items: center; flex-wrap: wrap; font-size: 0.8rem; font-weight: 800; margin-bottom: 5px; color: #334155; }
 
         .form-control {
             width: 100%;
@@ -139,7 +204,7 @@
             border: 1.5px solid #dfd5c7;
             border-radius: 12px;
             font-family: inherit;
-            font-size: 0.86rem;
+            font-size: 0.85rem;
             background: #faf7f2;
             color: var(--text-dark);
             outline: none;
@@ -148,11 +213,11 @@
         textarea.form-control { min-height: 76px; resize: vertical; line-height: 1.6; }
 
         .btn {
-            padding: 11px 16px;
+            padding: 11px 14px;
             border-radius: 14px;
             border: none;
             font-family: inherit;
-            font-size: 0.86rem;
+            font-size: 0.84rem;
             font-weight: 800;
             cursor: pointer;
             transition: 0.2s;
@@ -167,9 +232,8 @@
         .btn-success { background: var(--success); color: #fff; }
         .btn-danger { background: #fee2e2; color: var(--danger); border: 1px solid #fecaca; }
         .btn-info { background: #e0f2fe; color: var(--info); border: 1px solid #bae6fd; }
-        .btn-sm { padding: 6px 10px; font-size: 0.76rem; border-radius: 10px; }
+        .btn-sm { padding: 6px 10px; font-size: 0.75rem; border-radius: 10px; }
 
-        /* شاخص‌های آماری */
         .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         @media (min-width: 520px) { .kpi-grid { grid-template-columns: repeat(4, 1fr); } }
 
@@ -180,10 +244,9 @@
             padding: 12px;
             text-align: center;
         }
-        .kpi-num { font-size: 1.45rem; font-weight: 900; color: var(--seraj-purple); }
-        .kpi-lbl { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-top: 2px; }
+        .kpi-num { font-size: 1.4rem; font-weight: 900; color: var(--seraj-purple); }
+        .kpi-lbl { font-size: 0.74rem; color: var(--text-muted); font-weight: 700; margin-top: 2px; }
 
-        /* آیتم‌های لیست */
         .list-item {
             background: #faf7f2;
             border: 1.5px solid #e5ddd0;
@@ -191,7 +254,7 @@
             padding: 12px;
             margin-bottom: 10px;
         }
-        .list-item-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+        .list-item-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
         .badge { padding: 3px 9px; border-radius: 10px; font-size: 0.72rem; font-weight: 800; }
         .badge-green { background: #dcfce7; color: #15803d; }
         .badge-red { background: #fee2e2; color: #b91c1c; }
@@ -207,8 +270,21 @@
             border-radius: 12px;
             border: 1px solid #e5ddd0;
             margin-bottom: 8px;
-            font-size: 0.83rem;
+            font-size: 0.82rem;
             font-weight: 700;
+        }
+
+        .level-inventory-bar {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 8px 10px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 0.77rem;
+            font-weight: 800;
         }
 
         .winner-card {
@@ -228,7 +304,7 @@
             color: #fde68a;
             padding: 10px 20px;
             border-radius: 22px;
-            font-size: 0.83rem;
+            font-size: 0.82rem;
             font-weight: 800;
             z-index: 9999;
             opacity: 0;
@@ -288,7 +364,7 @@
             <button class="tab-btn" onclick="switchTab('tab-course', this)">📚 دوره و گیت‌ها</button>
             <button class="tab-btn" onclick="switchTab('tab-form', this)">📝 فرم‌ساز ثبت‌نام</button>
             <button class="tab-btn" onclick="switchTab('tab-schedule', this)">⏱️ زمان‌بندی و آزمون</button>
-            <button class="tab-btn" onclick="switchTab('tab-questions', this)">❓ بانک سوالات</button>
+            <button class="tab-btn" onclick="switchTab('tab-questions', this)">❓ بانک سوالات دوره</button>
             <button class="tab-btn" onclick="switchTab('tab-users', this)">👥 داوطلبان و نتایج</button>
             <button class="tab-btn" onclick="switchTab('tab-security', this)">🔐 امنیت و لاگ</button>
         </div>
@@ -296,7 +372,10 @@
         <!-- ۱. تب داشبورد و قرعه‌کشی -->
         <div id="tab-dashboard" class="tab-panel active">
             <div class="card" style="margin-bottom: 12px;">
-                <div class="card-title"><span>آمار لحظه‌ای سامانه</span></div>
+                <div class="card-title">
+                    <span>آمار لحظه‌ای دوره فعال <button type="button" class="help-trigger" onclick="toggleHelp('h-kpi')">?</button></span>
+                </div>
+                <div id="h-kpi" class="help-popover">این بخش آمار زنده ثبت‌نامی‌ها و شرکت‌کنندگان آزمون دوره فعلی را از گوگل شیت نمایش می‌دهد.</div>
                 <div class="kpi-grid">
                     <div class="kpi-box"><div class="kpi-num" id="kpi-total-reg">0</div><div class="kpi-lbl">کل ثبت‌نام‌ها</div></div>
                     <div class="kpi-box"><div class="kpi-num" id="kpi-gender">0 / 0</div><div class="kpi-lbl">بانوان / آقایان</div></div>
@@ -306,9 +385,11 @@
                 <div id="top-provinces-box" style="margin-top: 12px; font-size: 0.8rem; color: #334155;"></div>
             </div>
 
-            <!-- ماژول قرعه‌کشی هوشمند -->
             <div class="card">
-                <div class="card-title"><span>🏆 قرعه‌کشی هوشمند واجدین شرایط</span></div>
+                <div class="card-title">
+                    <span>🏆 قرعه‌کشی هوشمند واجدین شرایط <button type="button" class="help-trigger" onclick="toggleHelp('h-lottery')">?</button></span>
+                </div>
+                <div id="h-lottery" class="help-popover">فیلترهای مورد نظر (مثلاً قبول‌شدگان آزمون بدون تخلف خروج از صفحه) را انتخاب کنید تا سیستم به‌صورت کاملاً تصادفی برندگان را انتخاب کند.</div>
                 <div class="grid-2">
                     <div class="form-group">
                         <label class="form-label">جامعه آماری قرعه‌کشی:</label>
@@ -327,7 +408,7 @@
                         <input type="number" id="lot-min-score" class="form-control" value="70" min="0" max="100">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">شرط سلامت آزمون (سقف تخلف خروج):</label>
+                        <label class="form-label">سقف تخلف خروج مجاز:</label>
                         <select id="lot-max-vio" class="form-control">
                             <option value="0">فقط بدون تخلف (۰ خروج)</option>
                             <option value="1">حداکثر ۱ بار خروج</option>
@@ -350,7 +431,10 @@
         <!-- ۲. تب دوره، محتوا و گیت‌های عضویت -->
         <div id="tab-course" class="tab-panel">
             <div class="card" style="margin-bottom: 12px;">
-                <div class="card-title"><span>مشخصات دوره و کتاب محور</span></div>
+                <div class="card-title">
+                    <span>مشخصات دوره فعال <button type="button" class="help-trigger" onclick="toggleHelp('h-course-info')">?</button></span>
+                </div>
+                <div id="h-course-info" class="help-popover">این اطلاعات بلافاصله در سربرگ برنامک ثبت‌نام، کارت ورود داوطلبان و برنامک آزمون نمایش داده می‌شوند.</div>
                 <div class="grid-2">
                     <div class="form-group">
                         <label class="form-label">شماره دوره:</label>
@@ -367,24 +451,37 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">جملات متحرک بالای صفحه (هر خط یک جمله):</label>
-                    <textarea id="cfg-slogans" class="form-control" rows="4"></textarea>
+                    <textarea id="cfg-slogans" class="form-control" rows="3"></textarea>
                 </div>
 
+                <!-- بخش گیت‌های عضویت + بانک گیت‌های ذخیره‌شده -->
                 <div class="card-title" style="margin-top: 16px;">
-                    <span>گیت‌های عضویت اجباری/اختیاری</span>
-                    <button type="button" class="btn btn-info btn-sm" onclick="addGateItem()">+ افزودن کانال/گروه</button>
+                    <span>گیت‌های عضویت دوره <button type="button" class="help-trigger" onclick="toggleHelp('h-gates')">?</button></span>
+                    <button type="button" class="btn btn-info btn-sm" onclick="addGateItem()">+ گیت جدید</button>
                 </div>
+                <div id="h-gates" class="help-popover">کانال‌ها یا گروه‌هایی که داوطلب پیش از صدور کارت باید عضو شود. می‌توانید گیت‌های پرکاربرد را در «بانک گیت‌ها» ذخیره کنید تا در دوره‌های بعدی با یک کلیک انتخاب شوند.</div>
+
+                <!-- انتخاب از گیت‌های ذخیره‌شده قبلی -->
+                <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 12px; padding: 10px; margin-bottom: 12px;">
+                    <label class="form-label" style="color: #0369a1; margin-bottom: 6px;">📌 انتخاب از گیت‌های ذخیره‌شده قبلی:</label>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                        <select id="saved-gates-select" class="form-control" style="flex: 1; min-width: 180px; background: #fff; padding: 8px;"></select>
+                        <button type="button" class="btn btn-success btn-sm" onclick="reuseSavedGate()">+ افزودن به این دوره</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteFromSavedGates()">حذف از بانک</button>
+                    </div>
+                </div>
+
                 <div id="gates-container"></div>
 
                 <button class="btn btn-primary" style="margin-top: 10px;" onclick="saveCourseAndGates()">💾 ذخیره تغییرات دوره و گیت‌ها</button>
             </div>
 
-            <!-- شروع دوره جدید و آرشیو -->
+            <!-- پایان دوره فعلی و شروع دوره جدید -->
             <div class="card" style="border-color: #fca5a5;">
-                <div class="card-title" style="color: var(--danger);"><span>📦 پایان دوره فعلی و شروع دوره جدید</span></div>
-                <p style="font-size: 0.8rem; color: #475569; line-height: 1.6; margin-top: 0;">
-                    با اجرای این عملیات، تمام ثبت‌نامی‌های فعلی به تب <b>«آرشیو_دوره‌ها»</b> منتقل می‌شوند (سابقه افراد برای تشخیص «داوطلب وفادار» محفوظ می‌ماند) و جداول ثبت‌نام و آزمون برای دوره جدید پاکسازی می‌شوند.
-                </p>
+                <div class="card-title" style="color: var(--danger);">
+                    <span>📦 پایان دوره فعلی و شروع دوره جدید <button type="button" class="help-trigger" onclick="toggleHelp('h-archive')">?</button></span>
+                </div>
+                <div id="h-archive" class="help-popover">با زدن این دکمه، دو تب جدید با نام دوره فعلی (مثلاً «آرشیو_ثبت‌نام_دوره_چهارم» و «آرشیو_آزمون_دوره_چهارم») در گوگل شیت ساخته می‌شود، تمام اطلاعات به آنجا منتقل می‌شود و تب اصلی برای دوره جدید آماده می‌گردد. سابقه شرکت‌کنندگان قبلی برای تشخیص «داوطلب وفادار» حفظ خواهد شد.</div>
                 <div class="grid-2">
                     <div class="form-group">
                         <label class="form-label">عنوان دوره جدید:</label>
@@ -395,7 +492,7 @@
                         <input type="text" id="arch-new-book" class="form-control" placeholder="نام کتاب جدید">
                     </div>
                 </div>
-                <button class="btn btn-danger" style="width: 100%;" onclick="archiveAndStartNewRound()">آرشیو دوره فعلی و آغاز دوره جدید</button>
+                <button class="btn btn-danger" style="width: 100%;" onclick="archiveAndStartNewRound()">آرشیو در شیت مجزا و آغاز دوره جدید</button>
             </div>
         </div>
 
@@ -403,37 +500,38 @@
         <div id="tab-form" class="tab-panel">
             <div class="card">
                 <div class="card-title">
-                    <span>فیلدهای فرم ثبت‌نام داوطلب</span>
+                    <span>فیلدهای فرم ثبت‌نام <button type="button" class="help-trigger" onclick="toggleHelp('h-form-builder')">?</button></span>
                     <button type="button" class="btn btn-info btn-sm" onclick="addNewFormField()">+ فیلد جدید</button>
                 </div>
-                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0;">
-                    توصیه می‌شود فیلدهای پایه (نام، نام خانوادگی، شماره همراه، جنسیت، استان، شهر) را حفظ کنید و در صورت نیاز فیلدهای جدید (مثل کد ملی، مقطع تحصیلی، سن) اضافه نمایید.
-                </p>
+                <div id="h-form-builder" class="help-popover">فیلدهای نمایش‌داده‌شده در فرم ثبت‌نام را از اینجا کم یا زیاد کنید. اطلاعات فیلدهای جدید در ستون «اطلاعات تکمیلی» شیت ذخیره می‌شوند.</div>
                 <div id="form-fields-container"></div>
                 <button class="btn btn-primary" style="margin-top: 8px;" onclick="saveFormFields()">💾 ذخیره ساختار فرم ثبت‌نام</button>
             </div>
         </div>
 
-        <!-- ۴. تب زمان‌بندی و تنظیمات آزمون -->
+        <!-- ۴. تب زمان‌بندی شمسی و تنظیمات آزمون -->
         <div id="tab-schedule" class="tab-panel">
             <div class="card" style="margin-bottom: 12px;">
-                <div class="card-title"><span>🗓️ زمان‌بندی و وضعیت ثبت‌نام</span></div>
+                <div class="card-title">
+                    <span>🗓️ زمان‌بندی شمسی ثبت‌نام <button type="button" class="help-trigger" onclick="toggleHelp('h-reg-sch')">?</button></span>
+                </div>
+                <div id="h-reg-sch" class="help-popover">در حالت «خودکار»، فرم ثبت‌نام فقط بین تاریخ و ساعت شروع تا پایان (به وقت رسمی تهران) باز است و خارج از این بازه به‌صورت خودکار بسته می‌شود.</div>
                 <div class="form-group">
                     <label class="form-label">حالت دسترسی به فرم ثبت‌نام:</label>
                     <select id="cfg-reg-mode" class="form-control">
-                        <option value="auto">خودکار بر اساس بازه تاریخ و ساعت</option>
+                        <option value="auto">خودکار بر اساس تاریخ و ساعت شمسی</option>
                         <option value="open">باز (دستی - همیشه باز)</option>
                         <option value="closed">بسته (دستی - توقف ثبت‌نام)</option>
                     </select>
                 </div>
                 <div class="grid-2">
                     <div class="form-group">
-                        <label class="form-label">شروع ثبت‌نام (وقت تهران):</label>
-                        <input type="datetime-local" id="cfg-reg-start" class="form-control" dir="ltr">
+                        <label class="form-label">شروع ثبت‌نام (شمسی - تهران):</label>
+                        <div id="picker-reg-start"></div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">پایان ثبت‌نام (وقت تهران):</label>
-                        <input type="datetime-local" id="cfg-reg-end" class="form-control" dir="ltr">
+                        <label class="form-label">پایان ثبت‌نام (شمسی - تهران):</label>
+                        <div id="picker-reg-end"></div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -441,60 +539,136 @@
                     <input type="text" id="cfg-reg-closed-msg" class="form-control">
                 </div>
                 <div class="switch-row">
-                    <span>نمایش تایمر شمارش معکوس قبل از شروع ثبت‌نام</span>
+                    <span>نمایش شمارش معکوس قبل از شروع ثبت‌نام</span>
                     <input type="checkbox" id="cfg-show-countdown">
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-title"><span>🛡️ تنظیمات آزمون آنلاین و ضدتقلب</span></div>
+                <div class="card-title">
+                    <span>🛡️ تنظیمات آزمون آنلاین و ضدتقلب <button type="button" class="help-trigger" onclick="toggleHelp('h-exam-cfg')">?</button></span>
+                </div>
+                <div id="h-exam-cfg" class="help-popover">تایمر آزمون بر اساس ساعت سرور محاسبه می‌شود؛ حتی اگر داوطلب برنامک را ببندد یا اینترنتش قطع شود، زمان از اول شروع نمی‌شود.</div>
+
                 <div class="grid-2">
                     <div class="form-group">
-                        <label class="form-label">وضعیت برگزاری آزمون:</label>
+                        <label class="form-label">
+                            وضعیت برگزاری آزمون:
+                            <button type="button" class="help-trigger" onclick="toggleHelp('h-exam-mode')">?</button>
+                        </label>
+                        <div id="h-exam-mode" class="help-popover">«خودکار» بر اساس زمان‌بندی زیر عمل می‌کند. «باز» آزمون را فوراً در دسترس قرار می‌دهد و «بسته» ورود را می‌بندد.</div>
                         <select id="cfg-exam-mode" class="form-control">
-                            <option value="auto">خودکار بر اساس زمان‌بندی</option>
+                            <option value="auto">خودکار بر اساس زمان‌بندی شمسی</option>
                             <option value="open">باز (هم‌اکنون فعال)</option>
                             <option value="closed">بسته (غیرفعال)</option>
-                            <option value="demo">حالت آزمایشی (Demo)</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">شرط مجوز شرکت در آزمون:</label>
+                        <label class="form-label">
+                            شرط مجوز ورود به آزمون:
+                            <button type="button" class="help-trigger" onclick="toggleHelp('h-exam-access')">?</button>
+                        </label>
+                        <div id="h-exam-access" class="help-popover">تعیین کنید فقط کسانی که قبلاً در دوره ثبت‌نام کرده‌اند مجاز باشند یا افراد جدید هم بتوانند همان لحظه ثبت‌نام کرده و آزمون دهند.</div>
                         <select id="cfg-exam-access" class="form-control">
                             <option value="registered_only">فقط ثبت‌نام‌شدگان قبلی</option>
                             <option value="allow_new_registration">افراد جدید هم همان لحظه ثبت‌نام کنند</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">شروع بازه آزمون (وقت تهران):</label>
-                        <input type="datetime-local" id="cfg-exam-start" class="form-control" dir="ltr">
+                        <label class="form-label">شروع بازه آزمون (شمسی - تهران):</label>
+                        <div id="picker-exam-start"></div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">پایان بازه آزمون (وقت تهران):</label>
-                        <input type="datetime-local" id="cfg-exam-end" class="form-control" dir="ltr">
+                        <label class="form-label">پایان بازه آزمون (شمسی - تهران):</label>
+                        <div id="picker-exam-end"></div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">مدت زمان کل آزمون هر فرد (دقیقه):</label>
+                        <label class="form-label">
+                            مدت زمان کل آزمون هر فرد (دقیقه):
+                            <button type="button" class="help-trigger" onclick="toggleHelp('h-dur')">?</button>
+                        </label>
+                        <div id="h-dur" class="help-popover">حداکثر زمانی که هر داوطلب از لحظه زدن دکمه «شروع آزمون» برای پاسخ به کل سوالات فرصت دارد.</div>
                         <input type="number" id="cfg-exam-duration-min" class="form-control" min="1" max="180">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">زمان مجاز هر سوال (ثانیه - ۰ یعنی آزاد):</label>
+                        <label class="form-label">
+                            زمان مجاز هر سوال (ثانیه - ۰ = آزاد):
+                            <button type="button" class="help-trigger" onclick="toggleHelp('h-qtimer')">?</button>
+                        </label>
+                        <div id="h-qtimer" class="help-popover">اگر عددی مثل ۴۰ وارد کنید، داوطلب برای هر سوال فقط ۴۰ ثانیه فرصت دارد و پس از آن خودکار به سوال بعدی می‌رود (بدون امکان بازگشت). عدد ۰ این محدودیت را غیرفعال می‌کند.</div>
                         <input type="number" id="cfg-q-timer" class="form-control" min="0" max="600">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">تعداد سوال تصادفی برای هر نفر (۰ = همه):</label>
-                        <input type="number" id="cfg-q-count" class="form-control" min="0" max="200">
+                </div>
+
+                <!-- بخش شفاف نحوه انتخاب و تصادفی‌سازی سوالات -->
+                <div style="background: #fdf4ff; border: 1.5px solid #e9d5ff; border-radius: 16px; padding: 12px; margin-bottom: 12px;">
+                    <label class="form-label" style="color: var(--seraj-purple);">
+                        🎯 نحوه انتخاب و چیدمان سوالات برای هر داوطلب:
+                        <button type="button" class="help-trigger" onclick="toggleHelp('h-sel-mode')">?</button>
+                    </label>
+                    <div id="h-sel-mode" class="help-popover">
+                        <b>۱. همه سوالات ثابت:</b> همه افراد سوالات را به ترتیب یکسان می‌بینند.<br>
+                        <b>۲. همه سوالات تصادفی:</b> همه سوالات نمایش داده می‌شود ولی ترتیب برای هر نفر به هم می‌ریزد.<br>
+                        <b>۳. تعداد مشخص تصادفی:</b> مثلاً از ۵۰ سوال، ۲۰ سوال تصادفی انتخاب می‌شود.<br>
+                        <b>۴. ترکیبی بر اساس سطح سختی:</b> دقیقاً مشخص می‌کنید چند سوال ساده، چند متوسط و چند دشوار برای هر نفر انتخاب شود تا عدالت آزمون حفظ شود.
                     </div>
+
+                    <select id="cfg-q-sel-mode" class="form-control" style="background: #fff;" onchange="updateSelectionModeUI()">
+                        <option value="all_fixed">۱. نمایش تمام سوالات فعال دوره به ترتیب ثابت</option>
+                        <option value="all_shuffled">۲. نمایش تمام سوالات فعال دوره با ترتیب تصادفی (Shuffle)</option>
+                        <option value="random_total">۳. انتخاب تصادفی تعداد مشخصی سوال از کل بانک دوره</option>
+                        <option value="random_by_level">۴. انتخاب ترکیبی و متعادل بر اساس سطح سختی (ساده / متوسط / دشوار)</option>
+                    </select>
+
+                    <!-- زیرتنظیم حالت ۳ -->
+                    <div id="box-random-total" style="display: none; margin-top: 10px;">
+                        <label class="form-label">تعداد کل سوالاتی که به تصادف برای هر داوطلب انتخاب شود:</label>
+                        <input type="number" id="cfg-random-total-count" class="form-control" style="background: #fff;" min="1" max="200">
+                    </div>
+
+                    <!-- زیرتنظیم حالت ۴ (تفکیک سطح سختی) -->
+                    <div id="box-random-level" style="display: none; margin-top: 10px;">
+                        <div class="level-inventory-bar" id="active-round-inventory">موجودی بانک دوره فعال: ---</div>
+                        <div class="grid-3">
+                            <div>
+                                <label class="form-label">تعداد سوال «ساده»:</label>
+                                <input type="number" id="cfg-rand-easy" class="form-control" style="background: #fff;" min="0" max="100">
+                            </div>
+                            <div>
+                                <label class="form-label">تعداد سوال «متوسط»:</label>
+                                <input type="number" id="cfg-rand-medium" class="form-control" style="background: #fff;" min="0" max="100">
+                            </div>
+                            <div>
+                                <label class="form-label">تعداد سوال «دشوار»:</label>
+                                <input type="number" id="cfg-rand-hard" class="form-control" style="background: #fff;" min="0" max="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-3">
                     <div class="form-group">
-                        <label class="form-label">حدنصاب قبولی / قرعه‌کشی (درصد):</label>
+                        <label class="form-label">
+                            حدنصاب قبولی (%):
+                            <button type="button" class="help-trigger" onclick="toggleHelp('h-pass')">?</button>
+                        </label>
+                        <div id="h-pass" class="help-popover">حداقل درصد نمره‌ای که داوطلب برای قبولی و ورود به قرعه‌کشی نیاز دارد.</div>
                         <input type="number" id="cfg-pass-percent" class="form-control" min="0" max="100">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">نمره منفی (تعداد غلط = ۱ صحیح، ۰ = بدون منفی):</label>
+                        <label class="form-label">
+                            نمره منفی (۰ = ندارد):
+                            <button type="button" class="help-trigger" onclick="toggleHelp('h-neg')">?</button>
+                        </label>
+                        <div id="h-neg" class="help-popover">مثلاً عدد ۳ یعنی هر ۳ پاسخ غلط، یک پاسخ صحیح را خنثی می‌کند. عدد ۰ نمره منفی را غیرفعال می‌کند.</div>
                         <input type="number" id="cfg-neg-marking" class="form-control" min="0" max="10">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">سقف اخطار خروج از صفحه آزمون:</label>
+                        <label class="form-label">
+                            سقف اخطار خروج:
+                            <button type="button" class="help-trigger" onclick="toggleHelp('h-vio')">?</button>
+                        </label>
+                        <div id="h-vio" class="help-popover">اگر داوطلب حین آزمون از صفحه خارج شود (مثلاً برای جستجو)، اخطار می‌گیرد و در این سقف، آزمونش خودکار ثبت و قفل می‌شود.</div>
                         <input type="number" id="cfg-max-violations" class="form-control" min="1" max="10">
                     </div>
                 </div>
@@ -502,18 +676,14 @@
                 <div class="form-group">
                     <label class="form-label">زمان نمایش پاسخنامه تشریحی به داوطلب:</label>
                     <select id="cfg-answers-policy" class="form-control">
-                        <option value="after_exam_end">فقط پس از پایان کل مهلت آزمون (توصیه‌شده)</option>
+                        <option value="after_exam_end">فقط پس از پایان کل مهلت آزمون (توصیه‌شده برای جلوگیری از لو رفتن سوالات)</option>
                         <option value="immediate">بلافاصله بعد از ثبت آزمون هر نفر</option>
                         <option value="never">عدم نمایش پاسخنامه</option>
                     </select>
                 </div>
 
                 <div class="switch-row">
-                    <span>تصادفی‌سازی ترتیب سوالات (Shuffle Questions)</span>
-                    <input type="checkbox" id="cfg-shuffle-q">
-                </div>
-                <div class="switch-row">
-                    <span>تصادفی‌سازی ترتیب گزینه‌ها (Shuffle Options)</span>
+                    <span>تصادفی‌سازی ترتیب گزینه‌های هر سوال (Shuffle Options)</span>
                     <input type="checkbox" id="cfg-shuffle-opt">
                 </div>
 
@@ -526,22 +696,41 @@
             </div>
         </div>
 
-        <!-- ۵. تب بانک سوالات -->
+        <!-- ۵. تب بانک سوالات مجزا برای هر دوره -->
         <div id="tab-questions" class="tab-panel">
+            <!-- انتخاب دوره هدف جهت طراحی آزمون -->
+            <div class="card" style="margin-bottom: 12px; border: 2px solid var(--seraj-gold-border);">
+                <div class="card-title">
+                    <span>📚 انتخاب آزمون / دوره مرتبط <button type="button" class="help-trigger" onclick="toggleHelp('h-q-round')">?</button></span>
+                    <button type="button" class="btn btn-info btn-sm" onclick="createNewExamRoundProfile()">+ تعریف دوره/آزمون جدید</button>
+                </div>
+                <div id="h-q-round" class="help-popover">می‌توانید برای هر دوره به‌صورت کاملاً مجزا بانک سوال طراحی کنید (مثلاً سوالات دوره پنجم را از قبل آماده کنید در حالی که دوره چهارم فعال است).</div>
+                <div class="form-group" style="margin-bottom: 6px;">
+                    <label class="form-label">در حال طراحی/ویرایش سوالات برای دوره:</label>
+                    <select id="q-target-round-select" class="form-control" style="font-weight: 900; color: var(--seraj-purple);" onchange="onTargetRoundChange()"></select>
+                </div>
+                <div class="level-inventory-bar" id="selected-round-inventory">آمار سوالات این دوره: ---</div>
+            </div>
+
             <div class="card" style="margin-bottom: 12px;">
                 <div class="card-title">
-                    <span id="q-editor-title">➕ افزودن سوال جدید</span>
-                    <button type="button" class="btn btn-info btn-sm" onclick="toggleBulkBox()">📥 ورود گروهی سوال</button>
+                    <span id="q-editor-title">➕ افزودن سوال تکی</span>
+                    <button type="button" class="btn btn-info btn-sm" onclick="toggleBulkBox()">📥 ورود گروهی با قالب مشخص</button>
                 </div>
 
-                <!-- باکس ورود گروهی -->
-                <div id="bulk-q-box" style="display: none; background: #f0f9ff; border: 1.5px dashed #38bdf8; border-radius: 14px; padding: 12px; margin-bottom: 14px;">
-                    <div style="font-size: 0.78rem; color: #0369a1; margin-bottom: 6px; line-height: 1.6;">
-                        هر سوال را در یک خط با جداکننده <b>|</b> وارد کنید:<br>
-                        <code>متن سوال | گزینه ۱ | گزینه ۲ | گزینه ۳ | گزینه ۴ | شماره صحیح (1تا4) | منبع/صفحه</code>
+                <!-- باکس ورود گروهی با قالب واضح -->
+                <div id="bulk-q-box" style="display: none; background: #f0f9ff; border: 1.5px dashed #0284c7; border-radius: 14px; padding: 12px; margin-bottom: 14px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+                        <b style="font-size: 0.82rem; color: #0369a1;">قالب استاندارد ورود گروهی (هر خط یک سوال):</b>
+                        <button type="button" class="btn btn-gold btn-sm" style="width: auto;" onclick="insertBulkTemplateSample()">📋 درج نمونه قالب آماده</button>
                     </div>
-                    <textarea id="bulk-q-text" class="form-control" rows="5" placeholder="نویسنده کتاب کیست؟ | الف | ب | ج | د | 2 | صفحه ۱۵"></textarea>
-                    <button type="button" class="btn btn-success btn-sm" style="margin-top: 6px; width: 100%;" onclick="parseBulkQuestions()">افزودن همه سوالات به لیست</button>
+                    <div style="background: #fff; border: 1px solid #bae6fd; border-radius: 10px; padding: 8px; font-size: 0.76rem; color: #1e3a8a; line-height: 1.7; margin-bottom: 8px;">
+                        ترتیب ستون‌ها با جداکننده <b>|</b> :<br>
+                        <code>متن سوال | گزینه ۱ | گزینه ۲ | گزینه ۳ | گزینه ۴ | شماره صحیح (1تا4) | سطح (ساده/متوسط/دشوار) | بارم | منبع/صفحه</code><br>
+                        <small style="color: #64748b;">(اگر سطح یا بارم را ننویسید، به‌طور پیش‌فرض «متوسط» و «۱ نمره» ثبت می‌شود)</small>
+                    </div>
+                    <textarea id="bulk-q-text" class="form-control" rows="5" placeholder="سوالات خود را طبق قالب بالا وارد کنید..."></textarea>
+                    <button type="button" class="btn btn-success btn-sm" style="margin-top: 8px; width: 100%;" onclick="parseBulkQuestions()">✓ بررسی و افزودن سوالات به این دوره</button>
                 </div>
 
                 <input type="hidden" id="edit-q-index" value="-1">
@@ -566,10 +755,6 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">بارم سوال:</label>
-                        <input type="number" id="q-score" class="form-control" value="1" min="1" max="20">
-                    </div>
-                    <div class="form-group">
                         <label class="form-label">سطح سختی:</label>
                         <select id="q-level" class="form-control">
                             <option value="ساده">ساده</option>
@@ -577,24 +762,28 @@
                             <option value="دشوار">دشوار</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label class="form-label">بارم سوال:</label>
+                        <input type="number" id="q-score" class="form-control" value="1" min="1" max="20">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">توضیح پاسخنامه / صفحه کتاب (اختیاری):</label>
                     <input type="text" id="q-explanation" class="form-control" placeholder="مثلاً: صفحه ۴۲ کتاب، پاراگراف دوم">
                 </div>
                 <div style="display: flex; gap: 8px;">
-                    <button type="button" class="btn btn-success" style="flex: 1;" onclick="addOrUpdateQuestion()">ثبت در لیست سوالات</button>
+                    <button type="button" class="btn btn-success" style="flex: 1;" onclick="addOrUpdateQuestion()">ثبت در لیست سوالات دوره</button>
                     <button type="button" id="btn-cancel-q-edit" class="btn btn-danger" style="display: none;" onclick="resetQuestionForm()">انصراف</button>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-title">
-                    <span>فهرست سوالات (<span id="total-q-badge">0</span> سوال)</span>
-                    <button type="button" class="btn btn-primary btn-sm" style="width: auto;" onclick="saveAllQuestionsToServer()">💾 ذخیره نهایی در سرور</button>
+                    <span>فهرست سوالات این دوره (<span id="total-q-badge">0</span> سوال)</span>
+                    <button type="button" class="btn btn-primary btn-sm" style="width: auto;" onclick="saveAllQuestionsToServer()">💾 ذخیره در سرور</button>
                 </div>
                 <div id="questions-list-container"></div>
-                <button type="button" class="btn btn-primary" style="margin-top: 8px;" onclick="saveAllQuestionsToServer()">💾 ذخیره نهایی تمام سوالات در گوگل شیت</button>
+                <button type="button" class="btn btn-primary" style="margin-top: 8px;" onclick="saveAllQuestionsToServer()">💾 ذخیره نهایی سوالات این دوره در گوگل شیت</button>
             </div>
         </div>
 
@@ -602,9 +791,10 @@
         <div id="tab-users" class="tab-panel">
             <div class="card">
                 <div class="card-title">
-                    <span>مدیریت داوطلبان و کارنامه‌ها</span>
+                    <span>مدیریت داوطلبان و کارنامه‌ها <button type="button" class="help-trigger" onclick="toggleHelp('h-users')">?</button></span>
                     <button type="button" class="btn btn-success btn-sm" onclick="exportUsersCSV()">📥 خروجی اکسل</button>
                 </div>
+                <div id="h-users" class="help-popover">در بخش «کارنامه آزمون»، اگر اینترنت داوطلبی قطع شده یا به هر دلیلی نیاز به آزمون مجدد دارد، می‌توانید با دکمه «اجازه آزمون مجدد» سابقه آزمون او را ریست کنید.</div>
 
                 <div style="display: flex; gap: 6px; margin-bottom: 10px;">
                     <button type="button" id="subtab-reg" class="btn btn-primary btn-sm" style="flex: 1;" onclick="switchUserSubTab('reg')">ثبت‌نامی‌ها (<span id="cnt-reg">0</span>)</button>
@@ -622,7 +812,10 @@
         <!-- ۷. تب امنیت و لاگ‌های سیستم -->
         <div id="tab-security" class="tab-panel">
             <div class="card" style="margin-bottom: 12px;">
-                <div class="card-title"><span>🔐 تنظیمات دسترسی مدیران</span></div>
+                <div class="card-title">
+                    <span>🔐 تنظیمات دسترسی مدیران <button type="button" class="help-trigger" onclick="toggleHelp('h-sec')">?</button></span>
+                </div>
+                <div id="h-sec" class="help-popover">با وارد کردن شناسه عددی ایتای خودتان در کادر دوم، حتی اگر کسی رمز عبور پنل را بداند، بدون حساب ایتای شما اجازه ورود نخواهد داشت.</div>
                 <div class="form-group">
                     <label class="form-label">رمز عبور ورود به پنل مدیریت:</label>
                     <input type="text" id="sec-admin-pass" class="form-control" dir="ltr">
@@ -630,7 +823,6 @@
                 <div class="form-group">
                     <label class="form-label">شناسه‌های عددی ایتای مدیران مجاز (با کاما جدا شود):</label>
                     <input type="text" id="sec-admin-ids" class="form-control" placeholder="مثال: 12345678,87654321" dir="ltr">
-                    <small style="color: var(--text-muted); font-size: 0.75rem;">اگر خالی باشد، هر کسی با رمز عبور می‌تواند وارد شود. برای امنیت کامل شناسه ایتای خودتان را وارد کنید.</small>
                 </div>
                 <div class="form-group">
                     <label class="form-label">توکن برنامک ایتا (اختیاری):</label>
@@ -662,8 +854,11 @@
     let appState = {
         settings: {},
         gates: [],
+        savedGatesLibrary: [],
+        roundsList: [],
+        selectedQuestionRound: "",
         formFields: [],
-        questions: [],
+        allQuestions: [],
         registrations: [],
         examResults: [],
         securityLogs: []
@@ -671,11 +866,117 @@
     let currentUserSubTab = "reg";
     let lastLotteryWinners = [];
 
+    const SHAMSI_MONTHS = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
+
+    // تبدیل تاریخ میلادی به شمسی برای نمایش اولیه
+    function gregorianToJalali(gy, gm, gd) {
+        const g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+        const gy2 = (gm > 2) ? (gy + 1) : gy;
+        let days = 355666 + (365 * gy) + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 + 399) / 400) + gd + g_d_m[gm - 1];
+        let jy = -1595 + (33 * Math.floor(days / 12053));
+        days %= 12053;
+        jy += 4 * Math.floor(days / 1461);
+        days %= 1461;
+        if (days > 365) {
+            jy += Math.floor((days - 1) / 365);
+            days = (days - 1) % 365;
+        }
+        const jm = (days < 186) ? 1 + Math.floor(days / 31) : 7 + Math.floor((days - 186) / 30);
+        const jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
+        return { jy, jm, jd };
+    }
+
+    function pad2(n) { return n < 10 ? "0" + n : String(n); }
+
+    // ساخت انتخابگر تاریخ و ساعت شمسی در DOM
+    function buildShamsiPicker(containerId, prefix) {
+        const el = document.getElementById(containerId);
+        let yearOpts = "";
+        for (let y = 1403; y <= 1412; y++) yearOpts += `<option value="${y}">${y}</option>`;
+        let monthOpts = SHAMSI_MONTHS.map((m, i) => `<option value="${pad2(i + 1)}">${m}</option>`).join("");
+        let dayOpts = "";
+        for (let d = 1; d <= 31; d++) dayOpts += `<option value="${pad2(d)}">${d}</option>`;
+        let hourOpts = "";
+        for (let h = 0; h <= 23; h++) hourOpts += `<option value="${pad2(h)}">ساعت ${pad2(h)}</option>`;
+        let minOpts = "";
+        for (let m = 0; m <= 59; m++) minOpts += `<option value="${pad2(m)}">دقیقه ${pad2(m)}</option>`;
+
+        el.innerHTML = `
+            <div class="shamsi-picker-box">
+                <div class="shamsi-row">
+                    <select id="${prefix}-d" class="shamsi-select">${dayOpts}</select>
+                    <select id="${prefix}-m" class="shamsi-select">${monthOpts}</select>
+                    <select id="${prefix}-y" class="shamsi-select">${yearOpts}</select>
+                </div>
+                <div class="shamsi-time-row">
+                    <select id="${prefix}-min" class="shamsi-select">${minOpts}</select>
+                    <select id="${prefix}-h" class="shamsi-select">${hourOpts}</select>
+                    <button type="button" class="btn btn-info btn-sm" onclick="setPickerToNow('${prefix}')">الان</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function setPickerValue(prefix, dtStr) {
+        let jy = 1405, jm = 1, jd = 1, hh = 0, mm = 0;
+        if (dtStr) {
+            const clean = String(dtStr).replace("T", " ").trim();
+            const [dPart, tPart] = clean.split(" ");
+            const dArr = (dPart || "").split(/[\/\-]/).map(Number);
+            const tArr = (tPart || "00:00").split(":").map(Number);
+            if (dArr.length >= 3 && !isNaN(dArr[0])) {
+                if (dArr[0] > 1700) {
+                    const j = gregorianToJalali(dArr[0], dArr[1], dArr[2]);
+                    jy = j.jy; jm = j.jm; jd = j.jd;
+                } else {
+                    jy = dArr[0]; jm = dArr[1]; jd = dArr[2];
+                }
+            }
+            hh = tArr[0] || 0;
+            mm = tArr[1] || 0;
+        }
+        document.getElementById(`${prefix}-y`).value = String(jy);
+        document.getElementById(`${prefix}-m`).value = pad2(jm);
+        document.getElementById(`${prefix}-d`).value = pad2(jd);
+        document.getElementById(`${prefix}-h`).value = pad2(hh);
+        document.getElementById(`${prefix}-min`).value = pad2(mm);
+    }
+
+    function getPickerValue(prefix) {
+        const y = document.getElementById(`${prefix}-y`).value;
+        const m = document.getElementById(`${prefix}-m`).value;
+        const d = document.getElementById(`${prefix}-d`).value;
+        const h = document.getElementById(`${prefix}-h`).value;
+        const min = document.getElementById(`${prefix}-min`).value;
+        return `${y}/${m}/${d} ${h}:${min}`;
+    }
+
+    function setPickerToNow(prefix) {
+        const now = new Date();
+        const j = gregorianToJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
+        setPickerValue(prefix, `${j.jy}/${pad2(j.jm)}/${pad2(j.jd)} ${pad2(now.getHours())}:${pad2(now.getMinutes())}`);
+        showToast("✓ تاریخ و ساعت روی لحظه فعلی تنظیم شد.");
+    }
+
+    // راه‌اندازی اولیه ۴ انتخابگر شمسی
+    buildShamsiPicker("picker-reg-start", "rs");
+    buildShamsiPicker("picker-reg-end", "re");
+    buildShamsiPicker("picker-exam-start", "es");
+    buildShamsiPicker("picker-exam-end", "ee");
+
+    // باز و بسته کردن راهنمای تعاملی (?)
+    function toggleHelp(id) {
+        const target = document.getElementById(id);
+        const isOpen = target.classList.contains("open");
+        document.querySelectorAll(".help-popover.open").forEach(el => el.classList.remove("open"));
+        if (!isOpen) target.classList.add("open");
+    }
+
     function showToast(msg) {
         const el = document.getElementById("toast-msg");
         el.textContent = msg;
         el.classList.add("show");
-        setTimeout(() => el.classList.remove("show"), 3200);
+        setTimeout(() => el.classList.remove("show"), 3400);
     }
 
     function copyMyEitaaId() {
@@ -695,7 +996,6 @@
         return await res.json();
     }
 
-    // ورود به پنل
     async function handleLogin(e) {
         e.preventDefault();
         const pass = document.getElementById("inp-admin-pass").value.trim();
@@ -741,7 +1041,6 @@
         document.getElementById("login-view").style.display = "block";
     }
 
-    // ورود خودکار در صورت باز بودن نشست
     window.addEventListener("DOMContentLoaded", () => {
         const savedPass = sessionStorage.getItem("seraj_admin_pass");
         if (savedPass) {
@@ -757,19 +1056,32 @@
         btnEl.classList.add("active");
     }
 
-    // پر کردن تمام بخش‌ها با داده‌های سرور
     function hydrateState(res) {
         appState.settings = res.settings || {};
         appState.formFields = res.formFields || [];
-        appState.questions = res.questions || [];
+        appState.allQuestions = res.questions || [];
         appState.registrations = res.registrations || [];
         appState.examResults = res.examResults || [];
         appState.securityLogs = res.securityLogs || [];
 
-        try { appState.gates = JSON.parse(appState.settings.gates_json || "[]"); } catch (e) { appState.gates = []; }
-
         const s = appState.settings;
-        document.getElementById("header-round-info").textContent = `دوره فعال: ${s.round_full_name || "---"}`;
+        try { appState.gates = JSON.parse(s.gates_json || "[]"); } catch (e) { appState.gates = []; }
+        try { appState.savedGatesLibrary = JSON.parse(s.saved_gates_library_json || "[]"); } catch (e) { appState.savedGatesLibrary = []; }
+        if (appState.savedGatesLibrary.length === 0 && appState.gates.length > 0) {
+            appState.savedGatesLibrary = JSON.parse(JSON.stringify(appState.gates));
+        }
+
+        try { appState.roundsList = JSON.parse(s.rounds_list_json || "[]"); } catch (e) { appState.roundsList = []; }
+        const activeRoundFull = s.round_full_name || "دوره فعال";
+        if (appState.roundsList.indexOf(activeRoundFull) === -1) appState.roundsList.unshift(activeRoundFull);
+        appState.allQuestions.forEach(q => {
+            if (q.round && appState.roundsList.indexOf(q.round) === -1) appState.roundsList.push(q.round);
+        });
+        if (!appState.selectedQuestionRound || appState.roundsList.indexOf(appState.selectedQuestionRound) === -1) {
+            appState.selectedQuestionRound = activeRoundFull;
+        }
+
+        document.getElementById("header-round-info").textContent = `دوره فعال: ${activeRoundFull}`;
 
         // داشبورد
         const totalReg = appState.registrations.length;
@@ -784,7 +1096,6 @@
         document.getElementById("kpi-exam-done").textContent = completedExams.length;
         document.getElementById("kpi-exam-pass").textContent = passedCount;
 
-        // استان‌های برتر
         const provMap = {};
         appState.registrations.forEach(r => { provMap[r.province] = (provMap[r.province] || 0) + 1; });
         const topProvs = Object.entries(provMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
@@ -792,45 +1103,53 @@
             ? "<b>استان‌های پیشتاز:</b> " + topProvs.map(p => `${p[0]} (${p[1]} نفر)`).join(" • ")
             : "هنوز ثبت‌نامی ثبت نشده است.";
 
-        // دوره و محتوا
+        // دوره و گیت‌ها
         document.getElementById("cfg-round-num").value = s.round_number || "";
         document.getElementById("cfg-book-title").value = s.book_title || "";
-        document.getElementById("cfg-round-full").value = s.round_full_name || "";
+        document.getElementById("cfg-round-full").value = activeRoundFull;
         try {
-            const slogansArr = JSON.parse(s.slogans_json || "[]");
-            document.getElementById("cfg-slogans").value = slogansArr.join("\n");
+            document.getElementById("cfg-slogans").value = JSON.parse(s.slogans_json || "[]").join("\n");
         } catch (e) {}
+        renderSavedGatesDropdown();
         renderGatesEditor();
 
         // فرم‌ساز
         renderFormFieldsEditor();
 
-        // زمان‌بندی و آزمون
+        // زمان‌بندی شمسی و آزمون
         document.getElementById("cfg-reg-mode").value = s.reg_mode || "auto";
-        document.getElementById("cfg-reg-start").value = s.reg_start || "";
-        document.getElementById("cfg-reg-end").value = s.reg_end || "";
+        setPickerValue("rs", s.reg_start);
+        setPickerValue("re", s.reg_end);
         document.getElementById("cfg-reg-closed-msg").value = s.reg_closed_msg || "";
         document.getElementById("cfg-show-countdown").checked = (s.show_countdown === "true");
 
         document.getElementById("cfg-exam-mode").value = s.exam_mode || "auto";
         document.getElementById("cfg-exam-access").value = s.exam_access || "registered_only";
-        document.getElementById("cfg-exam-start").value = s.exam_start || "";
-        document.getElementById("cfg-exam-end").value = s.exam_end || "";
+        setPickerValue("es", s.exam_start);
+        setPickerValue("ee", s.exam_end);
         document.getElementById("cfg-exam-duration-min").value = Math.round((Number(s.exam_duration_sec) || 900) / 60);
         document.getElementById("cfg-q-timer").value = s.question_timer_sec || 0;
-        document.getElementById("cfg-q-count").value = s.question_count || 0;
+
+        document.getElementById("cfg-q-sel-mode").value = s.question_selection_mode || "all_shuffled";
+        document.getElementById("cfg-random-total-count").value = s.random_total_count || 20;
+        document.getElementById("cfg-rand-easy").value = s.random_easy_count || 5;
+        document.getElementById("cfg-rand-medium").value = s.random_medium_count || 10;
+        document.getElementById("cfg-rand-hard").value = s.random_hard_count || 5;
+        updateSelectionModeUI();
+        updateActiveRoundInventoryBadge();
+
         document.getElementById("cfg-pass-percent").value = s.passing_score_percent || 70;
         document.getElementById("cfg-neg-marking").value = s.negative_marking || 0;
         document.getElementById("cfg-max-violations").value = s.max_violations || 2;
         document.getElementById("cfg-answers-policy").value = s.show_answers_policy || "after_exam_end";
-        document.getElementById("cfg-shuffle-q").checked = (s.shuffle_questions === "true");
         document.getElementById("cfg-shuffle-opt").checked = (s.shuffle_options === "true");
         document.getElementById("cfg-exam-rules").value = s.exam_rules_text || "";
 
-        // سوالات
+        // بانک سوالات دوره
+        renderRoundSelectorDropdown();
         renderQuestionsList();
 
-        // کاربران
+        // داوطلبان
         document.getElementById("cnt-reg").textContent = appState.registrations.length;
         document.getElementById("cnt-exam").textContent = appState.examResults.length;
         renderUsersList();
@@ -843,15 +1162,60 @@
     }
 
     // ==========================================
-    // مدیریت گیت‌های عضویت و دوره
+    // گیت‌ها و بانک گیت‌های ذخیره‌شده
     // ==========================================
+    function renderSavedGatesDropdown() {
+        const sel = document.getElementById("saved-gates-select");
+        if (appState.savedGatesLibrary.length === 0) {
+            sel.innerHTML = `<option value="">-- بانک گیت‌ها خالی است --</option>`;
+            return;
+        }
+        sel.innerHTML = appState.savedGatesLibrary.map((g, idx) =>
+            `<option value="${idx}">${g.title} (${g.target === 'all' ? 'همه' : g.target})</option>`
+        ).join("");
+    }
+
+    function reuseSavedGate() {
+        const idx = document.getElementById("saved-gates-select").value;
+        if (idx === "" || !appState.savedGatesLibrary[idx]) return;
+        const clone = JSON.parse(JSON.stringify(appState.savedGatesLibrary[idx]));
+        clone.id = "gate_" + Date.now();
+        appState.gates.push(clone);
+        renderGatesEditor();
+        showToast("✓ گیت انتخاب‌شده به این دوره اضافه شد.");
+    }
+
+    function saveGateToLibrary(idx) {
+        const g = appState.gates[idx];
+        const existsIdx = appState.savedGatesLibrary.findIndex(item => item.url === g.url && item.title === g.title);
+        if (existsIdx >= 0) {
+            appState.savedGatesLibrary[existsIdx] = JSON.parse(JSON.stringify(g));
+        } else {
+            appState.savedGatesLibrary.push(JSON.parse(JSON.stringify(g)));
+        }
+        renderSavedGatesDropdown();
+        showToast("✓ این گیت در بانک گیت‌ها ذخیره شد (دکمه ذخیره نهایی پایین صفحه را بزنید).");
+    }
+
+    function deleteFromSavedGates() {
+        const idx = document.getElementById("saved-gates-select").value;
+        if (idx === "" || !appState.savedGatesLibrary[idx]) return;
+        if (!confirm("این گیت از بانک ذخیره‌شده حذف شود؟")) return;
+        appState.savedGatesLibrary.splice(Number(idx), 1);
+        renderSavedGatesDropdown();
+        showToast("از بانک گیت‌ها حذف شد.");
+    }
+
     function renderGatesEditor() {
         const container = document.getElementById("gates-container");
         container.innerHTML = appState.gates.map((g, idx) => `
             <div class="list-item">
                 <div class="list-item-header">
                     <b>گیت #${idx + 1}</b>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="removeGate(${idx})">حذف</button>
+                    <div>
+                        <button type="button" class="btn btn-info btn-sm" onclick="saveGateToLibrary(${idx})">💾 ذخیره در بانک</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeGate(${idx})">حذف</button>
+                    </div>
                 </div>
                 <div class="grid-2">
                     <div class="form-group">
@@ -904,15 +1268,20 @@
 
     async function saveCourseAndGates() {
         const slogans = document.getElementById("cfg-slogans").value.split("\n").map(s => s.trim()).filter(Boolean);
+        const fullRound = document.getElementById("cfg-round-full").value.trim();
+        if (fullRound && appState.roundsList.indexOf(fullRound) === -1) appState.roundsList.push(fullRound);
+
         const updates = {
             round_number: document.getElementById("cfg-round-num").value.trim(),
             book_title: document.getElementById("cfg-book-title").value.trim(),
-            round_full_name: document.getElementById("cfg-round-full").value.trim(),
+            round_full_name: fullRound,
+            rounds_list_json: JSON.stringify(appState.roundsList),
             slogans_json: JSON.stringify(slogans),
-            gates_json: JSON.stringify(appState.gates)
+            gates_json: JSON.stringify(appState.gates),
+            saved_gates_library_json: JSON.stringify(appState.savedGatesLibrary)
         };
         const res = await apiCall({ action: "adminSaveSettings", updates });
-        showToast(res.status === "success" ? "✓ تنظیمات دوره و گیت‌ها ذخیره شد." : res.message);
+        showToast(res.status === "success" ? "✓ تنظیمات دوره و بانک گیت‌ها ذخیره شد." : res.message);
         if (res.status === "success") refreshAllData();
     }
 
@@ -920,7 +1289,7 @@
         const newRound = document.getElementById("arch-new-round").value.trim();
         const newBook = document.getElementById("arch-new-book").value.trim();
         if (!newRound || !newBook) { alert("لطفاً عنوان دوره جدید و نام کتاب جدید را وارد کنید."); return; }
-        if (!confirm(`آیا مطمئن هستید که می‌خواهید اطلاعات دوره فعلی را آرشیو کرده و «${newRound}» را آغاز کنید؟`)) return;
+        if (!confirm(`آیا مطمئن هستید که می‌خواهید اطلاعات دوره فعلی در شیت مجزا آرشیو شده و «${newRound}» آغاز شود؟`)) return;
 
         const res = await apiCall({ action: "adminArchiveAndNewRound", newRoundNumber: newRound, newBookTitle: newBook });
         alert(res.message);
@@ -1011,41 +1380,101 @@
     }
 
     // ==========================================
-    // زمان‌بندی و آزمون
+    // زمان‌بندی شمسی و تنظیمات آزمون
     // ==========================================
+    function updateSelectionModeUI() {
+        const mode = document.getElementById("cfg-q-sel-mode").value;
+        document.getElementById("box-random-total").style.display = (mode === "random_total") ? "block" : "none";
+        document.getElementById("box-random-level").style.display = (mode === "random_by_level") ? "block" : "none";
+    }
+
+    function updateActiveRoundInventoryBadge() {
+        const activeRound = appState.settings.round_full_name || "";
+        const qs = appState.allQuestions.filter(q => q.round === activeRound && q.active !== false);
+        const easy = qs.filter(q => q.level === "ساده").length;
+        const med = qs.filter(q => q.level === "متوسط").length;
+        const hard = qs.filter(q => q.level === "دشوار").length;
+        document.getElementById("active-round-inventory").innerHTML =
+            `موجودی سوالات فعال دوره جاری: <span class="badge badge-green">ساده: ${easy}</span> <span class="badge badge-blue">متوسط: ${med}</span> <span class="badge badge-red">دشوار: ${hard}</span>`;
+    }
+
     async function saveScheduleAndExamSettings() {
         const updates = {
             reg_mode: document.getElementById("cfg-reg-mode").value,
-            reg_start: document.getElementById("cfg-reg-start").value,
-            reg_end: document.getElementById("cfg-reg-end").value,
+            reg_start: getPickerValue("rs"),
+            reg_end: getPickerValue("re"),
             reg_closed_msg: document.getElementById("cfg-reg-closed-msg").value.trim(),
             show_countdown: String(document.getElementById("cfg-show-countdown").checked),
 
             exam_mode: document.getElementById("cfg-exam-mode").value,
             exam_access: document.getElementById("cfg-exam-access").value,
-            exam_start: document.getElementById("cfg-exam-start").value,
-            exam_end: document.getElementById("cfg-exam-end").value,
+            exam_start: getPickerValue("es"),
+            exam_end: getPickerValue("ee"),
             exam_duration_sec: String((Number(document.getElementById("cfg-exam-duration-min").value) || 15) * 60),
             question_timer_sec: String(Number(document.getElementById("cfg-q-timer").value) || 0),
-            question_count: String(Number(document.getElementById("cfg-q-count").value) || 0),
+
+            question_selection_mode: document.getElementById("cfg-q-sel-mode").value,
+            random_total_count: String(Number(document.getElementById("cfg-random-total-count").value) || 20),
+            random_easy_count: String(Number(document.getElementById("cfg-rand-easy").value) || 0),
+            random_medium_count: String(Number(document.getElementById("cfg-rand-medium").value) || 0),
+            random_hard_count: String(Number(document.getElementById("cfg-rand-hard").value) || 0),
+
             passing_score_percent: String(Number(document.getElementById("cfg-pass-percent").value) || 70),
             negative_marking: String(Number(document.getElementById("cfg-neg-marking").value) || 0),
             max_violations: String(Number(document.getElementById("cfg-max-violations").value) || 2),
             show_answers_policy: document.getElementById("cfg-answers-policy").value,
-            shuffle_questions: String(document.getElementById("cfg-shuffle-q").checked),
             shuffle_options: String(document.getElementById("cfg-shuffle-opt").checked),
             exam_rules_text: document.getElementById("cfg-exam-rules").value.trim()
         };
         const res = await apiCall({ action: "adminSaveSettings", updates });
-        showToast(res.status === "success" ? "✓ تنظیمات زمان‌بندی و آزمون ذخیره شد." : res.message);
+        showToast(res.status === "success" ? "✓ تنظیمات زمان‌بندی شمسی و آزمون ذخیره شد." : res.message);
     }
 
     // ==========================================
-    // بانک سوالات (تکی و گروهی)
+    // بانک سوالات مجزا برای هر دوره
     // ==========================================
+    function renderRoundSelectorDropdown() {
+        const sel = document.getElementById("q-target-round-select");
+        sel.innerHTML = appState.roundsList.map(r =>
+            `<option value="${r}" ${r === appState.selectedQuestionRound ? "selected" : ""}>${r}</option>`
+        ).join("");
+    }
+
+    function onTargetRoundChange() {
+        appState.selectedQuestionRound = document.getElementById("q-target-round-select").value;
+        resetQuestionForm();
+        renderQuestionsList();
+    }
+
+    async function createNewExamRoundProfile() {
+        const name = prompt("نام کامل دوره یا آزمون جدید را وارد کنید (مثلاً: دوره پنجم (نام کتاب)):");
+        if (!name || !name.trim()) return;
+        const cleanName = name.trim();
+        if (appState.roundsList.indexOf(cleanName) === -1) {
+            appState.roundsList.push(cleanName);
+        }
+        appState.selectedQuestionRound = cleanName;
+        renderRoundSelectorDropdown();
+        renderQuestionsList();
+        await apiCall({ action: "adminSaveSettings", updates: { rounds_list_json: JSON.stringify(appState.roundsList) } });
+        showToast(`✓ دوره «${cleanName}» ایجاد شد. اکنون سوالات این دوره را وارد کنید.`);
+    }
+
+    function getQuestionsForSelectedRound() {
+        return appState.allQuestions.filter(q => q.round === appState.selectedQuestionRound);
+    }
+
     function toggleBulkBox() {
         const box = document.getElementById("bulk-q-box");
         box.style.display = box.style.display === "none" ? "block" : "none";
+    }
+
+    function insertBulkTemplateSample() {
+        const sample =
+`نویسنده کتاب «خون دلی که لعل شد» کیست؟ | سید علی خامنه‌ای | محمدحسین بهجتی | رهبر انقلاب (خاطرات خودنوشت) | حداد عادل | 3 | ساده | 1 | مقدمه کتاب
+ماجرای اصلی کتاب مربوط به کدام دوره تاریخی است؟ | دوران دفاع مقدس | دوران مبارزات پیش از انقلاب (زندان و تبعید) | دهه هفتاد | مشروطه | 2 | متوسط | 2 | فصل اول، صفحه ۱۸`;
+        document.getElementById("bulk-q-text").value = sample;
+        showToast("✓ نمونه قالب درج شد. می‌توانید سوالات خود را جایگزین کنید.");
     }
 
     function parseBulkQuestions() {
@@ -1053,31 +1482,42 @@
         if (!raw) return;
         const lines = raw.split("\n").map(l => l.trim()).filter(Boolean);
         let added = 0;
+        let errors = 0;
 
         lines.forEach(line => {
             const parts = line.split("|").map(p => p.trim());
-            if (parts.length >= 6) {
-                appState.questions.push({
-                    id: "Q-" + Date.now() + "-" + Math.floor(Math.random() * 999),
+            if (parts.length >= 6 && parts[0] && parts[1] && parts[2]) {
+                let rawLevel = parts[6] || "متوسط";
+                if (["ساده", "متوسط", "دشوار"].indexOf(rawLevel) === -1) rawLevel = "متوسط";
+                const rawScore = Number(parts[7]) || 1;
+                const rawExp = parts[8] || "";
+                const corr = Number(parts[5]);
+
+                appState.allQuestions.push({
+                    id: "Q-" + Date.now() + "-" + Math.floor(Math.random() * 9999),
                     text: parts[0],
                     opt1: parts[1],
                     opt2: parts[2],
-                    opt3: parts[3],
-                    opt4: parts[4],
-                    correct: Number(parts[5]) || 1,
-                    score: 1,
-                    level: "متوسط",
-                    explanation: parts[6] || "",
-                    active: true
+                    opt3: parts[3] || "",
+                    opt4: parts[4] || "",
+                    correct: (corr >= 1 && corr <= 4) ? corr : 1,
+                    level: rawLevel,
+                    score: rawScore,
+                    explanation: rawExp,
+                    active: true,
+                    round: appState.selectedQuestionRound
                 });
                 added++;
+            } else {
+                errors++;
             }
         });
 
         document.getElementById("bulk-q-text").value = "";
         toggleBulkBox();
         renderQuestionsList();
-        showToast(`✓ ${added} سوال به لیست اضافه شد. دکمه «ذخیره نهایی» را بزنید.`);
+        updateActiveRoundInventoryBadge();
+        showToast(`✓ ${added} سوال اضافه شد${errors > 0 ? ` (${errors} خط نامعتبر نادیده گرفته شد)` : ""}. دکمه «ذخیره در سرور» را بزنید.`);
     }
 
     function addOrUpdateQuestion() {
@@ -1096,29 +1536,33 @@
             return;
         }
 
-        const editIdx = Number(document.getElementById("edit-q-index").value);
+        const editGlobalIdx = Number(document.getElementById("edit-q-index").value);
         const qObj = {
-            id: editIdx >= 0 ? appState.questions[editIdx].id : ("Q-" + Date.now() + "-" + Math.floor(Math.random() * 999)),
+            id: editGlobalIdx >= 0 ? appState.allQuestions[editGlobalIdx].id : ("Q-" + Date.now() + "-" + Math.floor(Math.random() * 9999)),
             text, opt1, opt2, opt3, opt4, correct, score, level, explanation,
-            active: editIdx >= 0 ? appState.questions[editIdx].active : true
+            active: editGlobalIdx >= 0 ? appState.allQuestions[editGlobalIdx].active : true,
+            round: appState.selectedQuestionRound
         };
 
-        if (editIdx >= 0) {
-            appState.questions[editIdx] = qObj;
+        if (editGlobalIdx >= 0) {
+            appState.allQuestions[editGlobalIdx] = qObj;
             showToast("✓ سوال ویرایش شد.");
         } else {
-            appState.questions.push(qObj);
-            showToast("✓ سوال به لیست اضافه شد.");
+            appState.allQuestions.push(qObj);
+            showToast("✓ سوال به لیست این دوره اضافه شد.");
         }
 
         resetQuestionForm();
         renderQuestionsList();
+        updateActiveRoundInventoryBadge();
     }
 
-    function editQuestion(idx) {
-        const q = appState.questions[idx];
-        document.getElementById("edit-q-index").value = idx;
-        document.getElementById("q-editor-title").textContent = `✏️ ویرایش سوال #${idx + 1}`;
+    function editQuestionById(qId) {
+        const globalIdx = appState.allQuestions.findIndex(q => q.id === qId);
+        if (globalIdx < 0) return;
+        const q = appState.allQuestions[globalIdx];
+        document.getElementById("edit-q-index").value = globalIdx;
+        document.getElementById("q-editor-title").textContent = `✏️ ویرایش سوال`;
         document.getElementById("q-text").value = q.text;
         document.getElementById("q-opt1").value = q.opt1;
         document.getElementById("q-opt2").value = q.opt2;
@@ -1134,7 +1578,7 @@
 
     function resetQuestionForm() {
         document.getElementById("edit-q-index").value = "-1";
-        document.getElementById("q-editor-title").textContent = "➕ افزودن سوال جدید";
+        document.getElementById("q-editor-title").textContent = "➕ افزودن سوال تکی";
         document.getElementById("q-text").value = "";
         document.getElementById("q-opt1").value = "";
         document.getElementById("q-opt2").value = "";
@@ -1142,25 +1586,41 @@
         document.getElementById("q-opt4").value = "";
         document.getElementById("q-correct").value = "1";
         document.getElementById("q-score").value = "1";
+        document.getElementById("q-level").value = "متوسط";
         document.getElementById("q-explanation").value = "";
         document.getElementById("btn-cancel-q-edit").style.display = "none";
     }
 
-    function deleteQuestion(idx) {
-        if (confirm("این سوال حذف شود؟")) {
-            appState.questions.splice(idx, 1);
-            renderQuestionsList();
-        }
+    function toggleQuestionActiveById(qId, checked) {
+        const q = appState.allQuestions.find(item => item.id === qId);
+        if (q) q.active = checked;
+        updateActiveRoundInventoryBadge();
+        renderQuestionsList();
+    }
+
+    function deleteQuestionById(qId) {
+        if (!confirm("این سوال حذف شود؟")) return;
+        appState.allQuestions = appState.allQuestions.filter(q => q.id !== qId);
+        renderQuestionsList();
+        updateActiveRoundInventoryBadge();
     }
 
     function renderQuestionsList() {
-        document.getElementById("total-q-badge").textContent = appState.questions.length;
+        const roundQs = getQuestionsForSelectedRound();
+        document.getElementById("total-q-badge").textContent = roundQs.length;
+
+        const easy = roundQs.filter(q => q.level === "ساده" && q.active !== false).length;
+        const med = roundQs.filter(q => q.level === "متوسط" && q.active !== false).length;
+        const hard = roundQs.filter(q => q.level === "دشوار" && q.active !== false).length;
+        document.getElementById("selected-round-inventory").innerHTML =
+            `سوالات فعال این دوره: <span class="badge badge-green">ساده: ${easy}</span> <span class="badge badge-blue">متوسط: ${med}</span> <span class="badge badge-red">دشوار: ${hard}</span>`;
+
         const container = document.getElementById("questions-list-container");
-        if (appState.questions.length === 0) {
-            container.innerHTML = `<p style="text-align:center; color:#64748b; font-size:0.83rem;">هنوز سوالی ثبت نشده است.</p>`;
+        if (roundQs.length === 0) {
+            container.innerHTML = `<p style="text-align:center; color:#64748b; font-size:0.83rem;">هنوز سوالی برای «${appState.selectedQuestionRound}» ثبت نشده است.</p>`;
             return;
         }
-        container.innerHTML = appState.questions.map((q, idx) => `
+        container.innerHTML = roundQs.map((q, idx) => `
             <div class="list-item">
                 <div class="list-item-header">
                     <b style="font-size:0.88rem; color:var(--seraj-purple);">${idx + 1}. ${q.text}</b>
@@ -1174,11 +1634,11 @@
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
                     <label style="font-size:0.76rem; font-weight:700;">
-                        <input type="checkbox" ${q.active !== false ? "checked" : ""} onchange="appState.questions[${idx}].active=this.checked"> فعال در آزمون
+                        <input type="checkbox" ${q.active !== false ? "checked" : ""} onchange="toggleQuestionActiveById('${q.id}', this.checked)"> فعال در آزمون
                     </label>
                     <div>
-                        <button type="button" class="btn btn-info btn-sm" onclick="editQuestion(${idx})">ویرایش</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteQuestion(${idx})">حذف</button>
+                        <button type="button" class="btn btn-info btn-sm" onclick="editQuestionById('${q.id}')">ویرایش</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteQuestionById('${q.id}')">حذف</button>
                     </div>
                 </div>
             </div>
@@ -1186,12 +1646,17 @@
     }
 
     async function saveAllQuestionsToServer() {
-        const res = await apiCall({ action: "adminManageQuestions", questions: appState.questions });
-        showToast(res.status === "success" ? "✓ تمام سوالات در گوگل شیت ذخیره شد." : res.message);
+        const roundQs = getQuestionsForSelectedRound();
+        const res = await apiCall({
+            action: "adminManageQuestions",
+            targetRound: appState.selectedQuestionRound,
+            questions: roundQs
+        });
+        showToast(res.status === "success" ? `✓ ${res.message}` : res.message);
     }
 
     // ==========================================
-    // مدیریت داوطلبان، کارنامه‌ها و خروجی اکسل
+    // مدیریت داوطلبان، کارنامه‌ها و اکسل
     // ==========================================
     function switchUserSubTab(sub) {
         currentUserSubTab = sub;
@@ -1308,7 +1773,6 @@
             return;
         }
 
-        // انتخاب تصادفی بدون تکرار
         const shuffled = candidates.slice().sort(() => Math.random() - 0.5);
         lastLotteryWinners = shuffled.slice(0, Math.min(count, shuffled.length));
 
