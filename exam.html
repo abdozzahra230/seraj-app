@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>سامانه آزمون آنلاین سراج</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v3.4.0/dist/font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+    <style>
+        :root {
+            --seraj-dark: #1e0329;
+            --seraj-purple: #3d0e4f;
+            --seraj-purple-mid: #5b1774;
+            --seraj-gold: #f59e0b;
+            --seraj-gold-border: #fcd34d;
+            --seraj-gold-gradient: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #b45309 100%);
+            --bg-color: #f6f2ea;
+            --text-dark: #1a1622;
+            --text-muted: #64748b;
+            --danger: #dc2626;
+            --success: #059669;
+            --shadow: 0 14px 32px -6px rgba(30, 3, 41, 0.16);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        @media print {
+            body { display: none !important; }
+        }
+
+        body {
+            font-family: 'Sahel', 'Vazirmatn', Tahoma, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 12px 12px 40px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 2; }
+
+        .header-card {
+            background: linear-gradient(145deg, var(--seraj-dark) 0%, var(--seraj-purple) 100%);
+            color: #fff;
+            border-radius: 24px;
+            padding: 18px 16px;
+            text-align: center;
+            border: 2px solid var(--seraj-gold-border);
+            box-shadow: var(--shadow);
+        }
+
+        .badge-pill {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fde68a;
+            border: 1px solid var(--seraj-gold);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            display: inline-block;
+        }
+
+        .header-title { font-size: 1.55rem; font-weight: 900; margin: 6px 0 4px 0; color: #fff; }
+        .header-sub { font-size: 0.84rem; color: #fde68a; font-weight: 800; margin: 0; }
+
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 20px 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid #ece5d8;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: var(--seraj-purple);
+            text-align: center;
+            margin: 0 0 14px 0;
+        }
+
+        .form-group { margin-bottom: 12px; }
+        .form-label { display: block; font-size: 0.82rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dark); }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.8px solid #dfd5c7;
+            border-radius: 15px;
+            font-family: inherit;
+            font-size: 0.92rem;
+            background: #faf7f2;
+            color: var(--text-dark);
+            outline: none;
+            user-select: text;
+            -webkit-user-select: text;
+        }
+        .form-control:focus { border-color: var(--seraj-purple-mid); background: #fff; }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 16px;
+            border: none;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background: linear-gradient(135deg, var(--seraj-purple) 0%, var(--seraj-dark) 100%); color: #fde68a; border: 1.5px solid var(--seraj-gold); }
+        .btn-gold { background: var(--seraj-gold-gradient); color: #1e0329; }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-outline { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+        .btn-sm { padding: 9px 12px; font-size: 0.82rem; border-radius: 12px; }
+
+        /* تایمر و نوار وضعیت آزمون */
+        .exam-topbar {
+            background: var(--seraj-dark);
+            color: #fff;
+            border-radius: 18px;
+            padding: 10px 14px;
+            border: 1.5px solid var(--seraj-gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 8px;
+            z-index: 50;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+
+        .timer-pill {
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid var(--seraj-gold);
+            color: #fde68a;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 900;
+            direction: ltr;
+        }
+        .timer-pill.danger { background: #dc2626; color: #fff; border-color: #fca5a5; animation: pulse 0.9s infinite; }
+
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+        .q-progress-bar {
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .q-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--seraj-purple), var(--seraj-gold));
+            transition: width 0.3s ease;
+        }
+
+        .question-canvas-wrap {
+            background: #faf7f2;
+            border: 1.5px solid #e2d9c8;
+            border-radius: 16px;
+            padding: 10px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: right;
+            background: #faf7f2;
+            border: 1.8px solid #dfd5c7;
+            border-radius: 15px;
+            padding: 13px 14px;
+            margin-bottom: 9px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.18s;
+        }
+        .option-btn.selected {
+            background: linear-gradient(135deg, var(--seraj-purple) 0%, var(--seraj-dark) 100%);
+            color: #fde68a;
+            border-color: var(--seraj-gold);
+            box-shadow: 0 6px 14px rgba(42, 8, 53, 0.22);
+        }
+        .opt-circle {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #e7dfd5;
+            color: var(--seraj-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+        .option-btn.selected .opt-circle { background: var(--seraj-gold); color: #1e0329; }
+
+        /* واترمارک شناور ضد اسکرین‌شات */
+        #watermark-layer {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 40;
+            overflow: hidden;
+            display: none;
+        }
+        .wm-text {
+            position: absolute;
+            font-size: 0.82rem;
+            font-weight: 900;
+            color: rgba(61, 14, 79, 0.085);
+            transform: rotate(-24deg);
+            white-space: nowrap;
+            transition: all 1.5s ease;
+        }
+
+        /* پرده سیاه فوری هنگام خروج از صفحه */
+        #blackout-curtain {
+            position: fixed;
+            inset: 0;
+            background: #09020d;
+            color: #fde68a;
+            z-index: 99999;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+        }
+
+        .rules-box {
+            background: #fffbeb;
+            border: 1.5px solid #fcd34d;
+            border-radius: 16px;
+            padding: 12px;
+            font-size: 0.82rem;
+            line-height: 1.75;
+            color: #78350f;
+            white-space: pre-line;
+            margin-bottom: 14px;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 12px 0;
+            direction: ltr;
+        }
+        .cd-box {
+            background: #faf5ed;
+            border: 1.5px solid var(--seraj-gold-border);
+            border-radius: 14px;
+            padding: 10px 4px;
+            text-align: center;
+        }
+        .cd-num { font-size: 1.3rem; font-weight: 900; color: var(--seraj-purple); }
+        .cd-lbl { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .stat-box {
+            background: #faf7f2;
+            border: 1px solid #e5ddd0;
+            border-radius: 14px;
+            padding: 10px 6px;
+            text-align: center;
+        }
+        .stat-val { font-size: 1.2rem; font-weight: 900; }
+        .stat-lbl { font-size: 0.74rem; color: var(--text-muted); font-weight: 700; }
+
+        .review-item {
+            background: #faf7f2;
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-right: 4px solid #cbd5e1;
+            font-size: 0.82rem;
+            line-height: 1.65;
+        }
+        .review-item.ok { border-right-color: var(--success); }
+        .review-item.bad { border-right-color: var(--danger); }
+
+        .loader-spinner {
+            width: 34px;
+            height: 34px;
+            border: 3.5px solid #f3ece1;
+            border-top-color: var(--seraj-purple);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 12px auto;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 3, 41, 0.96);
+            color: #fde68a;
+            padding: 10px 20px;
+            border-radius: 22px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s;
+            white-space: nowrap;
+        }
+        .toast.show { opacity: 1; }
+    </style>
+</head>
+<body>
+
+<!-- پرده سیاه ضد اسکرین‌شات و خروج از صفحه -->
+<div id="blackout-curtain">
+    <div style="font-size: 3rem; margin-bottom: 10px;">🛡️</div>
+    <h2 style="margin: 0 0 8px 0; color: #fca5a5;">هشدار امنیتی سامانه آزمون!</h2>
+    <p id="blackout-msg" style="font-size: 0.9rem; line-height: 1.7; max-width: 340px; color: #f8fafc;">
+        خروج از صفحه آزمون یا جابه‌جایی بین برنامه‌ها ثبت شد. تکرار این مورد باعث پایان خودکار آزمون شما می‌شود.
+    </p>
+    <button type="button" class="btn btn-gold" style="max-width: 240px; margin-top: 16px;" onclick="dismissBlackout()">بازگشت به ادامه آزمون</button>
+</div>
+
+<!-- لایه واترمارک شناور -->
+<div id="watermark-layer"></div>
+
+<div class="container">
+    <div class="header-card">
+        <span class="badge-pill" id="exam-round-badge">آزمون آنلاین کتابخوانی سراج</span>
+        <h1 class="header-title">سـِـــــراج</h1>
+        <p class="header-sub" id="exam-book-title">در حال بارگذاری اطلاعات آزمون...</p>
+    </div>
+
+    <!-- ۱. بارگذاری اولیه -->
+    <div id="view-loading" class="card" style="text-align: center;">
+        <div class="loader-spinner"></div>
+        <p style="font-size: 0.85rem; font-weight: 800; color: var(--seraj-purple);">در حال همگام‌سازی ساعت و تنظیمات با سرور...</p>
+    </div>
+
+    <!-- ۲. وضعیت بسته یا شمارش معکوس نوبت بعدی آزمون -->
+    <div id="view-closed" class="card" style="display: none; text-align: center;">
+        <span class="badge-pill" style="background:#fef3c7; color:#b45309; margin-bottom: 8px;" id="closed-state-badge">وضعیت آزمون</span>
+        <h3 id="closed-title" style="color: var(--seraj-purple); margin: 6px 0;">آزمون در حال حاضر فعال نیست</h3>
+        <p id="closed-desc" style="font-size: 0.85rem; color: #475569; line-height: 1.7;"></p>
+
+        <div id="exam-countdown-box" style="display: none;">
+            <div style="font-size: 0.8rem; font-weight: 800; color: var(--seraj-purple);">زمان باقی‌مانده تا آغاز نوبت بعدی:</div>
+            <div class="countdown-grid">
+                <div class="cd-box"><div class="cd-num" id="ecd-days">00</div><div class="cd-lbl">روز</div></div>
+                <div class="cd-box"><div class="cd-num" id="ecd-hours">00</div><div class="cd-lbl">ساعت</div></div>
+                <div class="cd-box"><div class="cd-num" id="ecd-mins">00</div><div class="cd-lbl">دقیقه</div></div>
+                <div class="cd-box"><div class="cd-num" id="ecd-secs">00</div><div class="cd-lbl">ثانیه</div></div>
+            </div>
+        </div>
+
+        <div id="slots-list-box" style="text-align: right; margin-top: 12px;"></div>
+    </div>
+
+    <!-- ۳. احراز هویت داوطلب و قوانین پیش از شروع -->
+    <div id="view-login" class="card" style="display: none;">
+        <div id="demo-banner" style="display:none; background:#dcfce7; border:1px solid #86efac; color:#166534; padding:10px; border-radius:14px; font-size:0.8rem; font-weight:800; margin-bottom:12px; text-align:center;">
+            🧪 حالت «آزمون آزمایشی (Demo)» فعال است؛ می‌توانید بدون کد پیگیری آزمون را تست کنید.
+        </div>
+
+        <h3 class="card-title">ورود داوطلب به جلسه آزمون</h3>
+
+        <div class="rules-box" id="exam-rules-display"></div>
+
+        <form onsubmit="handleVerifyAndStart(event)">
+            <div class="form-group">
+                <label class="form-label">📱 شماره همراه ثبت‌نام‌شده:</label>
+                <input type="tel" id="ex-phone" class="form-control" placeholder="۰۹۱۲۳۴۵۶۷۸۹" maxlength="11" dir="ltr" required>
+            </div>
+            <div class="form-group" id="tracking-code-group">
+                <label class="form-label">🎫 کد پیگیری داوطلبی:</label>
+                <input type="text" id="ex-code" class="form-control" placeholder="مثال: SRJ-105-42" dir="ltr" required>
+            </div>
+            <button type="submit" id="btn-start-exam" class="btn btn-primary">تأیید قوانین و شروع رسمی آزمون</button>
+        </form>
+
+        <!-- بخش ثبت‌نام سریع در لحظه (در صورتی که در پنل فعال شده باشد) -->
+        <div id="on-the-spot-box" style="display: none; margin-top: 16px; border-top: 2px dashed #e2e8f0; padding-top: 14px;">
+            <div style="background:#eff6ff; border:1px solid #93c5fd; color:#1e40af; padding:10px; border-radius:14px; font-size:0.8rem; font-weight:800; margin-bottom:10px;">
+                شما قبلاً ثبت‌نام نکرده‌اید، اما امکان ثبت‌نام در لحظه برای این آزمون باز است. مشخصات خود را وارد کنید:
+            </div>
+            <div class="form-group"><label class="form-label">نام:</label><input type="text" id="ots-fname" class="form-control"></div>
+            <div class="form-group"><label class="form-label">نام خانوادگی:</label><input type="text" id="ots-lname" class="form-control"></div>
+            <div class="form-group">
+                <label class="form-label">جنسیت:</label>
+                <select id="ots-gender" class="form-control"><option value="آقا">آقا</option><option value="خانم">خانم</option></select>
+            </div>
+            <div class="form-group"><label class="form-label">استان:</label><input type="text" id="ots-prov" class="form-control" placeholder="نام استان"></div>
+            <div class="form-group"><label class="form-label">شهر:</label><input type="text" id="ots-city" class="form-control" placeholder="نام شهر"></div>
+            <button type="button" id="btn-ots-submit" class="btn btn-gold" onclick="handleOnTheSpotRegister()">ثبت‌نام آنی و ورود به آزمون</button>
+        </div>
+    </div>
+
+    <!-- ۴. محیط برگزاری آزمون -->
+    <div id="view-exam" style="display: none;">
+        <div class="exam-topbar">
+            <div>
+                <div style="font-size: 0.74rem; color: #cbd5e1;" id="ex-cand-name">داوطلب</div>
+                <div style="font-size: 0.85rem; font-weight: 900; color: #fde68a;">سوال <span id="q-curr-num">1</span> از <span id="q-total-num">10</span></div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 0.68rem; color: #fca5a5;">تخلف خروج: <span id="vio-badge">0/2</span></div>
+                <div id="total-timer-pill" class="timer-pill">15:00</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 10px;">
+            <!-- تایمر اختصاصی هر سوال در صورت فعال بودن -->
+            <div id="per-q-timer-wrap" style="display: none; margin-bottom: 8px;">
+                <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:800; color:#b45309;">
+                    <span>زمان باقی‌مانده این سوال:</span>
+                    <span id="per-q-sec-lbl">40 ثانیه</span>
+                </div>
+                <div class="q-progress-bar"><div id="per-q-bar" class="q-progress-fill" style="width: 100%; background: #ea580c;"></div></div>
+            </div>
+
+            <div class="q-progress-bar"><div id="exam-progress-fill" class="q-progress-fill" style="width: 10%;"></div></div>
+
+            <!-- نمایش صورت سوال (تصویر Canvas ضدکپی یا متن محافظت‌شده) -->
+            <div class="question-canvas-wrap">
+                <canvas id="q-canvas" style="width: 100%; display: block;"></canvas>
+                <div id="q-text-fallback" style="display:none; font-size:0.96rem; font-weight:900; line-height:1.75; text-align:right;"></div>
+            </div>
+
+            <!-- گزینه‌ها -->
+            <div id="options-container"></div>
+
+            <div style="display: flex; gap: 8px; margin-top: 14px;">
+                <button type="button" id="btn-prev-q" class="btn btn-outline btn-sm" style="flex: 1;" onclick="navigateQuestion(-1)">→ سوال قبلی</button>
+                <button type="button" id="btn-next-q" class="btn btn-primary btn-sm" style="flex: 1.4;" onclick="navigateQuestion(1)">سوال بعدی ←</button>
+                <button type="button" id="btn-finish-exam" class="btn btn-gold btn-sm" style="flex: 1.4; display: none;" onclick="confirmFinishExam()">✓ ثبت نهایی آزمون</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ۵. کارنامه، پاسخنامه و گواهی‌نامه دیجیتال -->
+    <div id="view-result" class="card" style="display: none; text-align: center;">
+        <span id="res-status-badge" class="badge-pill" style="background:#dcfce7; color:#15803d; margin-bottom: 8px;">کارنامه رسمی آزمون</span>
+        <h2 id="res-fullname" style="margin: 4px 0; color: var(--seraj-purple); font-weight: 900;">---</h2>
+        <p id="res-round" style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 12px 0;">---</p>
+
+        <div style="background: linear-gradient(135deg, #faf5ed 0%, #fffbeb 100%); border: 2px solid var(--seraj-gold-border); border-radius: 18px; padding: 14px;">
+            <div style="font-size: 0.78rem; color: #64748b; font-weight: 700;">درصد امتیاز کسب‌شده:</div>
+            <div id="res-percent" style="font-size: 2.2rem; font-weight: 900; color: var(--seraj-purple);">0%</div>
+            <div id="res-pass-msg" style="font-size: 0.84rem; font-weight: 800; margin-top: 4px;"></div>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-box"><div class="stat-val" style="color:var(--success);" id="res-correct">0</div><div class="stat-lbl">پاسخ صحیح</div></div>
+            <div class="stat-box"><div class="stat-val" style="color:var(--danger);" id="res-wrong">0</div><div class="stat-lbl">پاسخ غلط</div></div>
+            <div class="stat-box"><div class="stat-val" style="color:#64748b;" id="res-blank">0</div><div class="stat-lbl">بی‌پاسخ</div></div>
+        </div>
+
+        <div style="font-size: 0.8rem; color: #475569; margin-bottom: 12px;">
+            مدت پاسخگویی: <b id="res-duration">0</b> ثانیه | تخلف خروج: <b id="res-violations">0</b>
+        </div>
+
+        <!-- بخش گواهی‌نامه دیجیتال -->
+        <div id="certificate-box" style="display: none; margin: 14px 0;">
+            <canvas id="cert-canvas" width="900" height="620" style="width: 100%; border-radius: 16px; border: 2px solid var(--seraj-gold); box-shadow: 0 8px 20px rgba(0,0,0,0.15);"></canvas>
+            <button type="button" class="btn btn-gold" style="margin-top: 8px;" onclick="downloadCertificate()">📥 دانلود تصویر گواهی‌نامه موفقیت</button>
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="copyScorecardText()">📋 کپی خلاصه کارنامه</button>
+
+        <!-- پاسخنامه تشریحی -->
+        <div id="review-section" style="display: none; text-align: right; margin-top: 18px; border-top: 2px dashed #e2e8f0; padding-top: 14px;">
+            <h4 style="margin: 0 0 10px 0; color: var(--seraj-purple);">📖 پاسخنامه و منبع کتاب:</h4>
+            <div id="review-list-container"></div>
+        </div>
+    </div>
+</div>
+
+<div id="toast-msg" class="toast">پیام</div>
+
+<script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzHjsAvRMmjZ_NaCrgXG6-qumHzlTfwEFq17gZmKuZVUXw6M-36HH0FRse3LAZil6G2/exec";
+
+    const tg = window.Eitaa?.WebApp || window.Telegram?.WebApp;
+    if (tg) { tg.ready(); tg.expand(); }
+
+    let publicCfg = {};
+    let examSession = {
+        active: false,
+        isDemo: false,
+        sessionToken: "",
+        candidate: null,
+        questions: [],
+        answers: {},
+        currentIdx: 0,
+        endTimestampMs: 0,
+        questionTimerSec: 0,
+        qRemainingSec: 0,
+        preventBacktrack: false,
+        renderCanvas: true,
+        maxViolations: 2,
+        violationsCount: 0,
+        submitting: false
+    };
+
+    let mainTimerInterval = null;
+    let qTimerInterval = null;
+    let wmInterval = null;
+    let lastViolationTime = 0;
+    let lastScorecardData = null;
+
+    function normalizeDigits(str) {
+        return String(str || "")
+            .replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d))
+            .replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d))
+            .trim();
+    }
+
+    function showToast(msg) {
+        const el = document.getElementById("toast-msg");
+        el.textContent = msg;
+        el.classList.add("show");
+        setTimeout(() => el.classList.remove("show"), 3200);
+    }
+
+    // غیرفعال‌سازی کامل منوی راست‌کلیک، کپی، برش و میانبرهای مرورگر
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.addEventListener("copy", e => e.preventDefault());
+    document.addEventListener("cut", e => e.preventDefault());
+    document.addEventListener("selectstart", e => {
+        if (e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") e.preventDefault();
+    });
+    document.addEventListener("keydown", e => {
+        if ((e.ctrlKey || e.metaKey) && ["c", "u", "s", "p", "a"].includes(e.key.toLowerCase())) {
+            e.preventDefault();
+        }
+    });
+
+    // راه‌اندازی اولیه
+    async function initExamApp() {
+        try {
+            const res = await fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({ action: "getPublicConfig" })
+            });
+            const data = await res.json();
+            if (data.status === "success") publicCfg = data.config;
+        } catch (e) {}
+
+        document.getElementById("exam-round-badge").textContent = `آزمون آنلاین ${publicCfg.roundNumber || "سراج"}`;
+        document.getElementById("exam-book-title").textContent = `کتاب محور: «${publicCfg.bookTitle || ""}»`;
+        document.getElementById("view-loading").style.display = "none";
+
+        const sch = publicCfg.examSchedule || { isOpen: false, state: "closed" };
+        if (!sch.isOpen) {
+            renderClosedExamView(sch);
+            return;
+        }
+
+        // پر کردن خودکار شماره و کد پیگیری در صورت ثبت‌نام قبلی روی همین گوشی
+        const savedReg = localStorage.getItem("seraj_reg_final_v8") || localStorage.getItem("seraj_reg_final_v7");
+        if (savedReg) {
+            try {
+                const parsed = JSON.parse(savedReg);
+                if (parsed.phone) document.getElementById("ex-phone").value = parsed.phone;
+                if (parsed.trackingCode) document.getElementById("ex-code").value = parsed.trackingCode;
+            } catch (e) {}
+        }
+
+        if (sch.state === "demo") {
+            document.getElementById("demo-banner").style.display = "block";
+            document.getElementById("tracking-code-group").style.display = "none";
+            document.getElementById("ex-code").required = false;
+            document.getElementById("ex-phone").required = false;
+        }
+
+        document.getElementById("exam-rules-display").textContent = publicCfg.examRulesText || "لطفاً با دقت به سوالات پاسخ دهید.";
+        document.getElementById("view-login").style.display = "block";
+    }
+
+    function renderClosedExamView(sch) {
+        document.getElementById("view-closed").style.display = "block";
+        const slots = sch.allSlots || [];
+        if (slots.length > 0) {
+            document.getElementById("slots-list-box").innerHTML =
+                `<div style="font-size:0.8rem; font-weight:900; color:var(--seraj-purple); margin-bottom:6px;">🕒 برنامه زمان‌بندی نوبت‌های آزمون:</div>` +
+                slots.map(sl => `
+                    <div style="background:#faf7f2; border:1px solid #e2d9c8; border-radius:12px; padding:8px 10px; margin-bottom:6px; font-size:0.78rem;">
+                        <b>${sl.title}:</b> از <span dir="ltr">${sl.start}</span> تا <span dir="ltr">${sl.end}</span>
+                    </div>
+                `).join("");
+        }
+
+        if (sch.state === "upcoming" && sch.startMs > 0) {
+            document.getElementById("closed-state-badge").textContent = "⏳ در انتظار آغاز نوبت آزمون";
+            document.getElementById("closed-title").textContent = sch.nextSlot ? `نوبت بعدی: ${sch.nextSlot.title}` : "آزمون به‌زودی آغاز می‌شود";
+            document.getElementById("closed-desc").textContent = "پس از پایان شمارش معکوس، صفحه به‌طور خودکار باز می‌شود.";
+            document.getElementById("exam-countdown-box").style.display = "block";
+
+            const offset = sch.serverNowMs - Date.now();
+            setInterval(() => {
+                const diff = sch.startMs - (Date.now() + offset);
+                if (diff <= 0) { location.reload(); return; }
+                document.getElementById("ecd-days").textContent = String(Math.floor(diff / 86400000)).padStart(2, "0");
+                document.getElementById("ecd-hours").textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, "0");
+                document.getElementById("ecd-mins").textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0");
+                document.getElementById("ecd-secs").textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, "0");
+            }, 1000);
+        } else {
+            document.getElementById("closed-state-badge").textContent = "🔒 پایان مهلت آزمون";
+            document.getElementById("closed-title").textContent = "زمان شرکت در آزمون به پایان رسیده است";
+            document.getElementById("closed-desc").textContent = "در صورتی که قبلاً در آزمون شرکت کرده‌اید، کارنامه شما در سیستم ثبت شده است.";
+        }
+    }
+
+    async function handleVerifyAndStart(e) {
+        if (e) e.preventDefault();
+        const phone = normalizeDigits(document.getElementById("ex-phone").value).replace(/[^0-9]/g, "");
+        const trackingCode = normalizeDigits(document.getElementById("ex-code").value).toUpperCase();
+        const btn = document.getElementById("btn-start-exam");
+
+        btn.disabled = true;
+        btn.textContent = "در حال احراز هویت و دریافت سوالات...";
+
+        try {
+            const res = await fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({ action: "examStartOrResume", phone, trackingCode })
+            });
+            const data = await res.json();
+
+            if (data.status === "closed") {
+                alert(data.message);
+                location.reload();
+                return;
+            }
+
+            if (data.status === "not_registered") {
+                if (data.allowOnTheSpot) {
+                    document.getElementById("on-the-spot-box").style.display = "block";
+                    showToast("لطفاً مشخصات زیر را برای ثبت‌نام آنی تکمیل کنید.");
+                } else {
+                    alert(data.message + "\nامکان ثبت‌نام جدید در این آزمون فعال نیست.");
+                }
+                btn.disabled = false;
+                btn.textContent = "تأیید قوانین و شروع رسمی آزمون";
+                return;
+            }
+
+            if (data.status === "already_completed") {
+                renderScorecard(data.result);
+                return;
+            }
+
+            if (data.status === "started" || data.status === "resumed") {
+                launchExamSession(data);
+                return;
+            }
+
+            alert(data.message || "خطا در شروع آزمون");
+        } catch (err) {
+            alert("خطا در ارتباط با سرور. لطفاً اتصال اینترنت را بررسی کنید.");
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "تأیید قوانین و شروع رسمی آزمون";
+        }
+    }
+
+    // ثبت‌نام در لحظه هنگام آزمون
+    async function handleOnTheSpotRegister() {
+        const phone = normalizeDigits(document.getElementById("ex-phone").value).replace(/[^0-9]/g, "");
+        const firstName = document.getElementById("ots-fname").value.trim();
+        const lastName = document.getElementById("ots-lname").value.trim();
+        const gender = document.getElementById("ots-gender").value;
+        const province = document.getElementById("ots-prov").value.trim();
+        const city = document.getElementById("ots-city").value.trim();
+
+        if (!/^09[0-9]{9}$/.test(phone) || !firstName || !lastName || !province || !city) {
+            alert("لطفاً تمام فیلدها و شماره همراه ۱۱ رقمی را کامل وارد کنید.");
+            return;
+        }
+
+        const btn = document.getElementById("btn-ots-submit");
+        btn.disabled = true;
+        btn.textContent = "در حال ثبت‌نام و ورود...";
+
+        try {
+            const regRes = await fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({
+                    action: "registerUser",
+                    fromExamOnTheSpot: true,
+                    firstName, lastName, phone, gender, province, city,
+                    userId: tg?.initDataUnsafe?.user?.id || "آزمون_لحظه‌ای"
+                })
+            });
+            const regData = await regRes.json();
+            if (regData.status === "success" || regData.status === "already_registered") {
+                document.getElementById("ex-code").value = regData.trackingCode;
+                localStorage.setItem("seraj_reg_final_v8", JSON.stringify({
+                    firstName, lastName, phone, gender, province, city,
+                    trackingCode: regData.trackingCode,
+                    roundName: publicCfg.roundFullName
+                }));
+                await handleVerifyAndStart(null);
+            } else {
+                alert(regData.message || "خطا در ثبت‌نام آنی");
+            }
+        } catch (e) {
+            alert("خطا در ارتباط با سرور");
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "ثبت‌نام آنی و ورود به آزمون";
+        }
+    }
+
+    // راه‌اندازی جلسه آزمون و فعال‌سازی لایه‌های ضدتقلب
+    function launchExamSession(data) {
+        examSession.active = true;
+        examSession.isDemo = !!data.isDemo;
+        examSession.sessionToken = data.sessionToken;
+        examSession.candidate = data.candidate;
+        examSession.questions = data.questions || [];
+        examSession.currentIdx = 0;
+        examSession.endTimestampMs = Date.now() + (Number(data.remainingSec) * 1000);
+        examSession.questionTimerSec = Number(data.questionTimerSec) || 0;
+        examSession.preventBacktrack = !!data.preventBacktrack;
+        examSession.renderCanvas = data.renderCanvas !== false;
+        examSession.maxViolations = Number(data.maxViolations) || 2;
+        examSession.violationsCount = Number(data.violationsCount) || 0;
+
+        // بازیابی پاسخ‌های ذخیره‌شده قبلی در گوشی (در صورت قطعی موقت)
+        const savedAnsKey = `seraj_ans_${examSession.candidate.phone}_${examSession.candidate.trackingCode}`;
+        try {
+            examSession.answers = JSON.parse(localStorage.getItem(savedAnsKey) || "{}");
+        } catch (e) { examSession.answers = {}; }
+
+        document.getElementById("view-login").style.display = "none";
+        document.getElementById("view-exam").style.display = "block";
+        document.getElementById("ex-cand-name").textContent = examSession.candidate.fullName;
+        document.getElementById("q-total-num").textContent = examSession.questions.length;
+        updateViolationBadge();
+
+        // فعال‌سازی قفل خروج ایتا
+        if (tg && tg.enableClosingConfirmation) {
+            try { tg.enableClosingConfirmation(); } catch (e) {}
+        }
+
+        // فعال‌سازی واترمارک شناور با هویت داوطلب
+        setupFloatingWatermark();
+
+        // فعال‌سازی پایشگر خروج از صفحه و پرده سیاه
+        activateAntiCheatListeners();
+
+        // شروع تایمر کل آزمون
+        startMainCountdown();
+
+        // نمایش اولین سوال
+        renderCurrentQuestion();
+    }
+
+    function setupFloatingWatermark() {
+        const layer = document.getElementById("watermark-layer");
+        layer.style.display = "block";
+        const label = `${examSession.candidate.fullName} | ${examSession.candidate.phone} | ${examSession.candidate.trackingCode}`;
+        let html = "";
+        for (let r = 0; r < 6; r++) {
+            for (let c = 0; c < 2; c++) {
+                html += `<div class="wm-text" style="top:${r * 17 + 4}%; left:${c * 52 + 4}%;">${label}</div>`;
+            }
+        }
+        layer.innerHTML = html;
+
+        wmInterval = setInterval(() => {
+            document.querySelectorAll(".wm-text").forEach(el => {
+                const dx = Math.floor(Math.random() * 24) - 12;
+                const dy = Math.floor(Math.random() * 18) - 9;
+                el.style.transform = `translate(${dx}px, ${dy}px) rotate(-24deg)`;
+            });
+        }, 5500);
+    }
+
+    function activateAntiCheatListeners() {
+        const handleExitAttempt = () => {
+            if (!examSession.active || examSession.submitting) return;
+            const now = Date.now();
+            if (now - lastViolationTime < 1500) return; // جلوگیری از ثبت دوبل هم‌زمان blur و visibilitychange
+            lastViolationTime = now;
+
+            examSession.violationsCount++;
+            updateViolationBadge();
+
+            if (tg && tg.HapticFeedback) {
+                try { tg.HapticFeedback.notificationOccurred("error"); } catch (e) {}
+            }
+
+            // همگام‌سازی تخلف با سرور
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({
+                    action: "examSyncViolation",
+                    phone: examSession.candidate.phone,
+                    sessionToken: examSession.sessionToken,
+                    isDemo: examSession.isDemo,
+                    violationsCount: examSession.violationsCount
+                })
+            }).catch(() => {});
+
+            if (examSession.violationsCount >= examSession.maxViolations) {
+                document.getElementById("blackout-curtain").style.display = "none";
+                submitExamFinal("پایان خودکار به دلیل عبور از سقف تخلف خروج از صفحه");
+                return;
+            }
+
+            document.getElementById("blackout-msg").innerHTML =
+                `شما از محیط آزمون خارج شدید! این مورد به عنوان تخلف <b>(${examSession.violationsCount} از ${examSession.maxViolations})</b> ثبت گردید.<br>در صورت تکرار، آزمون شما بلافاصله قفل و ثبت خواهد شد.`;
+            document.getElementById("blackout-curtain").style.display = "flex";
+        };
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) handleExitAttempt();
+        });
+        window.addEventListener("blur", handleExitAttempt);
+    }
+
+    function dismissBlackout() {
+        document.getElementById("blackout-curtain").style.display = "none";
+    }
+
+    function updateViolationBadge() {
+        document.getElementById("vio-badge").textContent = `${examSession.violationsCount}/${examSession.maxViolations}`;
+    }
+
+    function startMainCountdown() {
+        const pill = document.getElementById("total-timer-pill");
+        mainTimerInterval = setInterval(() => {
+            const remSec = Math.max(0, Math.floor((examSession.endTimestampMs - Date.now()) / 1000));
+            const m = Math.floor(remSec / 60);
+            const s = remSec % 60;
+            pill.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+            if (remSec <= 60) pill.classList.add("danger");
+
+            if (remSec <= 0) {
+                clearInterval(mainTimerInterval);
+                submitExamFinal("اتمام زمان کل آزمون");
+            }
+        }, 500);
+    }
+
+    function renderCurrentQuestion() {
+        const idx = examSession.currentIdx;
+        const total = examSession.questions.length;
+        const q = examSession.questions[idx];
+
+        document.getElementById("q-curr-num").textContent = idx + 1;
+        document.getElementById("exam-progress-fill").style.width = `${Math.round(((idx + 1) / total) * 100)}%`;
+
+        // رندر صورت سوال روی تصویر Canvas ضدکپی یا متن عادی
+        const canvas = document.getElementById("q-canvas");
+        const fallback = document.getElementById("q-text-fallback");
+        if (examSession.renderCanvas) {
+            canvas.style.display = "block";
+            fallback.style.display = "none";
+            drawQuestionOnCanvas(canvas, `${idx + 1}. ${q.text}`);
+        } else {
+            canvas.style.display = "none";
+            fallback.style.display = "block";
+            fallback.textContent = `${idx + 1}. ${q.text}`;
+        }
+
+        // رندر گزینه‌ها
+        const chosen = examSession.answers[q.qId] || 0;
+        const optLabels = ["الف", "ب", "ج", "د"];
+        document.getElementById("options-container").innerHTML = q.options.map((opt, i) => `
+            <button type="button" class="option-btn ${chosen === opt.optIdx ? "selected" : ""}" onclick="selectOption('${q.qId}', ${opt.optIdx})">
+                <span class="opt-circle">${optLabels[i] || (i + 1)}</span>
+                <span>${opt.text}</span>
+            </button>
+        `).join("");
+
+        // مدیریت دکمه‌های قبلی / بعدی / ثبت نهایی
+        const prevBtn = document.getElementById("btn-prev-q");
+        const nextBtn = document.getElementById("btn-next-q");
+        const finBtn = document.getElementById("btn-finish-exam");
+
+        prevBtn.style.display = (examSession.preventBacktrack || idx === 0) ? "none" : "inline-flex";
+        if (idx === total - 1) {
+            nextBtn.style.display = "none";
+            finBtn.style.display = "inline-flex";
+        } else {
+            nextBtn.style.display = "inline-flex";
+            finBtn.style.display = "none";
+        }
+
+        // تایمر اختصاصی هر سوال در صورت فعال بودن
+        if (examSession.questionTimerSec > 0) {
+            startPerQuestionTimer();
+        }
+    }
+
+    function drawQuestionOnCanvas(canvas, text) {
+        const dpr = window.devicePixelRatio || 1;
+        const displayWidth = canvas.parentElement.clientWidth - 20;
+        const fontSize = 15;
+        const lineHeight = 28;
+        const padding = 10;
+
+        const ctx = canvas.getContext("2d");
+        ctx.font = `800 ${fontSize}px Sahel, Vazirmatn, Tahoma, sans-serif`;
+
+        // شکستن هوشمند خطوط فارسی
+        const words = text.split(" ");
+        const lines = [];
+        let currentLine = "";
+        for (let w = 0; w < words.length; w++) {
+            const testLine = currentLine ? currentLine + " " + words[w] : words[w];
+            if (ctx.measureText(testLine).width > displayWidth - padding * 2 && currentLine) {
+                lines.push(currentLine);
+                currentLine = words[w];
+            } else {
+                currentLine = testLine;
+            }
+        }
+        if (currentLine) lines.push(currentLine);
+
+        const displayHeight = Math.max(54, lines.length * lineHeight + padding * 2);
+        canvas.width = displayWidth * dpr;
+        canvas.height = displayHeight * dpr;
+        canvas.style.height = displayHeight + "px";
+
+        ctx.scale(dpr, dpr);
+        ctx.clearRect(0, 0, displayWidth, displayHeight);
+
+        // خطوط ظریف ضد OCR در پس‌زمینه
+        ctx.strokeStyle = "rgba(91, 23, 116, 0.07)";
+        ctx.lineWidth = 1;
+        for (let i = 0; i < 4; i++) {
+            ctx.beginPath();
+            ctx.moveTo(0, (displayHeight / 4) * i + 6);
+            ctx.lineTo(displayWidth, (displayHeight / 4) * ((i + 2) % 4) + 10);
+            ctx.stroke();
+        }
+
+        ctx.font = `800 ${fontSize}px Sahel, Vazirmatn, Tahoma, sans-serif`;
+        ctx.fillStyle = "#1a1622";
+        ctx.textAlign = "right";
+        ctx.direction = "rtl";
+
+        lines.forEach((line, idx) => {
+            ctx.fillText(line, displayWidth - padding, padding + 18 + idx * lineHeight);
+        });
+    }
+
+    function startPerQuestionTimer() {
+        clearInterval(qTimerInterval);
+        document.getElementById("per-q-timer-wrap").style.display = "block";
+        examSession.qRemainingSec = examSession.questionTimerSec;
+        updatePerQuestionUI();
+
+        qTimerInterval = setInterval(() => {
+            examSession.qRemainingSec--;
+            updatePerQuestionUI();
+            if (examSession.qRemainingSec <= 0) {
+                clearInterval(qTimerInterval);
+                if (examSession.currentIdx < examSession.questions.length - 1) {
+                    examSession.currentIdx++;
+                    renderCurrentQuestion();
+                } else {
+                    submitExamFinal("اتمام زمان آخرین سوال");
+                }
+            }
+        }, 1000);
+    }
+
+    function updatePerQuestionUI() {
+        const pct = Math.max(0, Math.round((examSession.qRemainingSec / examSession.questionTimerSec) * 100));
+        document.getElementById("per-q-sec-lbl").textContent = `${examSession.qRemainingSec} ثانیه`;
+        document.getElementById("per-q-bar").style.width = `${pct}%`;
+    }
+
+    function selectOption(qId, optIdx) {
+        examSession.answers[qId] = optIdx;
+        const savedAnsKey = `seraj_ans_${examSession.candidate.phone}_${examSession.candidate.trackingCode}`;
+        localStorage.setItem(savedAnsKey, JSON.stringify(examSession.answers));
+        renderCurrentQuestion();
+    }
+
+    function navigateQuestion(step) {
+        const next = examSession.currentIdx + step;
+        if (next < 0 || next >= examSession.questions.length) return;
+        examSession.currentIdx = next;
+        renderCurrentQuestion();
+    }
+
+    function confirmFinishExam() {
+        const total = examSession.questions.length;
+        const answered = Object.keys(examSession.answers).length;
+        const unanswered = total - answered;
+        const msg = unanswered > 0
+            ? `شما به ${answered} سوال از ${total} سوال پاسخ داده‌اید (${unanswered} سوال بی‌پاسخ مانده است).\nآیا از ثبت نهایی و پایان آزمون مطمئن هستید؟`
+            : `شما به تمام ${total} سوال پاسخ داده‌اید.\nآیا آزمون ثبت نهایی شود؟`;
+
+        if (confirm(msg)) {
+            submitExamFinal("تکمیل توسط داوطلب");
+        }
+    }
+
+    async function submitExamFinal(reason) {
+        if (examSession.submitting) return;
+        examSession.submitting = true;
+        examSession.active = false;
+
+        clearInterval(mainTimerInterval);
+        clearInterval(qTimerInterval);
+        clearInterval(wmInterval);
+        document.getElementById("watermark-layer").style.display = "none";
+
+        const finBtn = document.getElementById("btn-finish-exam");
+        if (finBtn) { finBtn.disabled = true; finBtn.textContent = "در حال تصحیح و ثبت نهایی..."; }
+
+        try {
+            const res = await fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({
+                    action: "examSubmit",
+                    phone: examSession.candidate.phone,
+                    sessionToken: examSession.sessionToken,
+                    answers: examSession.answers,
+                    violationsCount: examSession.violationsCount,
+                    submitReason: reason,
+                    isDemo: examSession.isDemo,
+                    demoQuestions: examSession.isDemo ? examSession.questions : []
+                })
+            });
+            const data = await res.json();
+            if (data.status === "completed" || data.status === "already_completed") {
+                const savedAnsKey = `seraj_ans_${examSession.candidate.phone}_${examSession.candidate.trackingCode}`;
+                localStorage.removeItem(savedAnsKey);
+                renderScorecard(data.result);
+            } else {
+                alert(data.message || "خطا در ثبت آزمون");
+            }
+        } catch (e) {
+            alert("خطا در ارسال پاسخ‌ها. لطفاً اتصال اینترنت را بررسی کرده و دوباره ثبت را بزنید.");
+            examSession.submitting = false;
+            examSession.active = true;
+        }
+    }
+
+    // نمایش کارنامه، پاسخنامه و رسم گواهی‌نامه دیجیتال
+    function renderScorecard(r) {
+        lastScorecardData = r;
+        document.getElementById("view-login").style.display = "none";
+        document.getElementById("view-exam").style.display = "none";
+        document.getElementById("view-result").style.display = "block";
+
+        document.getElementById("res-fullname").textContent = r.fullName;
+        document.getElementById("res-round").textContent = `${r.roundName} • کد پیگیری: ${r.trackingCode}`;
+        document.getElementById("res-percent").textContent = `${r.percentage}%`;
+        document.getElementById("res-correct").textContent = r.correct;
+        document.getElementById("res-wrong").textContent = r.wrong;
+        document.getElementById("res-blank").textContent = r.blank;
+        document.getElementById("res-duration").textContent = r.durationUsedSec;
+        document.getElementById("res-violations").textContent = r.violations;
+
+        const passEl = document.getElementById("res-pass-msg");
+        if (r.passed) {
+            passEl.style.color = "#15803d";
+            passEl.textContent = `🎉 تبریک! شما حدنصاب (${r.passingThreshold}%) را کسب کردید و وارد قرعه‌کشی شدید.`;
+            if (r.enableCertificate) {
+                document.getElementById("certificate-box").style.display = "block";
+                drawDigitalCertificate(r);
+            }
+        } else {
+            passEl.style.color = "#b45309";
+            passEl.textContent = `حدنصاب قبولی در قرعه‌کشی ${r.passingThreshold}% است. از همراهی شما سپاسگزاریم.`;
+        }
+
+        if (r.canShowReview && r.review && r.review.length > 0) {
+            document.getElementById("review-section").style.display = "block";
+            document.getElementById("review-list-container").innerHTML = r.review.map((item, i) => `
+                <div class="review-item ${item.isCorrect ? "ok" : "bad"}">
+                    <b>${i + 1}. ${item.questionText}</b><br>
+                    <span>پاسخ شما: <b>${item.chosenOpt ? "گزینه " + item.chosenOpt : "بی‌پاسخ"}</b> | گزینه صحیح: <b style="color:#059669;">گزینه ${item.correctOpt}</b></span>
+                    ${item.explanation ? `<div style="color:#0369a1; margin-top:4px;">📌 ${item.explanation}</div>` : ""}
+                </div>
+            `).join("");
+        }
+    }
+
+    function drawDigitalCertificate(r) {
+        const canvas = document.getElementById("cert-canvas");
+        const ctx = canvas.getContext("2d");
+        const w = canvas.width, h = canvas.height;
+
+        // پس‌زمینه کرم اشرافی
+        ctx.fillStyle = "#fffdf7";
+        ctx.fillRect(0, 0, w, h);
+
+        // قاب دو لایه بنفش و طلایی
+        ctx.strokeStyle = "#2a0835";
+        ctx.lineWidth = 14;
+        ctx.strokeRect(24, 24, w - 48, h - 48);
+
+        ctx.strokeStyle = "#f59e0b";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(42, 42, w - 84, h - 84);
+
+        // سربرگ بنفش
+        ctx.fillStyle = "#2a0835";
+        ctx.fillRect(60, 62, w - 120, 88);
+
+        ctx.fillStyle = "#fde68a";
+        ctx.font = "900 28px Sahel, Vazirmatn, Tahoma";
+        ctx.textAlign = "center";
+        ctx.fillText(r.certificateTitle || "گواهی‌نامه موفقیت در مسابقه کتابخوانی سراج", w / 2, 116);
+
+        ctx.fillStyle = "#475569";
+        ctx.font = "700 22px Sahel, Vazirmatn, Tahoma";
+        ctx.fillText("بدین‌وسیله گواهی می‌شود فرهیخته گرامی:", w / 2, 215);
+
+        ctx.fillStyle = "#3d0e4f";
+        ctx.font = "900 38px Sahel, Vazirmatn, Tahoma";
+        ctx.fillText(r.fullName, w / 2, 280);
+
+        ctx.fillStyle = "#1e293b";
+        ctx.font = "700 22px Sahel, Vazirmatn, Tahoma";
+        ctx.fillText(`در ${r.roundName}`, w / 2, 345);
+        ctx.fillText(`با کسب امتیاز ${r.percentage}% با موفقیت شرکت نموده و حائز رتبه قبولی گردیده است.`, w / 2, 392);
+
+        ctx.fillStyle = "#b45309";
+        ctx.font = "800 19px Sahel, Vazirmatn, Tahoma";
+        ctx.fillText(`کد رهگیری گواهی: ${r.trackingCode}`, w / 2, 465);
+
+        ctx.fillStyle = "#64748b";
+        ctx.font = "700 18px Sahel, Vazirmatn, Tahoma";
+        ctx.fillText("دبیرخانه سلسله مسابقات کتابخوانی سراج • مجموعه فرهنگی الهدی", w / 2, 535);
+    }
+
+    function downloadCertificate() {
+        const canvas = document.getElementById("cert-canvas");
+        const link = document.createElement("a");
+        link.download = `Seraj_Certificate_${lastScorecardData?.trackingCode || "cert"}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        showToast("✓ تصویر گواهی‌نامه دانلود شد.");
+    }
+
+    function copyScorecardText() {
+        if (!lastScorecardData) return;
+        const r = lastScorecardData;
+        const txt = `کارنامه آزمون کتابخوانی سراج\nداوطلب: ${r.fullName}\nدوره: ${r.roundName}\nامتیاز: ${r.percentage}% (${r.correct} صحیح از ${r.correct + r.wrong + r.blank})\nکد پیگیری: ${r.trackingCode}`;
+        navigator.clipboard?.writeText(txt);
+        showToast("✓ خلاصه کارنامه کپی شد.");
+    }
+
+    initExamApp();
+</script>
+
+</body>
+</html>
