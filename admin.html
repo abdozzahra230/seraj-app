@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>پنل مدیریت جامع | مسابقات کتابخوانی سراج</title> 
+    <title>پنل مدیریت جامع | مسابقات کتابخوانی سراج</title>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v3.4.0/dist/font-face.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
@@ -14,52 +14,80 @@
             --seraj-purple-mid: #5b1774;
             --seraj-gold: #f59e0b;
             --seraj-gold-border: #fcd34d;
-            --bg-color: #f4f1ea;
-            --card-bg: #ffffff;
+            --seraj-gold-gradient: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #b45309 100%);
+            --bg-color: #faf6f0;
+            --card-bg: rgba(255, 255, 255, 0.97);
             --text-dark: #1a1622;
             --text-muted: #64748b;
             --danger: #dc2626;
             --success: #059669;
             --info: #0284c7;
-            --shadow: 0 10px 28px -6px rgba(30, 3, 41, 0.14);
+            --shadow: 0 14px 32px -6px rgba(30, 3, 41, 0.15), 0 4px 12px -2px rgba(245, 158, 11, 0.08);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: 'Sahel', 'Vazirmatn', Tahoma, sans-serif;
-            background: var(--bg-color);
+            font-family: 'Sahel', 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif;
+            background: radial-gradient(circle at 10% 4%, rgba(245, 158, 11, 0.14), transparent 42%),
+                        radial-gradient(circle at 90% 10%, rgba(91, 23, 116, 0.14), transparent 48%),
+                        var(--bg-color);
             color: var(--text-dark);
             margin: 0;
-            padding: 12px 12px 48px 12px;
+            padding: 12px 12px 64px 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
         .container { width: 100%; max-width: 680px; display: flex; flex-direction: column; gap: 12px; }
 
+        /* سربرگ یکپارچه با هویت بصری سراج */
         .admin-header {
-            background: linear-gradient(135deg, var(--seraj-dark) 0%, var(--seraj-purple) 100%);
+            background: linear-gradient(145deg, var(--seraj-dark) 0%, var(--seraj-purple) 65%, #4a135e 100%);
             color: #fff;
-            border-radius: 22px;
-            padding: 16px 18px;
-            border: 1.5px solid var(--seraj-gold-border);
+            border-radius: 24px;
+            padding: 18px 18px 16px 18px;
+            border: 2px solid var(--seraj-gold-border);
             box-shadow: var(--shadow);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .admin-header h1 { margin: 0; font-size: 1.12rem; font-weight: 900; color: #fde68a; }
-        .admin-header p { margin: 3px 0 0 0; font-size: 0.78rem; color: #e2e8f0; }
+        .bookmark-ribbon {
+            position: absolute;
+            top: 0;
+            left: 22px;
+            width: 18px;
+            height: 30px;
+            background: linear-gradient(180deg, #ea580c 0%, #dc2626 100%);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 75%, 0 100%);
+            z-index: 2;
+        }
 
-        .header-actions { display: flex; gap: 6px; }
+        .book-watermark {
+            position: absolute;
+            right: -16px;
+            bottom: -18px;
+            opacity: 0.08;
+            pointer-events: none;
+            width: 115px;
+            height: 115px;
+        }
+
+        .admin-header h1 { margin: 0; font-size: 1.15rem; font-weight: 900; color: #fde68a; position: relative; z-index: 2; }
+        .admin-header p { margin: 4px 0 0 0; font-size: 0.78rem; color: #e2e8f0; position: relative; z-index: 2; }
+
+        .header-actions { display: flex; gap: 6px; position: relative; z-index: 2; }
         .icon-btn {
             background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(253,230,138,0.4);
+            border: 1px solid rgba(253,230,138,0.45);
             color: #fde68a;
             border-radius: 12px;
             padding: 7px 12px;
@@ -67,13 +95,33 @@
             font-size: 0.78rem;
             font-weight: 800;
             cursor: pointer;
+            transition: 0.18s;
         }
+        .icon-btn:active { transform: scale(0.96); }
 
+        /* نوار هشدار تغییرات ذخیره‌نشده */
+        .unsaved-bar {
+            display: none;
+            background: #fef3c7;
+            border: 1.5px solid #f59e0b;
+            color: #92400e;
+            border-radius: 14px;
+            padding: 9px 14px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+        .unsaved-bar.visible { display: flex; }
+
+        /* منوی دو ستونه بهینه */
         .nav-tabs {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 6px;
-            padding: 4px 0 6px 0;
+            padding: 2px 0 4px 0;
         }
 
         .tab-btn {
@@ -81,14 +129,15 @@
             background: #fff;
             border: 1.5px solid #e2d9c8;
             color: var(--text-dark);
-            padding: 9px 6px;
-            border-radius: 13px;
+            padding: 10px 6px;
+            border-radius: 14px;
             font-family: inherit;
-            font-size: 0.78rem;
+            font-size: 0.79rem;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.2s;
             text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
         }
         .tab-btn:last-child { grid-column: span 2; }
 
@@ -96,12 +145,13 @@
             background: linear-gradient(135deg, var(--seraj-purple) 0%, var(--seraj-dark) 100%);
             color: #fde68a;
             border-color: var(--seraj-gold);
-            box-shadow: 0 4px 12px rgba(42, 8, 53, 0.2);
+            box-shadow: 0 6px 14px rgba(42, 8, 53, 0.24);
         }
 
         .card {
             background: var(--card-bg);
-            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border-radius: 22px;
             padding: 16px;
             box-shadow: var(--shadow);
             border: 1px solid #ece5d8;
@@ -155,6 +205,7 @@
         }
         .help-popover.open { display: block; }
 
+        /* انتخابگر هوشمند تاریخ و ساعت شمسی */
         .shamsi-picker-box {
             background: #faf7f2;
             border: 1.5px solid #dfd5c7;
@@ -163,7 +214,7 @@
         }
         .shamsi-row {
             display: grid;
-            grid-template-columns: 1.1fr 1.3fr 0.9fr;
+            grid-template-columns: 0.9fr 1.3fr 1.1fr;
             gap: 5px;
             margin-bottom: 6px;
         }
@@ -197,15 +248,16 @@
             width: 100%;
             padding: 10px 12px;
             border: 1.5px solid #dfd5c7;
-            border-radius: 12px;
+            border-radius: 13px;
             font-family: inherit;
             font-size: 0.85rem;
             background: #faf7f2;
             color: var(--text-dark);
             outline: none;
+            transition: 0.18s;
         }
-        .form-control:focus { border-color: var(--seraj-purple-mid); background: #fff; }
-        textarea.form-control { min-height: 76px; resize: vertical; line-height: 1.6; }
+        .form-control:focus { border-color: var(--seraj-purple-mid); background: #fff; box-shadow: 0 0 0 3px rgba(91, 23, 116, 0.1); }
+        textarea.form-control { min-height: 74px; resize: vertical; line-height: 1.6; }
 
         .btn {
             padding: 11px 14px;
@@ -215,20 +267,22 @@
             font-size: 0.84rem;
             font-weight: 800;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.18s;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
         }
-        .btn:active { transform: scale(0.98); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn:active:not(:disabled) { transform: scale(0.98); }
         .btn-primary { background: linear-gradient(135deg, var(--seraj-purple) 0%, var(--seraj-dark) 100%); color: #fde68a; border: 1px solid var(--seraj-gold); width: 100%; }
-        .btn-gold { background: linear-gradient(135deg, #fde047 0%, #f59e0b 100%); color: #1e0329; width: 100%; }
+        .btn-gold { background: var(--seraj-gold-gradient); color: #1e0329; width: 100%; }
         .btn-success { background: var(--success); color: #fff; }
         .btn-danger { background: #fee2e2; color: var(--danger); border: 1px solid #fecaca; }
         .btn-info { background: #e0f2fe; color: var(--info); border: 1px solid #bae6fd; }
         .btn-sm { padding: 6px 10px; font-size: 0.75rem; border-radius: 10px; }
 
+        /* شاخص‌های آماری و نوارهای تحلیلی داشبورد */
         .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         @media (min-width: 520px) { .kpi-grid { grid-template-columns: repeat(4, 1fr); } }
 
@@ -236,16 +290,35 @@
             background: #faf7f2;
             border: 1.5px solid #e7dfd5;
             border-radius: 16px;
-            padding: 12px;
+            padding: 12px 8px;
             text-align: center;
         }
-        .kpi-num { font-size: 1.4rem; font-weight: 900; color: var(--seraj-purple); }
+        .kpi-num { font-size: 1.42rem; font-weight: 900; color: var(--seraj-purple); }
         .kpi-lbl { font-size: 0.74rem; color: var(--text-muted); font-weight: 700; margin-top: 2px; }
+
+        .analytics-bar-wrap {
+            background: #faf7f2;
+            border: 1px solid #e7dfd5;
+            border-radius: 14px;
+            padding: 10px 12px;
+            margin-top: 10px;
+        }
+        .bar-track {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            margin: 6px 0;
+        }
+        .bar-seg-women { background: #a21caf; height: 100%; transition: width 0.4s; }
+        .bar-seg-men { background: #0284c7; height: 100%; transition: width 0.4s; }
+        .bar-seg-pass { background: #059669; height: 100%; transition: width 0.4s; }
 
         .list-item {
             background: #faf7f2;
             border: 1.5px solid #e5ddd0;
-            border-radius: 14px;
+            border-radius: 15px;
             padding: 12px;
             margin-bottom: 10px;
         }
@@ -260,7 +333,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 12px;
+            padding: 9px 12px;
             background: #faf7f2;
             border-radius: 12px;
             border: 1px solid #e5ddd0;
@@ -283,12 +356,49 @@
             font-weight: 800;
         }
 
+        .inventory-warning {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #991b1b;
+            border-radius: 10px;
+            padding: 7px 10px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            margin-top: 8px;
+            display: none;
+        }
+
         .winner-card {
             background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
             border: 2px solid var(--seraj-gold);
             border-radius: 16px;
             padding: 14px;
             margin-top: 12px;
+        }
+
+        /* پنجره‌های مودال (ویرایش داوطلب و خروجی اکسل سازگار با ایتا) */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(18, 3, 26, 0.82);
+            backdrop-filter: blur(4px);
+            z-index: 9990;
+            padding: 16px;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-backdrop.open { display: flex; }
+        .modal-box {
+            background: #fff;
+            border-radius: 22px;
+            padding: 18px;
+            width: 100%;
+            max-width: 440px;
+            border: 2px solid var(--seraj-gold);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.4);
+            max-height: 88vh;
+            overflow-y: auto;
         }
 
         .toast {
@@ -298,7 +408,7 @@
             transform: translateX(-50%);
             background: rgba(30, 3, 41, 0.96);
             color: #fde68a;
-            padding: 10px 20px;
+            padding: 10px 22px;
             border-radius: 22px;
             font-size: 0.82rem;
             font-weight: 800;
@@ -320,7 +430,7 @@
 <div class="container">
 
     <!-- صفحه ورود مدیر -->
-    <div id="login-view" class="card" style="max-width: 420px; margin: 30px auto;">
+    <div id="login-view" class="card" style="max-width: 420px; margin: 28px auto; border: 2px solid var(--seraj-gold-border);">
         <div style="text-align: center; margin-bottom: 16px;">
             <span class="badge badge-gold">سامانه مدیریت سراج</span>
             <h2 style="margin: 8px 0 4px 0; color: var(--seraj-purple); font-weight: 900;">ورود به پنل مدیریت جامع</h2>
@@ -344,25 +454,36 @@
     <!-- محیط اصلی پنل مدیریت -->
     <div id="admin-view" style="display: none;">
         <div class="admin-header">
+            <div class="bookmark-ribbon"></div>
+            <svg class="book-watermark" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
             <div>
                 <h1>🎛️ پنل مدیریت مسابقات سراج</h1>
                 <p id="header-round-info">دوره فعال: ---</p>
             </div>
             <div class="header-actions">
-                <button class="icon-btn" onclick="refreshAllData()">🔄 بروزرسانی</button>
-                <button class="icon-btn" onclick="logoutAdmin()">خروج</button>
+                <button type="button" class="icon-btn" onclick="refreshAllData()">🔄 بروزرسانی</button>
+                <button type="button" class="icon-btn" onclick="logoutAdmin()">خروج</button>
             </div>
+        </div>
+
+        <!-- نوار هشدار تغییرات ذخیره‌نشده -->
+        <div id="unsaved-warning-bar" class="unsaved-bar">
+            <span>⚠️ تغییراتی دارید که هنوز در سرور ذخیره نشده‌اند!</span>
+            <button type="button" class="btn btn-success btn-sm" onclick="clearDirtyState()">فهمیدم</button>
         </div>
 
         <!-- منوی ناوبری -->
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('tab-dashboard', this)">📊 داشبورد و قرعه‌کشی</button>
-            <button class="tab-btn" onclick="switchTab('tab-course', this)">📚 دوره و گیت‌ها</button>
-            <button class="tab-btn" onclick="switchTab('tab-form', this)">📝 فرم‌ساز ثبت‌نام</button>
-            <button class="tab-btn" onclick="switchTab('tab-schedule', this)">⏱️ زمان‌بندی و آزمون</button>
-            <button class="tab-btn" onclick="switchTab('tab-questions', this)">❓ بانک سوالات دوره</button>
-            <button class="tab-btn" onclick="switchTab('tab-users', this)">👥 داوطلبان و نتایج</button>
-            <button class="tab-btn" onclick="switchTab('tab-security', this)">🔐 امنیت و لاگ</button>
+            <button type="button" class="tab-btn active" onclick="switchTab('tab-dashboard', this)">📊 داشبورد و قرعه‌کشی</button>
+            <button type="button" class="tab-btn" onclick="switchTab('tab-course', this)">📚 دوره و گیت‌ها</button>
+            <button type="button" class="tab-btn" onclick="switchTab('tab-form', this)">📝 فرم‌ساز ثبت‌نام</button>
+            <button type="button" class="tab-btn" onclick="switchTab('tab-schedule', this)">⏱️ زمان‌بندی و آزمون</button>
+            <button type="button" class="tab-btn" onclick="switchTab('tab-questions', this)">❓ بانک سوالات دوره</button>
+            <button type="button" class="tab-btn" onclick="switchTab('tab-users', this)">👥 داوطلبان و نتایج</button>
+            <button type="button" class="tab-btn" onclick="switchTab('tab-security', this)">🔐 امنیت و لاگ</button>
         </div>
 
         <!-- ۱. تب داشبورد و قرعه‌کشی -->
@@ -378,6 +499,27 @@
                     <div class="kpi-box"><div class="kpi-num" id="kpi-exam-done">0</div><div class="kpi-lbl">شرکت در آزمون</div></div>
                     <div class="kpi-box"><div class="kpi-num" id="kpi-exam-pass">0</div><div class="kpi-lbl">قبول‌شدگان</div></div>
                 </div>
+
+                <!-- نوارهای تحلیلی نسبت جنسیتی و نرخ قبولی -->
+                <div class="analytics-bar-wrap">
+                    <div style="display:flex; justify-content:space-between; font-size:0.76rem; font-weight:800;">
+                        <span style="color:#a21caf;" id="lbl-women-pct">بانوان: 0%</span>
+                        <span style="color:#0284c7;" id="lbl-men-pct">آقایان: 0%</span>
+                    </div>
+                    <div class="bar-track">
+                        <div id="bar-women" class="bar-seg-women" style="width:50%;"></div>
+                        <div id="bar-men" class="bar-seg-men" style="width:50%;"></div>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; font-size:0.76rem; font-weight:800; margin-top:8px;">
+                        <span style="color:#059669;" id="lbl-pass-rate">نرخ قبولی در آزمون: 0%</span>
+                        <span style="color:#64748b;" id="lbl-avg-score">میانگین نمرات: 0%</span>
+                    </div>
+                    <div class="bar-track">
+                        <div id="bar-pass" class="bar-seg-pass" style="width:0%;"></div>
+                    </div>
+                </div>
+
                 <div id="top-provinces-box" style="margin-top: 12px; font-size: 0.8rem; color: #334155;"></div>
             </div>
 
@@ -412,12 +554,12 @@
                         </select>
                     </div>
                 </div>
-                <button class="btn btn-gold" onclick="runSmartLottery()">🎲 اجرای قرعه‌کشی تصادفی</button>
+                <button type="button" class="btn btn-gold" onclick="runSmartLottery()">🎲 اجرای قرعه‌کشی تصادفی</button>
 
                 <div id="lottery-result-box" class="winner-card" style="display: none;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <b style="color: #92400e;">✨ فهرست برگزیدگان قرعه‌کشی:</b>
-                        <button class="btn btn-primary btn-sm" style="width: auto;" onclick="copyLotteryWinners()">کپی لیست</button>
+                        <button type="button" class="btn btn-primary btn-sm" style="width: auto;" onclick="copyLotteryWinners()">کپی لیست</button>
                     </div>
                     <div id="lottery-winners-list" style="font-size: 0.84rem; line-height: 1.8;"></div>
                 </div>
@@ -434,24 +576,24 @@
                 <div class="grid-2">
                     <div class="form-group">
                         <label class="form-label">شماره دوره:</label>
-                        <input type="text" id="cfg-round-num" class="form-control" placeholder="مثلاً: دوره چهارم">
+                        <input type="text" id="cfg-round-num" class="form-control" placeholder="مثلاً: دوره چهارم" oninput="markDirty()">
                     </div>
                     <div class="form-group">
                         <label class="form-label">نام کتاب محور:</label>
-                        <input type="text" id="cfg-book-title" class="form-control" placeholder="مثلاً: خون دلی که لعل شد">
+                        <input type="text" id="cfg-book-title" class="form-control" placeholder="مثلاً: خون دلی که لعل شد" oninput="markDirty()">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">عنوان کامل دوره (نمایش در کارت و شیت):</label>
-                    <input type="text" id="cfg-round-full" class="form-control">
+                    <input type="text" id="cfg-round-full" class="form-control" oninput="markDirty()">
                 </div>
                 <div class="form-group">
                     <label class="form-label">متن پاورقی کارت ورود و برنامک:</label>
-                    <input type="text" id="cfg-footer-note" class="form-control">
+                    <input type="text" id="cfg-footer-note" class="form-control" oninput="markDirty()">
                 </div>
                 <div class="form-group">
                     <label class="form-label">جملات متحرک بالای صفحه (هر خط یک جمله):</label>
-                    <textarea id="cfg-slogans" class="form-control" rows="3"></textarea>
+                    <textarea id="cfg-slogans" class="form-control" rows="3" oninput="markDirty()"></textarea>
                 </div>
 
                 <!-- بخش گیت‌های عضویت + بانک گیت‌های ذخیره‌شده -->
@@ -472,7 +614,7 @@
 
                 <div id="gates-container"></div>
 
-                <button class="btn btn-primary" style="margin-top: 10px;" onclick="saveCourseAndGates()">💾 ذخیره تغییرات دوره و گیت‌ها</button>
+                <button type="button" id="btn-save-course" class="btn btn-primary" style="margin-top: 10px;" onclick="saveCourseAndGates()">💾 ذخیره تغییرات دوره و گیت‌ها</button>
             </div>
 
             <div class="card" style="border-color: #fca5a5;">
@@ -490,7 +632,7 @@
                         <input type="text" id="arch-new-book" class="form-control" placeholder="نام کتاب جدید">
                     </div>
                 </div>
-                <button class="btn btn-danger" style="width: 100%;" onclick="archiveAndStartNewRound()">آرشیو در شیت مجزا و آغاز دوره جدید</button>
+                <button type="button" id="btn-archive-round" class="btn btn-danger" style="width: 100%;" onclick="archiveAndStartNewRound()">آرشیو در شیت مجزا و آغاز دوره جدید</button>
             </div>
         </div>
 
@@ -503,13 +645,12 @@
                 </div>
                 <div id="h-form-builder" class="help-popover">فیلدهای نمایش‌داده‌شده در فرم ثبت‌نام را از اینجا کم یا زیاد کنید و ترتیب یا اجباری بودن آن‌ها را تغییر دهید.</div>
                 <div id="form-fields-container"></div>
-                <button class="btn btn-primary" style="margin-top: 8px;" onclick="saveFormFields()">💾 ذخیره ساختار فرم ثبت‌نام</button>
+                <button type="button" id="btn-save-form" class="btn btn-primary" style="margin-top: 8px;" onclick="saveFormFields()">💾 ذخیره ساختار فرم ثبت‌نام</button>
             </div>
         </div>
 
         <!-- ۴. تب زمان‌بندی شمسی و تنظیمات آزمون -->
         <div id="tab-schedule" class="tab-panel">
-            <!-- بخش ثبت‌نام -->
             <div class="card" style="margin-bottom: 12px;">
                 <div class="card-title">
                     <span>🗓️ زمان‌بندی شمسی ثبت‌نام <button type="button" class="help-trigger" onclick="toggleHelp('h-reg-sch')">?</button></span>
@@ -517,7 +658,7 @@
                 <div id="h-reg-sch" class="help-popover">در حالت «خودکار»، فرم ثبت‌نام فقط بین تاریخ و ساعت شروع تا پایان (به وقت تهران) باز است.</div>
                 <div class="form-group">
                     <label class="form-label">حالت دسترسی به فرم ثبت‌نام:</label>
-                    <select id="cfg-reg-mode" class="form-control">
+                    <select id="cfg-reg-mode" class="form-control" onchange="markDirty()">
                         <option value="auto">خودکار بر اساس تاریخ و ساعت شمسی</option>
                         <option value="open">باز (دستی - همیشه باز)</option>
                         <option value="closed">بسته (دستی - توقف ثبت‌نام)</option>
@@ -535,26 +676,26 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">پیام نمایش هنگام بسته بودن ثبت‌نام:</label>
-                    <input type="text" id="cfg-reg-closed-msg" class="form-control">
+                    <input type="text" id="cfg-reg-closed-msg" class="form-control" oninput="markDirty()">
                 </div>
                 <div class="switch-row">
                     <span>نمایش شمارش معکوس قبل از شروع ثبت‌نام و آزمون</span>
-                    <input type="checkbox" id="cfg-show-countdown">
+                    <input type="checkbox" id="cfg-show-countdown" onchange="markDirty()">
                 </div>
             </div>
 
-            <!-- بخش نوبت‌های زمانی برگزاری آزمون (Multi-Slot) -->
+            <!-- نوبت‌های زمانی برگزاری آزمون (Multi-Slot) -->
             <div class="card" style="margin-bottom: 12px; border: 2px solid #bae6fd;">
                 <div class="card-title">
                     <span>🕒 نوبت‌های زمانی برگزاری آزمون (چندنوبتی) <button type="button" class="help-trigger" onclick="toggleHelp('h-exam-slots')">?</button></span>
                     <button type="button" class="btn btn-info btn-sm" onclick="addExamSlotItem()">+ افزودن نوبت زمانی</button>
                 </div>
-                <div id="h-exam-slots" class="help-popover">می‌توانید چند بازه زمانی مجزا برای آزمون تعریف کنید (مثلاً نوبت اول صبح و نوبت دوم عصر، یا در دو روز مختلف). در فاصله بین نوبت‌ها آزمون بسته می‌ماند و شمارش معکوس تا نوبت بعدی نمایش داده می‌شود.</div>
+                <div id="h-exam-slots" class="help-popover">می‌توانید چند بازه زمانی مجزا برای آزمون تعریف کنید (مثلاً نوبت اول صبح و نوبت دوم عصر، یا در دو روز مختلف).</div>
 
                 <div class="grid-2">
                     <div class="form-group">
                         <label class="form-label">وضعیت کلی آزمون:</label>
-                        <select id="cfg-exam-mode" class="form-control">
+                        <select id="cfg-exam-mode" class="form-control" onchange="markDirty()">
                             <option value="auto">خودکار بر اساس نوبت‌های زمانی زیر</option>
                             <option value="open">باز (هم‌اکنون فعال بدون محدودیت نوبت)</option>
                             <option value="closed">بسته (غیرفعال)</option>
@@ -563,7 +704,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">شرط مجوز ورود به آزمون:</label>
-                        <select id="cfg-exam-access" class="form-control">
+                        <select id="cfg-exam-access" class="form-control" onchange="markDirty()">
                             <option value="registered_only">فقط ثبت‌نام‌شدگان قبلی</option>
                             <option value="allow_new_registration">افراد جدید هم همان لحظه ثبت‌نام کنند</option>
                         </select>
@@ -573,27 +714,26 @@
                 <div id="exam-slots-container"></div>
             </div>
 
-            <!-- بخش انتخاب سوالات بر اساس سطح سختی و ضدتقلب -->
+            <!-- طراحی آزمون، سطح سختی و ضدتقلب -->
             <div class="card">
                 <div class="card-title">
                     <span>🛡️ طراحی آزمون، سطح سختی و ضدتقلب <button type="button" class="help-trigger" onclick="toggleHelp('h-exam-cfg')">?</button></span>
                 </div>
-                <div id="h-exam-cfg" class="help-popover">تایمر آزمون بر اساس ساعت سرور محاسبه می‌شود. همچنین می‌توانید تعداد دقیق سوالات ساده، متوسط و دشوار را مشخص کنید تا سیستم برای هر داوطلب به‌طور تصادفی آزمون اختصاصی بچیند.</div>
+                <div id="h-exam-cfg" class="help-popover">تایمر آزمون بر اساس ساعت سرور محاسبه می‌شود. تعداد دقیق سوالات ساده، متوسط و دشوار را مشخص کنید تا سیستم برای هر داوطلب آزمون اختصاصی بچیند.</div>
 
-                <!-- باکس شفاف انتخاب تصادفی سوالات بر اساس سطح -->
                 <div style="background: #fdf4ff; border: 1.5px solid #e9d5ff; border-radius: 16px; padding: 12px; margin-bottom: 12px;">
                     <label class="form-label" style="color: var(--seraj-purple);">
                         🎯 نحوه انتخاب تصادفی سوالات و تفکیک سطح سختی:
                         <button type="button" class="help-trigger" onclick="toggleHelp('h-sel-mode')">?</button>
                     </label>
                     <div id="h-sel-mode" class="help-popover">
-                        <b>۱. ترکیبی و تصادفی بر اساس سطح سختی (پیشنهادی):</b> دقیقاً مشخص می‌کنید هر داوطلب چند سوال ساده، چند متوسط و چند دشوار به تصادف از بانک سوالات دریافت کند.<br>
+                        <b>۱. ترکیبی و تصادفی بر اساس سطح سختی:</b> دقیقاً مشخص می‌کنید هر داوطلب چند سوال ساده، چند متوسط و چند دشوار به تصادف دریافت کند.<br>
                         <b>۲. تعداد مشخص تصادفی از کل بانک:</b> مثلاً از ۵۰ سوال، ۲۰ سوال تصادفی انتخاب می‌شود.<br>
                         <b>۳. همه سوالات با ترتیب تصادفی:</b> همه سوالات دوره به ترتیب تصادفی نمایش داده می‌شوند.<br>
                         <b>۴. همه سوالات با ترتیب ثابت:</b> بدون تصادفی‌سازی.
                     </div>
 
-                    <select id="cfg-q-sel-mode" class="form-control" style="background: #fff;" onchange="updateSelectionModeUI()">
+                    <select id="cfg-q-sel-mode" class="form-control" style="background: #fff;" onchange="updateSelectionModeUI(); markDirty();">
                         <option value="random_by_level">۱. انتخاب تصادفی متعادل بر اساس سطح (ساده / متوسط / دشوار)</option>
                         <option value="random_total">۲. انتخاب تصادفی تعداد مشخصی سوال از کل بانک دوره</option>
                         <option value="all_shuffled">۳. نمایش تمام سوالات فعال دوره با ترتیب تصادفی</option>
@@ -606,20 +746,21 @@
                         <div class="grid-3">
                             <div>
                                 <label class="form-label">تعداد سوال «ساده»:</label>
-                                <input type="number" id="cfg-rand-easy" class="form-control" style="background: #fff;" min="0" max="100">
+                                <input type="number" id="cfg-rand-easy" class="form-control" style="background: #fff;" min="0" max="100" oninput="validateLevelCounts(); markDirty();">
                             </div>
                             <div>
                                 <label class="form-label">تعداد سوال «متوسط»:</label>
-                                <input type="number" id="cfg-rand-medium" class="form-control" style="background: #fff;" min="0" max="100">
+                                <input type="number" id="cfg-rand-medium" class="form-control" style="background: #fff;" min="0" max="100" oninput="validateLevelCounts(); markDirty();">
                             </div>
                             <div>
                                 <label class="form-label">تعداد سوال «دشوار»:</label>
-                                <input type="number" id="cfg-rand-hard" class="form-control" style="background: #fff;" min="0" max="100">
+                                <input type="number" id="cfg-rand-hard" class="form-control" style="background: #fff;" min="0" max="100" oninput="validateLevelCounts(); markDirty();">
                             </div>
                         </div>
+                        <div id="level-count-warning" class="inventory-warning"></div>
                         <div class="form-group" style="margin-top: 8px; margin-bottom: 0;">
                             <label class="form-label">ترتیب چیدمان سوالات انتخاب‌شده در صفحه داوطلب:</label>
-                            <select id="cfg-level-order" class="form-control" style="background: #fff;">
+                            <select id="cfg-level-order" class="form-control" style="background: #fff;" onchange="markDirty()">
                                 <option value="shuffled">درهم و تصادفی برای هر داوطلب</option>
                                 <option value="easy_to_hard">تدریجی از ساده به دشوار (سوالات هر سطح تصادفی)</option>
                             </select>
@@ -629,56 +770,40 @@
                     <!-- تنظیمات حالت ۲ -->
                     <div id="box-random-total" style="display: none; margin-top: 10px;">
                         <label class="form-label">تعداد کل سوالاتی که به تصادف برای هر داوطلب انتخاب شود:</label>
-                        <input type="number" id="cfg-random-total-count" class="form-control" style="background: #fff;" min="1" max="200">
+                        <input type="number" id="cfg-random-total-count" class="form-control" style="background: #fff;" min="1" max="200" oninput="markDirty()">
                     </div>
                 </div>
 
                 <div class="grid-2">
                     <div class="form-group">
-                        <label class="form-label">
-                            مدت زمان کل آزمون هر فرد (دقیقه):
-                            <button type="button" class="help-trigger" onclick="toggleHelp('h-dur')">?</button>
-                        </label>
-                        <div id="h-dur" class="help-popover">حداکثر زمانی که هر داوطلب از لحظه شروع آزمون برای پاسخ به کل سوالات فرصت دارد.</div>
-                        <input type="number" id="cfg-exam-duration-min" class="form-control" min="1" max="180">
+                        <label class="form-label">مدت زمان کل آزمون هر فرد (دقیقه):</label>
+                        <input type="number" id="cfg-exam-duration-min" class="form-control" min="1" max="180" oninput="markDirty()">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">
-                            مهلت ارفاقی تاخیر اینترنت (ثانیه):
-                            <button type="button" class="help-trigger" onclick="toggleHelp('h-grace')">?</button>
-                        </label>
-                        <div id="h-grace" class="help-popover">زمان اضافه پنهان در سرور (مثلاً ۲۰ ثانیه) برای اینکه اگر اینترنت کاربر در لحظه پایان کند شد، ثبت نهایی او رد نشود.</div>
-                        <input type="number" id="cfg-grace-sec" class="form-control" min="0" max="120">
+                        <label class="form-label">مهلت ارفاقی تاخیر اینترنت (ثانیه):</label>
+                        <input type="number" id="cfg-grace-sec" class="form-control" min="0" max="120" oninput="markDirty()">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">
-                            زمان مجاز هر سوال (ثانیه - ۰ = آزاد):
-                            <button type="button" class="help-trigger" onclick="toggleHelp('h-qtimer')">?</button>
-                        </label>
-                        <div id="h-qtimer" class="help-popover">اگر عددی مثل ۴۰ وارد کنید، هر سوال فقط ۴۰ ثانیه فرصت دارد و خودکار به سوال بعدی می‌رود.</div>
-                        <input type="number" id="cfg-q-timer" class="form-control" min="0" max="600">
+                        <label class="form-label">زمان مجاز هر سوال (ثانیه - ۰ = آزاد):</label>
+                        <input type="number" id="cfg-q-timer" class="form-control" min="0" max="600" oninput="markDirty()">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">
-                            سقف اخطار خروج از صفحه:
-                            <button type="button" class="help-trigger" onclick="toggleHelp('h-vio')">?</button>
-                        </label>
-                        <div id="h-vio" class="help-popover">تعداد دفعات مجاز خروج داوطلب از صفحه آزمون؛ پس از رسیدن به این سقف، آزمون خودکار ثبت و قفل می‌شود.</div>
-                        <input type="number" id="cfg-max-violations" class="form-control" min="1" max="10">
+                        <label class="form-label">سقف اخطار خروج از صفحه:</label>
+                        <input type="number" id="cfg-max-violations" class="form-control" min="1" max="10" oninput="markDirty()">
                     </div>
                     <div class="form-group">
                         <label class="form-label">حدنصاب قبولی / قرعه‌کشی (%):</label>
-                        <input type="number" id="cfg-pass-percent" class="form-control" min="0" max="100">
+                        <input type="number" id="cfg-pass-percent" class="form-control" min="0" max="100" oninput="markDirty()">
                     </div>
                     <div class="form-group">
                         <label class="form-label">نمره منفی (تعداد غلط = ۱ صحیح، ۰ = ندارد):</label>
-                        <input type="number" id="cfg-neg-marking" class="form-control" min="0" max="10">
+                        <input type="number" id="cfg-neg-marking" class="form-control" min="0" max="10" oninput="markDirty()">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">زمان نمایش پاسخنامه تشریحی به داوطلب:</label>
-                    <select id="cfg-answers-policy" class="form-control">
+                    <select id="cfg-answers-policy" class="form-control" onchange="markDirty()">
                         <option value="after_exam_end">فقط پس از پایان تمام نوبت‌های آزمون (توصیه‌شده)</option>
                         <option value="immediate">بلافاصله بعد از ثبت آزمون هر نفر</option>
                         <option value="never">عدم نمایش پاسخنامه</option>
@@ -687,36 +812,36 @@
 
                 <div class="switch-row">
                     <span>تصادفی‌سازی ترتیب گزینه‌های هر سوال (Shuffle Options)</span>
-                    <input type="checkbox" id="cfg-shuffle-opt">
+                    <input type="checkbox" id="cfg-shuffle-opt" onchange="markDirty()">
                 </div>
                 <div class="switch-row">
                     <span>نمایش متن سوالات به‌صورت تصویر ضدکپی (Canvas Anti-OCR)</span>
-                    <input type="checkbox" id="cfg-render-canvas">
+                    <input type="checkbox" id="cfg-render-canvas" onchange="markDirty()">
                 </div>
                 <div class="switch-row">
                     <span>جلوگیری از بازگشت به سوال قبلی (حرکت یک‌طرفه)</span>
-                    <input type="checkbox" id="cfg-prevent-back">
+                    <input type="checkbox" id="cfg-prevent-back" onchange="markDirty()">
                 </div>
                 <div class="switch-row">
                     <span>الزام تایید عضویت در کانال/گروه پیش از شروع آزمون</span>
-                    <input type="checkbox" id="cfg-exam-gates">
+                    <input type="checkbox" id="cfg-exam-gates" onchange="markDirty()">
                 </div>
                 <div class="switch-row">
-                    <span>صدور خودکار گواهی‌نامه دیجیتال برای قبول‌شدگان</span>
-                    <input type="checkbox" id="cfg-enable-cert">
+                    <span>صدور خودکار لوح تقدیر دیجیتال برای قبول‌شدگان</span>
+                    <input type="checkbox" id="cfg-enable-cert" onchange="markDirty()">
                 </div>
 
                 <div class="form-group" style="margin-top: 8px;">
-                    <label class="form-label">عنوان روی گواهی‌نامه / لوح تقدیر دیجیتال:</label>
-                    <input type="text" id="cfg-cert-title" class="form-control">
+                    <label class="form-label">عنوان روی لوح تقدیر دیجیتال:</label>
+                    <input type="text" id="cfg-cert-title" class="form-control" oninput="markDirty()">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">متن قوانین پیش از شروع آزمون:</label>
-                    <textarea id="cfg-exam-rules" class="form-control" rows="3"></textarea>
+                    <textarea id="cfg-exam-rules" class="form-control" rows="3" oninput="markDirty()"></textarea>
                 </div>
 
-                <button class="btn btn-primary" onclick="saveScheduleAndExamSettings()">💾 ذخیره تمام تنظیمات زمان‌بندی و آزمون</button>
+                <button type="button" id="btn-save-schedule" class="btn btn-primary" onclick="saveScheduleAndExamSettings()">💾 ذخیره تمام تنظیمات زمان‌بندی و آزمون</button>
             </div>
         </div>
 
@@ -801,10 +926,22 @@
             <div class="card">
                 <div class="card-title">
                     <span>فهرست سوالات و تحلیل کیفیت (<span id="total-q-badge">0</span> سوال)</span>
-                    <button type="button" class="btn btn-primary btn-sm" style="width: auto;" onclick="saveAllQuestionsToServer()">💾 ذخیره در سرور</button>
+                    <button type="button" id="btn-save-q-top" class="btn btn-primary btn-sm" style="width: auto;" onclick="saveAllQuestionsToServer()">💾 ذخیره در سرور</button>
                 </div>
+
+                <!-- جستجو و فیلتر سطح در بانک سوالات -->
+                <div class="grid-2" style="margin-bottom: 10px;">
+                    <input type="text" id="q-search-inp" class="form-control" placeholder="🔍 جستجو در متن یا گزینه‌های سوال..." oninput="renderQuestionsList()">
+                    <select id="q-level-filter" class="form-control" onchange="renderQuestionsList()">
+                        <option value="all">همه سطوح سختی</option>
+                        <option value="ساده">فقط سوالات ساده</option>
+                        <option value="متوسط">فقط سوالات متوسط</option>
+                        <option value="دشوار">فقط سوالات دشوار</option>
+                    </select>
+                </div>
+
                 <div id="questions-list-container"></div>
-                <button type="button" class="btn btn-primary" style="margin-top: 8px;" onclick="saveAllQuestionsToServer()">💾 ذخیره نهایی سوالات این دوره در گوگل شیت</button>
+                <button type="button" id="btn-save-q-bottom" class="btn btn-primary" style="margin-top: 8px;" onclick="saveAllQuestionsToServer()">💾 ذخیره نهایی سوالات این دوره در گوگل شیت</button>
             </div>
         </div>
 
@@ -816,30 +953,6 @@
                     <button type="button" class="btn btn-success btn-sm" onclick="exportUsersCSV()">📥 خروجی اکسل</button>
                 </div>
                 <div id="h-users" class="help-popover">می‌توانید اطلاعات ثبت‌نامی هر داوطلب را ویرایش کنید یا در بخش کارنامه آزمون، سابقه آزمون فرد را ریست کنید تا مجدداً آزمون دهد.</div>
-
-                <!-- باکس ویرایش داوطلب -->
-                <div id="edit-user-box" style="display: none; background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 14px; padding: 12px; margin-bottom: 12px;">
-                    <b style="color: #92400e; display: block; margin-bottom: 8px;">✏️ ویرایش مشخصات داوطلب</b>
-                    <input type="hidden" id="eu-orig-phone">
-                    <div class="grid-2">
-                        <div class="form-group"><label class="form-label">نام:</label><input type="text" id="eu-fname" class="form-control" style="background:#fff;"></div>
-                        <div class="form-group"><label class="form-label">نام خانوادگی:</label><input type="text" id="eu-lname" class="form-control" style="background:#fff;"></div>
-                        <div class="form-group"><label class="form-label">شماره همراه:</label><input type="text" id="eu-phone" class="form-control" dir="ltr" style="background:#fff;"></div>
-                        <div class="form-group">
-                            <label class="form-label">جنسیت:</label>
-                            <select id="eu-gender" class="form-control" style="background:#fff;">
-                                <option value="آقا">آقا</option>
-                                <option value="خانم">خانم</option>
-                            </select>
-                        </div>
-                        <div class="form-group"><label class="form-label">استان:</label><input type="text" id="eu-prov" class="form-control" style="background:#fff;"></div>
-                        <div class="form-group"><label class="form-label">شهر:</label><input type="text" id="eu-city" class="form-control" style="background:#fff;"></div>
-                    </div>
-                    <div style="display: flex; gap: 8px;">
-                        <button type="button" class="btn btn-success btn-sm" style="flex:1;" onclick="submitEditCandidate()">💾 ذخیره تغییرات</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="document.getElementById('edit-user-box').style.display='none'">بستن</button>
-                    </div>
-                </div>
 
                 <div style="display: flex; gap: 6px; margin-bottom: 10px;">
                     <button type="button" id="subtab-reg" class="btn btn-primary btn-sm" style="flex: 1;" onclick="switchUserSubTab('reg')">ثبت‌نامی‌ها (<span id="cnt-reg">0</span>)</button>
@@ -863,7 +976,10 @@
                 <div id="h-sec" class="help-popover">با وارد کردن شناسه عددی ایتای خودتان در کادر دوم، حتی اگر کسی رمز عبور پنل را بداند، بدون حساب ایتای شما اجازه ورود نخواهد داشت.</div>
                 <div class="form-group">
                     <label class="form-label">رمز عبور ورود به پنل مدیریت:</label>
-                    <input type="text" id="sec-admin-pass" class="form-control" dir="ltr">
+                    <div style="display: flex; gap: 6px;">
+                        <input type="password" id="sec-admin-pass" class="form-control" dir="ltr">
+                        <button type="button" class="btn btn-info btn-sm" onclick="toggleAdminPassVisibility()">👁️</button>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">شناسه‌های عددی ایتای مدیران مجاز (با کاما جدا شود):</label>
@@ -873,13 +989,60 @@
                     <label class="form-label">توکن برنامک ایتا (اختیاری):</label>
                     <input type="text" id="sec-bot-token" class="form-control" dir="ltr">
                 </div>
-                <button class="btn btn-primary" onclick="saveSecuritySettings()">💾 ذخیره تنظیمات امنیتی</button>
+                <button type="button" id="btn-save-sec" class="btn btn-primary" onclick="saveSecuritySettings()">💾 ذخیره تنظیمات امنیتی</button>
             </div>
 
             <div class="card">
                 <div class="card-title"><span>📜 گزارش رخدادهای امنیتی و مدیریتی</span></div>
                 <div id="security-logs-container" style="font-size: 0.8rem;"></div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- مودال ویرایش مشخصات داوطلب (بدون از دست رفتن موقعیت اسکرول) -->
+<div id="edit-user-modal" class="modal-backdrop">
+    <div class="modal-box">
+        <div class="card-title" style="margin-bottom: 10px;">
+            <span>✏️ ویرایش مشخصات داوطلب</span>
+            <button type="button" class="btn btn-danger btn-sm" onclick="closeEditUserModal()">✕</button>
+        </div>
+        <input type="hidden" id="eu-orig-phone">
+        <div class="grid-2">
+            <div class="form-group"><label class="form-label">نام:</label><input type="text" id="eu-fname" class="form-control"></div>
+            <div class="form-group"><label class="form-label">نام خانوادگی:</label><input type="text" id="eu-lname" class="form-control"></div>
+            <div class="form-group"><label class="form-label">شماره همراه:</label><input type="tel" id="eu-phone" class="form-control" dir="ltr" maxlength="11"></div>
+            <div class="form-group">
+                <label class="form-label">جنسیت:</label>
+                <select id="eu-gender" class="form-control">
+                    <option value="آقا">آقا</option>
+                    <option value="خانم">خانم</option>
+                </select>
+            </div>
+            <div class="form-group"><label class="form-label">استان:</label><input type="text" id="eu-prov" class="form-control"></div>
+            <div class="form-group"><label class="form-label">شهر:</label><input type="text" id="eu-city" class="form-control"></div>
+        </div>
+        <div style="display: flex; gap: 8px; margin-top: 6px;">
+            <button type="button" id="btn-submit-eu" class="btn btn-success" style="flex:1;" onclick="submitEditCandidate()">💾 ذخیره تغییرات</button>
+            <button type="button" class="btn btn-danger" onclick="closeEditUserModal()">انصراف</button>
+        </div>
+    </div>
+</div>
+
+<!-- مودال خروجی اکسل / CSV سازگار با مرورگر داخلی ایتا -->
+<div id="csv-export-modal" class="modal-backdrop">
+    <div class="modal-box">
+        <div class="card-title" style="margin-bottom: 8px;">
+            <span>📥 خروجی گزارش (اکسل / CSV)</span>
+            <button type="button" class="btn btn-danger btn-sm" onclick="document.getElementById('csv-export-modal').classList.remove('open')">✕</button>
+        </div>
+        <p style="font-size: 0.78rem; color: #475569; margin: 0 0 8px 0; line-height: 1.6;">
+            می‌توانید فایل گزارش را مستقیماً در ایتا ارسال/ذخیره کنید یا متن جدول را کپی نمایید:
+        </p>
+        <textarea id="csv-preview-area" class="form-control" rows="6" dir="ltr" readonly style="font-size: 0.74rem; margin-bottom: 10px;"></textarea>
+        <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-success" style="flex:1;" onclick="shareOrDownloadCsv()">📤 اشتراک‌گذاری / ذخیره فایل</button>
+            <button type="button" class="btn btn-primary" style="flex:1;" onclick="copyCsvText()">📋 کپی متن گزارش</button>
         </div>
     </div>
 </div>
@@ -912,8 +1075,53 @@
     };
     let currentUserSubTab = "reg";
     let lastLotteryWinners = [];
+    let hasUnsavedChanges = false;
+    let lastGeneratedCsv = { content: "", filename: "seraj_report.csv" };
 
     const SHAMSI_MONTHS = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
+
+    // ==========================================
+    // توابع امنیتی و مدیریت وضعیت تغییرات
+    // ==========================================
+    function escapeHTML(str) {
+        if (str === null || str === undefined) return "";
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    function markDirty() {
+        hasUnsavedChanges = true;
+        document.getElementById("unsaved-warning-bar").classList.add("visible");
+    }
+
+    function clearDirtyState() {
+        hasUnsavedChanges = false;
+        document.getElementById("unsaved-warning-bar").classList.remove("visible");
+    }
+
+    window.addEventListener("beforeunload", (e) => {
+        if (hasUnsavedChanges) {
+            e.preventDefault();
+            e.returnValue = "";
+        }
+    });
+
+    // ==========================================
+    // تقویم شمسی دقیق (با کنترل طول ماه و سال کبیسه)
+    // ==========================================
+    function isJalaliLeapYear(jy) {
+        return [1, 5, 9, 13, 17, 22, 26, 30].includes(((jy % 33) + 33) % 33);
+    }
+
+    function getShamsiMonthDays(jy, jm) {
+        if (jm <= 6) return 31;
+        if (jm <= 11) return 30;
+        return isJalaliLeapYear(jy) ? 30 : 29;
+    }
 
     function gregorianToJalali(gy, gm, gd) {
         const g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
@@ -934,7 +1142,21 @@
 
     function pad2(n) { return n < 10 ? "0" + n : String(n); }
 
-    function buildShamsiPicker(containerId, prefix, onChangeCallbackName) {
+    function updatePickerDaysLimit(prefix) {
+        const yEl = document.getElementById(`${prefix}-y`);
+        const mEl = document.getElementById(`${prefix}-m`);
+        const dEl = document.getElementById(`${prefix}-d`);
+        if (!yEl || !mEl || !dEl) return;
+
+        const maxDays = getShamsiMonthDays(Number(yEl.value), Number(mEl.value));
+        const currentDay = Math.min(Number(dEl.value) || 1, maxDays);
+        let opts = "";
+        for (let d = 1; d <= maxDays; d++) opts += `<option value="${pad2(d)}">${d}</option>`;
+        dEl.innerHTML = opts;
+        dEl.value = pad2(currentDay);
+    }
+
+    function buildShamsiPicker(containerId, prefix, onChangeFn) {
         const el = document.getElementById(containerId);
         if (!el) return;
         let yearOpts = "";
@@ -947,21 +1169,48 @@
         let minOpts = "";
         for (let m = 0; m <= 59; m++) minOpts += `<option value="${pad2(m)}">دقیقه ${pad2(m)}</option>`;
 
-        const chg = onChangeCallbackName ? `onchange="${onChangeCallbackName}"` : "";
         el.innerHTML = `
             <div class="shamsi-picker-box">
                 <div class="shamsi-row">
-                    <select id="${prefix}-d" class="shamsi-select" ${chg}>${dayOpts}</select>
-                    <select id="${prefix}-m" class="shamsi-select" ${chg}>${monthOpts}</select>
-                    <select id="${prefix}-y" class="shamsi-select" ${chg}>${yearOpts}</select>
+                    <select id="${prefix}-d" class="shamsi-select">${dayOpts}</select>
+                    <select id="${prefix}-m" class="shamsi-select">${monthOpts}</select>
+                    <select id="${prefix}-y" class="shamsi-select">${yearOpts}</select>
                 </div>
                 <div class="shamsi-time-row">
-                    <select id="${prefix}-min" class="shamsi-select" ${chg}>${minOpts}</select>
-                    <select id="${prefix}-h" class="shamsi-select" ${chg}>${hourOpts}</select>
-                    <button type="button" class="btn btn-info btn-sm" onclick="setPickerToNow('${prefix}', ${onChangeCallbackName ? `'${onChangeCallbackName}'` : 'null'})">الان</button>
+                    <select id="${prefix}-min" class="shamsi-select">${minOpts}</select>
+                    <select id="${prefix}-h" class="shamsi-select">${hourOpts}</select>
+                    <button type="button" id="${prefix}-now-btn" class="btn btn-info btn-sm">الان</button>
                 </div>
             </div>
         `;
+
+        const yEl = document.getElementById(`${prefix}-y`);
+        const mEl = document.getElementById(`${prefix}-m`);
+        const dEl = document.getElementById(`${prefix}-d`);
+        const hEl = document.getElementById(`${prefix}-h`);
+        const minEl = document.getElementById(`${prefix}-min`);
+        const nowBtn = document.getElementById(`${prefix}-now-btn`);
+
+        const handleAnyChange = () => {
+            updatePickerDaysLimit(prefix);
+            markDirty();
+            if (typeof onChangeFn === "function") onChangeFn();
+        };
+
+        yEl.addEventListener("change", handleAnyChange);
+        mEl.addEventListener("change", handleAnyChange);
+        dEl.addEventListener("change", () => { markDirty(); if (typeof onChangeFn === "function") onChangeFn(); });
+        hEl.addEventListener("change", () => { markDirty(); if (typeof onChangeFn === "function") onChangeFn(); });
+        minEl.addEventListener("change", () => { markDirty(); if (typeof onChangeFn === "function") onChangeFn(); });
+
+        nowBtn.addEventListener("click", () => {
+            const now = new Date();
+            const j = gregorianToJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
+            setPickerValue(prefix, `${j.jy}/${pad2(j.jm)}/${pad2(j.jd)} ${pad2(now.getHours())}:${pad2(now.getMinutes())}`);
+            markDirty();
+            if (typeof onChangeFn === "function") onChangeFn();
+            showToast("✓ تاریخ و ساعت روی لحظه فعلی تنظیم شد.");
+        });
     }
 
     function setPickerValue(prefix, dtStr) {
@@ -986,7 +1235,9 @@
         if (!yEl) return;
         yEl.value = String(jy);
         document.getElementById(`${prefix}-m`).value = pad2(jm);
-        document.getElementById(`${prefix}-d`).value = pad2(jd);
+        updatePickerDaysLimit(prefix);
+        const maxD = getShamsiMonthDays(jy, jm);
+        document.getElementById(`${prefix}-d`).value = pad2(Math.min(jd, maxD));
         document.getElementById(`${prefix}-h`).value = pad2(hh);
         document.getElementById(`${prefix}-min`).value = pad2(mm);
     }
@@ -998,14 +1249,6 @@
         const h = document.getElementById(`${prefix}-h`).value;
         const min = document.getElementById(`${prefix}-min`).value;
         return `${y}/${m}/${d} ${h}:${min}`;
-    }
-
-    function setPickerToNow(prefix, cbCode) {
-        const now = new Date();
-        const j = gregorianToJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
-        setPickerValue(prefix, `${j.jy}/${pad2(j.jm)}/${pad2(j.jd)} ${pad2(now.getHours())}:${pad2(now.getMinutes())}`);
-        if (cbCode) { try { eval(cbCode); } catch (e) {} }
-        showToast("✓ تاریخ و ساعت روی لحظه فعلی تنظیم شد.");
     }
 
     buildShamsiPicker("picker-reg-start", "rs");
@@ -1031,15 +1274,30 @@
         showToast("✓ شناسه ایتای شما کپی شد: " + currentEitaaUserId);
     }
 
-    async function apiCall(payload) {
+    // ارتباط مقاوم با سرور (Timeout + Retry)
+    async function apiCall(payload, retries = 1, timeoutMs = 13000) {
         payload.adminPassword = adminSession.password;
         payload.eitaaUserId = adminSession.eitaaUserId;
-        const res = await fetch(GOOGLE_SCRIPT_URL, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify(payload)
-        });
-        return await res.json();
+
+        for (let attempt = 0; attempt <= retries; attempt++) {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), timeoutMs);
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+                clearTimeout(timer);
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                return await res.json();
+            } catch (err) {
+                clearTimeout(timer);
+                if (attempt === retries) throw err;
+                await new Promise(r => setTimeout(r, 800));
+            }
+        }
     }
 
     async function handleLogin(e) {
@@ -1055,6 +1313,7 @@
             if (res.status === "success") {
                 sessionStorage.setItem("seraj_admin_pass", pass);
                 hydrateState(res);
+                clearDirtyState();
                 document.getElementById("login-view").style.display = "none";
                 document.getElementById("admin-view").style.display = "block";
                 showToast("✓ خوش آمدید! داده‌ها بارگذاری شد.");
@@ -1062,25 +1321,33 @@
                 alert(res.message || "خطا در ورود به پنل");
             }
         } catch (err) {
-            alert("خطا در ارتباط با سرور گوگل شیت.");
+            alert("خطا در ارتباط با سرور گوگل شیت. اتصال اینترنت را بررسی کنید.");
         } finally {
             btn.disabled = false;
             btn.textContent = "ورود و بارگذاری داده‌ها";
         }
     }
 
-    async function refreshAllData() {
+    async function refreshAllData(force = false) {
+        if (!force && hasUnsavedChanges) {
+            if (!confirm("تغییراتی دارید که هنوز در سرور ذخیره نشده‌اند! با بروزرسانی این تغییرات از بین می‌روند. ادامه می‌دهید؟")) {
+                return;
+            }
+        }
         showToast("در حال بروزرسانی اطلاعات...");
         try {
             const res = await apiCall({ action: "adminLogin" });
             if (res.status === "success") {
                 hydrateState(res);
+                clearDirtyState();
                 showToast("✓ تمام اطلاعات بروزرسانی شد.");
             }
-        } catch (e) { showToast("خطا در بروزرسانی"); }
+        } catch (e) { showToast("❌ خطا در بروزرسانی"); }
     }
 
     function logoutAdmin() {
+        if (hasUnsavedChanges && !confirm("تغییرات ذخیره‌نشده دارید. مطمئن هستید که می‌خواهید خارج شوید؟")) return;
+        clearDirtyState();
         sessionStorage.removeItem("seraj_admin_pass");
         adminSession.password = "";
         document.getElementById("admin-view").style.display = "none";
@@ -1135,7 +1402,7 @@
 
         document.getElementById("header-round-info").textContent = `دوره فعال: ${activeRoundFull}`;
 
-        // داشبورد
+        // داشبورد تحلیلی
         const totalReg = appState.registrations.length;
         const womenCount = appState.registrations.filter(r => r.gender === "خانم").length;
         const menCount = appState.registrations.filter(r => r.gender === "آقا").length;
@@ -1148,11 +1415,27 @@
         document.getElementById("kpi-exam-done").textContent = completedExams.length;
         document.getElementById("kpi-exam-pass").textContent = passedCount;
 
+        // نوارهای بصری جنسیت و قبولی
+        const womenPct = totalReg > 0 ? Math.round((womenCount / totalReg) * 100) : 50;
+        const menPct = totalReg > 0 ? (100 - womenPct) : 50;
+        document.getElementById("lbl-women-pct").textContent = `بانوان: ${totalReg > 0 ? womenPct : 0}% (${womenCount} نفر)`;
+        document.getElementById("lbl-men-pct").textContent = `آقایان: ${totalReg > 0 ? menPct : 0}% (${menCount} نفر)`;
+        document.getElementById("bar-women").style.width = `${womenPct}%`;
+        document.getElementById("bar-men").style.width = `${menPct}%`;
+
+        const passRate = completedExams.length > 0 ? Math.round((passedCount / completedExams.length) * 100) : 0;
+        const avgScore = completedExams.length > 0
+            ? Math.round(completedExams.reduce((acc, cur) => acc + (Number(cur.percentage) || 0), 0) / completedExams.length)
+            : 0;
+        document.getElementById("lbl-pass-rate").textContent = `نرخ قبولی در آزمون: ${passRate}%`;
+        document.getElementById("lbl-avg-score").textContent = `میانگین کل نمرات: ${avgScore}%`;
+        document.getElementById("bar-pass").style.width = `${passRate}%`;
+
         const provMap = {};
         appState.registrations.forEach(r => { provMap[r.province] = (provMap[r.province] || 0) + 1; });
         const topProvs = Object.entries(provMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
         document.getElementById("top-provinces-box").innerHTML = topProvs.length
-            ? "<b>استان‌های پیشتاز:</b> " + topProvs.map(p => `${p[0]} (${p[1]} نفر)`).join(" • ")
+            ? "<b>استان‌های پیشتاز:</b> " + topProvs.map(p => `${escapeHTML(p[0])} (${p[1]} نفر)`).join(" • ")
             : "هنوز ثبت‌نامی ثبت نشده است.";
 
         // دوره و گیت‌ها
@@ -1230,11 +1513,11 @@
             <div class="list-item">
                 <div class="list-item-header">
                     <b>نوبت #${idx + 1}</b>
-                    ${appState.examSlots.length > 1 ? `<button type="button" class="btn btn-danger btn-sm" onclick="removeExamSlot(${idx})">حذف نوبت</button>` : ""}
+                    ${appState.examSlots.length > 1 ? `<button type="button" class="btn btn-danger btn-sm" data-del-slot="${idx}">حذف نوبت</button>` : ""}
                 </div>
                 <div class="form-group">
                     <label class="form-label">عنوان نوبت (مثلاً: نوبت اول صبح):</label>
-                    <input type="text" class="form-control" style="background:#fff;" value="${sl.title || ""}" onchange="appState.examSlots[${idx}].title=this.value">
+                    <input type="text" class="form-control slot-title-inp" style="background:#fff;" data-slot-idx="${idx}" value="${escapeHTML(sl.title || "")}">
                 </div>
                 <div class="grid-2">
                     <div class="form-group" style="margin-bottom:0;">
@@ -1249,9 +1532,22 @@
             </div>
         `).join("");
 
+        container.querySelectorAll(".slot-title-inp").forEach(inp => {
+            inp.addEventListener("input", () => {
+                appState.examSlots[Number(inp.dataset.slotIdx)].title = inp.value;
+                markDirty();
+            });
+        });
+
+        container.querySelectorAll("[data-del-slot]").forEach(btn => {
+            btn.addEventListener("click", () => {
+                removeExamSlot(Number(btn.dataset.delSlot));
+            });
+        });
+
         appState.examSlots.forEach((sl, idx) => {
-            buildShamsiPicker(`slot-start-${idx}`, `sls_${idx}`, `syncSlotFromPicker(${idx})`);
-            buildShamsiPicker(`slot-end-${idx}`, `sle_${idx}`, `syncSlotFromPicker(${idx})`);
+            buildShamsiPicker(`slot-start-${idx}`, `sls_${idx}`, () => syncSlotFromPicker(idx));
+            buildShamsiPicker(`slot-end-${idx}`, `sle_${idx}`, () => syncSlotFromPicker(idx));
             setPickerValue(`sls_${idx}`, sl.start);
             setPickerValue(`sle_${idx}`, sl.end);
         });
@@ -1270,6 +1566,7 @@
             start: "1405/01/01 08:00",
             end: "1405/01/01 22:00"
         });
+        markDirty();
         renderExamSlotsEditor();
         showToast("✓ نوبت زمانی جدید اضافه شد.");
     }
@@ -1277,6 +1574,7 @@
     function removeExamSlot(idx) {
         if (appState.examSlots.length <= 1) return;
         appState.examSlots.splice(idx, 1);
+        markDirty();
         renderExamSlotsEditor();
     }
 
@@ -1290,7 +1588,7 @@
             return;
         }
         sel.innerHTML = appState.savedGatesLibrary.map((g, idx) =>
-            `<option value="${idx}">${g.title} (${g.target === 'all' ? 'همه' : g.target})</option>`
+            `<option value="${idx}">${escapeHTML(g.title)} (${g.target === 'all' ? 'همه' : escapeHTML(g.target)})</option>`
         ).join("");
     }
 
@@ -1300,6 +1598,7 @@
         const clone = JSON.parse(JSON.stringify(appState.savedGatesLibrary[idx]));
         clone.id = "gate_" + Date.now();
         appState.gates.push(clone);
+        markDirty();
         renderGatesEditor();
         showToast("✓ گیت انتخاب‌شده به این دوره اضافه شد.");
     }
@@ -1309,6 +1608,7 @@
         const existsIdx = appState.savedGatesLibrary.findIndex(item => item.url === g.url && item.title === g.title);
         if (existsIdx >= 0) appState.savedGatesLibrary[existsIdx] = JSON.parse(JSON.stringify(g));
         else appState.savedGatesLibrary.push(JSON.parse(JSON.stringify(g)));
+        markDirty();
         renderSavedGatesDropdown();
         showToast("✓ در بانک گیت‌ها ذخیره شد.");
     }
@@ -1318,36 +1618,37 @@
         if (idx === "" || !appState.savedGatesLibrary[idx]) return;
         if (!confirm("این گیت از بانک ذخیره‌شده حذف شود؟")) return;
         appState.savedGatesLibrary.splice(Number(idx), 1);
+        markDirty();
         renderSavedGatesDropdown();
     }
 
     function renderGatesEditor() {
         const container = document.getElementById("gates-container");
         container.innerHTML = appState.gates.map((g, idx) => `
-            <div class="list-item">
+            <div class="list-item" data-gate-idx="${idx}">
                 <div class="list-item-header">
                     <b>گیت #${idx + 1}</b>
                     <div>
-                        <button type="button" class="btn btn-info btn-sm" onclick="saveGateToLibrary(${idx})">💾 ذخیره در بانک</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="removeGate(${idx})">حذف</button>
+                        <button type="button" class="btn btn-info btn-sm btn-lib-gate">💾 ذخیره در بانک</button>
+                        <button type="button" class="btn btn-danger btn-sm btn-del-gate">حذف</button>
                     </div>
                 </div>
                 <div class="grid-2">
                     <div class="form-group">
                         <label class="form-label">عنوان باکس:</label>
-                        <input type="text" class="form-control" value="${g.title || ""}" onchange="appState.gates[${idx}].title=this.value">
+                        <input type="text" class="form-control g-title" value="${escapeHTML(g.title || "")}">
                     </div>
                     <div class="form-group">
                         <label class="form-label">لینک ایتا:</label>
-                        <input type="text" class="form-control" dir="ltr" value="${g.url || ""}" onchange="appState.gates[${idx}].url=this.value">
+                        <input type="text" class="form-control g-url" dir="ltr" value="${escapeHTML(g.url || "")}">
                     </div>
                     <div class="form-group">
                         <label class="form-label">متن دکمه:</label>
-                        <input type="text" class="form-control" value="${g.btnText || ""}" onchange="appState.gates[${idx}].btnText=this.value">
+                        <input type="text" class="form-control g-btn" value="${escapeHTML(g.btnText || "")}">
                     </div>
                     <div class="form-group">
                         <label class="form-label">مخاطب هدف:</label>
-                        <select class="form-control" onchange="appState.gates[${idx}].target=this.value">
+                        <select class="form-control g-target">
                             <option value="all" ${g.target === "all" ? "selected" : ""}>همه داوطلبان</option>
                             <option value="خانم" ${g.target === "خانم" ? "selected" : ""}>فقط بانوان (خانم)</option>
                             <option value="آقا" ${g.target === "آقا" ? "selected" : ""}>فقط آقایان (آقا)</option>
@@ -1356,13 +1657,29 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">توضیحات باکس:</label>
-                    <input type="text" class="form-control" value="${g.desc || ""}" onchange="appState.gates[${idx}].desc=this.value">
+                    <input type="text" class="form-control g-desc" value="${escapeHTML(g.desc || "")}">
                 </div>
                 <label style="font-size:0.8rem; font-weight:700;">
-                    <input type="checkbox" ${g.required !== false ? "checked" : ""} onchange="appState.gates[${idx}].required=this.checked"> عضویت در این کانال/گروه الزامی است
+                    <input type="checkbox" class="g-req" ${g.required !== false ? "checked" : ""}> عضویت در این کانال/گروه الزامی است
                 </label>
             </div>
         `).join("");
+
+        container.querySelectorAll(".list-item").forEach(card => {
+            const idx = Number(card.dataset.gateIdx);
+            card.querySelector(".btn-lib-gate").addEventListener("click", () => saveGateToLibrary(idx));
+            card.querySelector(".btn-del-gate").addEventListener("click", () => {
+                appState.gates.splice(idx, 1);
+                markDirty();
+                renderGatesEditor();
+            });
+            card.querySelector(".g-title").addEventListener("input", e => { appState.gates[idx].title = e.target.value; markDirty(); });
+            card.querySelector(".g-url").addEventListener("input", e => { appState.gates[idx].url = e.target.value; markDirty(); });
+            card.querySelector(".g-btn").addEventListener("input", e => { appState.gates[idx].btnText = e.target.value; markDirty(); });
+            card.querySelector(".g-target").addEventListener("change", e => { appState.gates[idx].target = e.target.value; markDirty(); });
+            card.querySelector(".g-desc").addEventListener("input", e => { appState.gates[idx].desc = e.target.value; markDirty(); });
+            card.querySelector(".g-req").addEventListener("change", e => { appState.gates[idx].required = e.target.checked; markDirty(); });
+        });
     }
 
     function addGateItem() {
@@ -1376,15 +1693,15 @@
             required: true,
             style: "blue"
         });
-        renderGatesEditor();
-    }
-
-    function removeGate(idx) {
-        appState.gates.splice(idx, 1);
+        markDirty();
         renderGatesEditor();
     }
 
     async function saveCourseAndGates() {
+        const btn = document.getElementById("btn-save-course");
+        btn.disabled = true;
+        btn.textContent = "در حال ذخیره تغییرات...";
+
         const slogans = document.getElementById("cfg-slogans").value.split("\n").map(s => s.trim()).filter(Boolean);
         const fullRound = document.getElementById("cfg-round-full").value.trim();
         if (fullRound && appState.roundsList.indexOf(fullRound) === -1) appState.roundsList.push(fullRound);
@@ -1399,9 +1716,21 @@
             gates_json: JSON.stringify(appState.gates),
             saved_gates_library_json: JSON.stringify(appState.savedGatesLibrary)
         };
-        const res = await apiCall({ action: "adminSaveSettings", updates });
-        showToast(res.status === "success" ? "✓ تنظیمات دوره و بانک گیت‌ها ذخیره شد." : res.message);
-        if (res.status === "success") refreshAllData();
+        try {
+            const res = await apiCall({ action: "adminSaveSettings", updates });
+            if (res.status === "success") {
+                clearDirtyState();
+                showToast("✓ تنظیمات دوره و بانک گیت‌ها ذخیره شد.");
+                await refreshAllData(true);
+            } else {
+                showToast(res.message || "خطا در ذخیره");
+            }
+        } catch (e) {
+            showToast("❌ خطا در ارتباط با سرور");
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "💾 ذخیره تغییرات دوره و گیت‌ها";
+        }
     }
 
     async function archiveAndStartNewRound() {
@@ -1410,9 +1739,23 @@
         if (!newRound || !newBook) { alert("لطفاً عنوان دوره جدید و نام کتاب جدید را وارد کنید."); return; }
         if (!confirm(`آیا مطمئن هستید که می‌خواهید اطلاعات دوره فعلی در شیت مجزا آرشیو شده و «${newRound}» آغاز شود؟`)) return;
 
-        const res = await apiCall({ action: "adminArchiveAndNewRound", newRoundNumber: newRound, newBookTitle: newBook });
-        alert(res.message);
-        if (res.status === "success") refreshAllData();
+        const btn = document.getElementById("btn-archive-round");
+        btn.disabled = true;
+        btn.textContent = "در حال ایجاد شیت آرشیو و انتقال داده‌ها...";
+
+        try {
+            const res = await apiCall({ action: "adminArchiveAndNewRound", newRoundNumber: newRound, newBookTitle: newBook });
+            alert(res.message);
+            if (res.status === "success") {
+                clearDirtyState();
+                await refreshAllData(true);
+            }
+        } catch (e) {
+            alert("خطا در ارتباط با سرور");
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "آرشیو در شیت مجزا و آغاز دوره جدید";
+        }
     }
 
     // ==========================================
@@ -1421,23 +1764,23 @@
     function renderFormFieldsEditor() {
         const container = document.getElementById("form-fields-container");
         container.innerHTML = appState.formFields.map((f, idx) => `
-            <div class="list-item">
+            <div class="list-item" data-f-idx="${idx}">
                 <div class="list-item-header">
-                    <b>${idx + 1}. ${f.label} <small style="color:#64748b;">(${f.id})</small></b>
+                    <b>${idx + 1}. ${escapeHTML(f.label)} <small style="color:#64748b;">(${escapeHTML(f.id)})</small></b>
                     <div>
-                        <button type="button" class="btn btn-info btn-sm" onclick="moveFormField(${idx}, -1)">↑</button>
-                        <button type="button" class="btn btn-info btn-sm" onclick="moveFormField(${idx}, 1)">↓</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="removeFormField(${idx})">حذف</button>
+                        <button type="button" class="btn btn-info btn-sm btn-f-up">↑</button>
+                        <button type="button" class="btn btn-info btn-sm btn-f-down">↓</button>
+                        <button type="button" class="btn btn-danger btn-sm btn-f-del">حذف</button>
                     </div>
                 </div>
                 <div class="grid-2">
                     <div class="form-group">
                         <label class="form-label">عنوان نمایشی:</label>
-                        <input type="text" class="form-control" value="${f.label}" onchange="appState.formFields[${idx}].label=this.value">
+                        <input type="text" class="form-control f-label" value="${escapeHTML(f.label)}">
                     </div>
                     <div class="form-group">
                         <label class="form-label">نوع فیلد:</label>
-                        <select class="form-control" onchange="appState.formFields[${idx}].type=this.value">
+                        <select class="form-control f-type">
                             <option value="text" ${f.type === "text" ? "selected" : ""}>متن کوتاه</option>
                             <option value="number" ${f.type === "number" ? "selected" : ""}>عدد (مثل سن / کد ملی)</option>
                             <option value="tel" ${f.type === "tel" ? "selected" : ""}>شماره موبایل</option>
@@ -1448,20 +1791,39 @@
                 </div>
                 <div class="grid-2">
                     <div class="form-group">
-                        <label class="form-label">گزینه‌ها (با کاما جدا شود):</label>
-                        <input type="text" class="form-control" value="${f.options || ""}" onchange="appState.formFields[${idx}].options=this.value">
+                        <label class="form-label">گزینه‌ها (برای لیست کشویی، با کاما جدا شود):</label>
+                        <input type="text" class="form-control f-opts" value="${escapeHTML(f.options || "")}">
                     </div>
                     <div class="form-group">
                         <label class="form-label">متن راهنما (Placeholder):</label>
-                        <input type="text" class="form-control" value="${f.placeholder || ""}" onchange="appState.formFields[${idx}].placeholder=this.value">
+                        <input type="text" class="form-control f-ph" value="${escapeHTML(f.placeholder || "")}">
                     </div>
                 </div>
                 <div style="display: flex; gap: 16px; font-size: 0.8rem; font-weight: 700;">
-                    <label><input type="checkbox" ${f.required ? "checked" : ""} onchange="appState.formFields[${idx}].required=this.checked"> فیلد اجباری</label>
-                    <label><input type="checkbox" ${f.active ? "checked" : ""} onchange="appState.formFields[${idx}].active=this.checked"> نمایش در فرم</label>
+                    <label><input type="checkbox" class="f-req" ${f.required ? "checked" : ""}> فیلد اجباری</label>
+                    <label><input type="checkbox" class="f-act" ${f.active ? "checked" : ""}> نمایش در فرم</label>
                 </div>
             </div>
         `).join("");
+
+        container.querySelectorAll(".list-item").forEach(card => {
+            const idx = Number(card.dataset.fIdx);
+            card.querySelector(".btn-f-up").addEventListener("click", () => moveFormField(idx, -1));
+            card.querySelector(".btn-f-down").addEventListener("click", () => moveFormField(idx, 1));
+            card.querySelector(".btn-f-del").addEventListener("click", () => {
+                if (confirm("این فیلد از فرم حذف شود؟")) {
+                    appState.formFields.splice(idx, 1);
+                    markDirty();
+                    renderFormFieldsEditor();
+                }
+            });
+            card.querySelector(".f-label").addEventListener("input", e => { appState.formFields[idx].label = e.target.value; markDirty(); });
+            card.querySelector(".f-type").addEventListener("change", e => { appState.formFields[idx].type = e.target.value; markDirty(); });
+            card.querySelector(".f-opts").addEventListener("input", e => { appState.formFields[idx].options = e.target.value; markDirty(); });
+            card.querySelector(".f-ph").addEventListener("input", e => { appState.formFields[idx].placeholder = e.target.value; markDirty(); });
+            card.querySelector(".f-req").addEventListener("change", e => { appState.formFields[idx].required = e.target.checked; markDirty(); });
+            card.querySelector(".f-act").addEventListener("change", e => { appState.formFields[idx].active = e.target.checked; markDirty(); });
+        });
     }
 
     function addNewFormField() {
@@ -1474,14 +1836,8 @@
             active: true,
             placeholder: ""
         });
+        markDirty();
         renderFormFieldsEditor();
-    }
-
-    function removeFormField(idx) {
-        if (confirm("این فیلد از فرم حذف شود؟")) {
-            appState.formFields.splice(idx, 1);
-            renderFormFieldsEditor();
-        }
     }
 
     function moveFormField(idx, dir) {
@@ -1490,12 +1846,28 @@
         const tmp = appState.formFields[idx];
         appState.formFields[idx] = appState.formFields[target];
         appState.formFields[target] = tmp;
+        markDirty();
         renderFormFieldsEditor();
     }
 
     async function saveFormFields() {
-        const res = await apiCall({ action: "adminSaveFormFields", fields: appState.formFields });
-        showToast(res.status === "success" ? "✓ ساختار فرم ذخیره شد." : res.message);
+        const btn = document.getElementById("btn-save-form");
+        btn.disabled = true;
+        btn.textContent = "در حال ذخیره ساختار فرم...";
+        try {
+            const res = await apiCall({ action: "adminSaveFormFields", fields: appState.formFields });
+            if (res.status === "success") {
+                clearDirtyState();
+                showToast("✓ ساختار فرم ذخیره شد.");
+            } else {
+                showToast(res.message || "خطا");
+            }
+        } catch (e) {
+            showToast("❌ خطا در ارتباط با سرور");
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "💾 ذخیره ساختار فرم ثبت‌نام";
+        }
     }
 
     // ==========================================
@@ -1505,20 +1877,51 @@
         const mode = document.getElementById("cfg-q-sel-mode").value;
         document.getElementById("box-random-level").style.display = (mode === "random_by_level") ? "block" : "none";
         document.getElementById("box-random-total").style.display = (mode === "random_total") ? "block" : "none";
+        if (mode === "random_by_level") validateLevelCounts();
+    }
+
+    function getActiveRoundLevelCounts() {
+        const activeRound = appState.settings.round_full_name || "";
+        const qs = appState.allQuestions.filter(q => q.round === activeRound && q.active !== false);
+        return {
+            easy: qs.filter(q => q.level === "ساده").length,
+            med: qs.filter(q => q.level === "متوسط").length,
+            hard: qs.filter(q => q.level === "دشوار").length
+        };
     }
 
     function updateActiveRoundInventoryBadge() {
-        const activeRound = appState.settings.round_full_name || "";
-        const qs = appState.allQuestions.filter(q => q.round === activeRound && q.active !== false);
-        const easy = qs.filter(q => q.level === "ساده").length;
-        const med = qs.filter(q => q.level === "متوسط").length;
-        const hard = qs.filter(q => q.level === "دشوار").length;
+        const inv = getActiveRoundLevelCounts();
         document.getElementById("active-round-inventory").innerHTML =
-            `موجودی سوالات فعال دوره جاری: <span class="badge badge-green">ساده: ${easy}</span> <span class="badge badge-blue">متوسط: ${med}</span> <span class="badge badge-red">دشوار: ${hard}</span>`;
+            `موجودی سوالات فعال دوره جاری: <span class="badge badge-green">ساده: ${inv.easy}</span> <span class="badge badge-blue">متوسط: ${inv.med}</span> <span class="badge badge-red">دشوار: ${inv.hard}</span>`;
+        validateLevelCounts();
+    }
+
+    function validateLevelCounts() {
+        const inv = getActiveRoundLevelCounts();
+        const reqEasy = Number(document.getElementById("cfg-rand-easy").value) || 0;
+        const reqMed = Number(document.getElementById("cfg-rand-medium").value) || 0;
+        const reqHard = Number(document.getElementById("cfg-rand-hard").value) || 0;
+
+        const warnings = [];
+        if (reqEasy > inv.easy) warnings.push(`تعداد سوال «ساده» درخواستی (${reqEasy}) از موجودی بانک (${inv.easy}) بیشتر است.`);
+        if (reqMed > inv.med) warnings.push(`تعداد سوال «متوسط» درخواستی (${reqMed}) از موجودی بانک (${inv.med}) بیشتر است.`);
+        if (reqHard > inv.hard) warnings.push(`تعداد سوال «دشوار» درخواستی (${reqHard}) از موجودی بانک (${inv.hard}) بیشتر است.`);
+
+        const warnEl = document.getElementById("level-count-warning");
+        if (warnings.length > 0) {
+            warnEl.style.display = "block";
+            warnEl.innerHTML = "⚠️ " + warnings.join("<br>⚠️ ");
+        } else {
+            warnEl.style.display = "none";
+        }
     }
 
     async function saveScheduleAndExamSettings() {
-        // همگام‌سازی نهایی تمام نوبت‌های زمانی از انتخابگرهای شمسی
+        const btn = document.getElementById("btn-save-schedule");
+        btn.disabled = true;
+        btn.textContent = "در حال ذخیره تنظیمات آزمون...";
+
         appState.examSlots.forEach((_, idx) => syncSlotFromPicker(idx));
 
         const updates = {
@@ -1555,17 +1958,29 @@
             certificate_title: document.getElementById("cfg-cert-title").value.trim(),
             exam_rules_text: document.getElementById("cfg-exam-rules").value.trim()
         };
-        const res = await apiCall({ action: "adminSaveSettings", updates });
-        showToast(res.status === "success" ? "✓ تمام تنظیمات زمان‌بندی و آزمون ذخیره شد." : res.message);
+        try {
+            const res = await apiCall({ action: "adminSaveSettings", updates });
+            if (res.status === "success") {
+                clearDirtyState();
+                showToast("✓ تمام تنظیمات زمان‌بندی و آزمون ذخیره شد.");
+            } else {
+                showToast(res.message || "خطا");
+            }
+        } catch (e) {
+            showToast("❌ خطا در ارتباط با سرور");
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "💾 ذخیره تمام تنظیمات زمان‌بندی و آزمون";
+        }
     }
 
     // ==========================================
-    // بانک سوالات مجزا برای هر دوره + تحلیل کیفیت
+    // بانک سوالات مجزا برای هر دوره + جستجو و فیلتر
     // ==========================================
     function renderRoundSelectorDropdown() {
         const sel = document.getElementById("q-target-round-select");
         sel.innerHTML = appState.roundsList.map(r =>
-            `<option value="${r}" ${r === appState.selectedQuestionRound ? "selected" : ""}>${r}</option>`
+            `<option value="${escapeHTML(r)}" ${r === appState.selectedQuestionRound ? "selected" : ""}>${escapeHTML(r)}</option>`
         ).join("");
     }
 
@@ -1639,6 +2054,7 @@
 
         document.getElementById("bulk-q-text").value = "";
         toggleBulkBox();
+        if (added > 0) markDirty();
         renderQuestionsList();
         updateActiveRoundInventoryBadge();
         showToast(`✓ ${added} سوال اضافه شد${errors > 0 ? ` (${errors} خط نامعتبر نادیده گرفته شد)` : ""}.`);
@@ -1676,6 +2092,7 @@
             showToast("✓ سوال اضافه شد.");
         }
 
+        markDirty();
         resetQuestionForm();
         renderQuestionsList();
         updateActiveRoundInventoryBadge();
@@ -1697,7 +2114,7 @@
         document.getElementById("q-level").value = q.level;
         document.getElementById("q-explanation").value = q.explanation || "";
         document.getElementById("btn-cancel-q-edit").style.display = "inline-flex";
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        document.getElementById("q-text").scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     function resetQuestionForm() {
@@ -1715,20 +2132,6 @@
         document.getElementById("btn-cancel-q-edit").style.display = "none";
     }
 
-    function toggleQuestionActiveById(qId, checked) {
-        const q = appState.allQuestions.find(item => item.id === qId);
-        if (q) q.active = checked;
-        updateActiveRoundInventoryBadge();
-        renderQuestionsList();
-    }
-
-    function deleteQuestionById(qId) {
-        if (!confirm("این سوال حذف شود؟")) return;
-        appState.allQuestions = appState.allQuestions.filter(q => q.id !== qId);
-        renderQuestionsList();
-        updateActiveRoundInventoryBadge();
-    }
-
     function renderQuestionsList() {
         const roundQs = getQuestionsForSelectedRound();
         document.getElementById("total-q-badge").textContent = roundQs.length;
@@ -1739,56 +2142,102 @@
         document.getElementById("selected-round-inventory").innerHTML =
             `سوالات فعال این دوره: <span class="badge badge-green">ساده: ${easy}</span> <span class="badge badge-blue">متوسط: ${med}</span> <span class="badge badge-red">دشوار: ${hard}</span>`;
 
+        const qSearch = (document.getElementById("q-search-inp")?.value || "").trim().toLowerCase();
+        const qLvlFilter = document.getElementById("q-level-filter")?.value || "all";
+
+        const filteredQs = roundQs.filter(q => {
+            const matchLvl = (qLvlFilter === "all" || q.level === qLvlFilter);
+            const matchTxt = !qSearch || `${q.text} ${q.opt1} ${q.opt2} ${q.opt3} ${q.opt4}`.toLowerCase().includes(qSearch);
+            return matchLvl && matchTxt;
+        });
+
         const container = document.getElementById("questions-list-container");
-        if (roundQs.length === 0) {
-            container.innerHTML = `<p style="text-align:center; color:#64748b; font-size:0.83rem;">هنوز سوالی برای «${appState.selectedQuestionRound}» ثبت نشده است.</p>`;
+        if (filteredQs.length === 0) {
+            container.innerHTML = `<p style="text-align:center; color:#64748b; font-size:0.83rem;">سوالی مطابق فیلتر انتخابی یافت نشد.</p>`;
             return;
         }
-        container.innerHTML = roundQs.map((q, idx) => {
+        container.innerHTML = filteredQs.map((q, idx) => {
             const st = appState.questionStats[q.id];
             const statBadge = st && st.attempts > 0
                 ? `<span class="badge badge-blue">📊 پاسخ صحیح: ${Math.round((st.correct / st.attempts) * 100)}% (${st.attempts} نفر)</span>`
                 : "";
+            const safeQid = escapeHTML(q.id);
             return `
-            <div class="list-item">
+            <div class="list-item" data-qid="${safeQid}">
                 <div class="list-item-header">
-                    <b style="font-size:0.88rem; color:var(--seraj-purple);">${idx + 1}. ${q.text}</b>
+                    <b style="font-size:0.88rem; color:var(--seraj-purple);">${idx + 1}. ${escapeHTML(q.text)}</b>
                     <div>
-                        <span class="badge badge-gold">${q.level} | ${q.score} نمره</span>
+                        <span class="badge badge-gold">${escapeHTML(q.level)} | ${q.score} نمره</span>
                         ${statBadge}
                     </div>
                 </div>
                 <div style="font-size:0.78rem; color:#334155; display:grid; grid-template-columns:1fr 1fr; gap:4px; margin:6px 0;">
-                    <div style="${q.correct === 1 ? 'color:#059669;font-weight:900;' : ''}">۱) ${q.opt1}</div>
-                    <div style="${q.correct === 2 ? 'color:#059669;font-weight:900;' : ''}">۲) ${q.opt2}</div>
-                    <div style="${q.correct === 3 ? 'color:#059669;font-weight:900;' : ''}">۳) ${q.opt3}</div>
-                    <div style="${q.correct === 4 ? 'color:#059669;font-weight:900;' : ''}">۴) ${q.opt4}</div>
+                    <div style="${q.correct === 1 ? 'color:#059669;font-weight:900;' : ''}">۱) ${escapeHTML(q.opt1)}</div>
+                    <div style="${q.correct === 2 ? 'color:#059669;font-weight:900;' : ''}">۲) ${escapeHTML(q.opt2)}</div>
+                    <div style="${q.correct === 3 ? 'color:#059669;font-weight:900;' : ''}">۳) ${escapeHTML(q.opt3)}</div>
+                    <div style="${q.correct === 4 ? 'color:#059669;font-weight:900;' : ''}">۴) ${escapeHTML(q.opt4)}</div>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
                     <label style="font-size:0.76rem; font-weight:700;">
-                        <input type="checkbox" ${q.active !== false ? "checked" : ""} onchange="toggleQuestionActiveById('${q.id}', this.checked)"> فعال در آزمون
+                        <input type="checkbox" class="q-act-chk" ${q.active !== false ? "checked" : ""}> فعال در آزمون
                     </label>
                     <div>
-                        <button type="button" class="btn btn-info btn-sm" onclick="editQuestionById('${q.id}')">ویرایش</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteQuestionById('${q.id}')">حذف</button>
+                        <button type="button" class="btn btn-info btn-sm btn-q-edit">ویرایش</button>
+                        <button type="button" class="btn btn-danger btn-sm btn-q-del">حذف</button>
                     </div>
                 </div>
             </div>`;
         }).join("");
+
+        container.querySelectorAll(".list-item").forEach(card => {
+            const qid = card.dataset.qid;
+            card.querySelector(".q-act-chk").addEventListener("change", e => {
+                const targetQ = appState.allQuestions.find(item => item.id === qid);
+                if (targetQ) targetQ.active = e.target.checked;
+                markDirty();
+                updateActiveRoundInventoryBadge();
+                renderQuestionsList();
+            });
+            card.querySelector(".btn-q-edit").addEventListener("click", () => editQuestionById(qid));
+            card.querySelector(".btn-q-del").addEventListener("click", () => {
+                if (!confirm("این سوال حذف شود؟")) return;
+                appState.allQuestions = appState.allQuestions.filter(item => item.id !== qid);
+                markDirty();
+                renderQuestionsList();
+                updateActiveRoundInventoryBadge();
+            });
+        });
     }
 
     async function saveAllQuestionsToServer() {
+        const b1 = document.getElementById("btn-save-q-top");
+        const b2 = document.getElementById("btn-save-q-bottom");
+        [b1, b2].forEach(b => { if (b) b.disabled = true; });
+        if (b2) b2.textContent = "در حال ذخیره سوالات در گوگل شیت...";
+
         const roundQs = getQuestionsForSelectedRound();
-        const res = await apiCall({
-            action: "adminManageQuestions",
-            targetRound: appState.selectedQuestionRound,
-            questions: roundQs
-        });
-        showToast(res.status === "success" ? `✓ ${res.message}` : res.message);
+        try {
+            const res = await apiCall({
+                action: "adminManageQuestions",
+                targetRound: appState.selectedQuestionRound,
+                questions: roundQs
+            });
+            if (res.status === "success") {
+                clearDirtyState();
+                showToast(`✓ ${res.message}`);
+            } else {
+                showToast(res.message || "خطا");
+            }
+        } catch (e) {
+            showToast("❌ خطا در ارتباط با سرور");
+        } finally {
+            [b1, b2].forEach(b => { if (b) b.disabled = false; });
+            if (b2) b2.textContent = "💾 ذخیره نهایی سوالات این دوره در گوگل شیت";
+        }
     }
 
     // ==========================================
-    // مدیریت داوطلبان، ویرایش دستی، کارنامه و اکسل
+    // مدیریت داوطلبان، مودال ویرایش و خروجی اکسل
     // ==========================================
     function switchUserSubTab(sub) {
         currentUserSubTab = sub;
@@ -1807,11 +2256,18 @@
         document.getElementById("eu-gender").value = r.gender;
         document.getElementById("eu-prov").value = r.province;
         document.getElementById("eu-city").value = r.city;
-        document.getElementById("edit-user-box").style.display = "block";
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        document.getElementById("edit-user-modal").classList.add("open");
+    }
+
+    function closeEditUserModal() {
+        document.getElementById("edit-user-modal").classList.remove("open");
     }
 
     async function submitEditCandidate() {
+        const btn = document.getElementById("btn-submit-eu");
+        btn.disabled = true;
+        btn.textContent = "در حال ذخیره...";
+
         const origPhone = document.getElementById("eu-orig-phone").value;
         const updatedData = {
             firstName: document.getElementById("eu-fname").value.trim(),
@@ -1821,16 +2277,23 @@
             province: document.getElementById("eu-prov").value.trim(),
             city: document.getElementById("eu-city").value.trim()
         };
-        const res = await apiCall({
-            action: "adminManageParticipants",
-            subAction: "editRegistration",
-            phone: origPhone,
-            updatedData
-        });
-        showToast(res.message);
-        if (res.status === "success") {
-            document.getElementById("edit-user-box").style.display = "none";
-            refreshAllData();
+        try {
+            const res = await apiCall({
+                action: "adminManageParticipants",
+                subAction: "editRegistration",
+                phone: origPhone,
+                updatedData
+            });
+            showToast(res.message);
+            if (res.status === "success") {
+                closeEditUserModal();
+                await refreshAllData(true);
+            }
+        } catch (e) {
+            showToast("❌ خطا در ذخیره تغییرات");
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "💾 ذخیره تغییرات";
         }
     }
 
@@ -1843,36 +2306,47 @@
                 `${r.firstName} ${r.lastName} ${r.phone} ${r.code} ${r.province} ${r.city}`.toLowerCase().includes(q)
             );
             container.innerHTML = filtered.slice(0, 100).map(r => `
-                <div class="list-item">
+                <div class="list-item" data-phone="${escapeHTML(r.phone)}">
                     <div class="list-item-header">
-                        <b>${r.firstName} ${r.lastName} <span class="badge badge-blue">${r.gender}</span></b>
-                        <span class="badge badge-gold" dir="ltr">${r.code}</span>
+                        <b>${escapeHTML(r.firstName)} ${escapeHTML(r.lastName)} <span class="badge badge-blue">${escapeHTML(r.gender)}</span></b>
+                        <span class="badge badge-gold" dir="ltr">${escapeHTML(r.code)}</span>
                     </div>
                     <div style="font-size:0.78rem; color:#475569; margin-bottom:6px;">
-                        📱 <span dir="ltr">${r.phone}</span> | 📍 ${r.province} - ${r.city} | ${r.loyalty}
+                        📱 <span dir="ltr">${escapeHTML(r.phone)}</span> | 📍 ${escapeHTML(r.province)} - ${escapeHTML(r.city)} | ${escapeHTML(r.loyalty)}
                     </div>
                     <div style="display:flex; gap:6px;">
-                        <button type="button" class="btn btn-info btn-sm" onclick="openEditCandidate('${r.phone}')">✏️ ویرایش</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteCandidate('${r.phone}')">حذف</button>
+                        <button type="button" class="btn btn-info btn-sm btn-u-edit">✏️ ویرایش</button>
+                        <button type="button" class="btn btn-danger btn-sm btn-u-del">حذف</button>
                     </div>
                 </div>
             `).join("") || `<p style="text-align:center; color:#64748b; font-size:0.82rem;">موردی یافت نشد.</p>`;
+
+            container.querySelectorAll(".list-item").forEach(card => {
+                const ph = card.dataset.phone;
+                card.querySelector(".btn-u-edit").addEventListener("click", () => openEditCandidate(ph));
+                card.querySelector(".btn-u-del").addEventListener("click", () => deleteCandidate(ph));
+            });
         } else {
             const filtered = appState.examResults.filter(e =>
                 `${e.fullName} ${e.phone} ${e.code}`.toLowerCase().includes(q)
             );
             container.innerHTML = filtered.slice(0, 100).map(e => `
-                <div class="list-item">
+                <div class="list-item" data-phone="${escapeHTML(e.phone)}">
                     <div class="list-item-header">
-                        <b>${e.fullName}</b>
-                        <span class="badge ${e.status === 'تکمیل شده' ? 'badge-green' : 'badge-gold'}">${e.status} (${e.percentage}%)</span>
+                        <b>${escapeHTML(e.fullName)}</b>
+                        <span class="badge ${e.status === 'تکمیل شده' ? 'badge-green' : 'badge-gold'}">${escapeHTML(e.status)} (${e.percentage}%)</span>
                     </div>
                     <div style="font-size:0.78rem; color:#475569; margin-bottom:6px;">
-                        📱 <span dir="ltr">${e.phone}</span> | صحیح: <b>${e.correct}</b> | غلط: <b>${e.wrong}</b> | زمان: <b>${e.durationSec}s</b> | تخلف خروج: <b style="color:${e.violations > 0 ? '#dc2626' : '#059669'}">${e.violations}</b>
+                        📱 <span dir="ltr">${escapeHTML(e.phone)}</span> | صحیح: <b>${e.correct}</b> | غلط: <b>${e.wrong}</b> | زمان: <b>${e.durationSec}s</b> | تخلف خروج: <b style="color:${e.violations > 0 ? '#dc2626' : '#059669'}">${e.violations}</b>
                     </div>
-                    <button type="button" class="btn btn-info btn-sm" onclick="resetCandidateExam('${e.phone}')">🔄 اجازه آزمون مجدد (ریست)</button>
+                    <button type="button" class="btn btn-info btn-sm btn-ex-reset">🔄 اجازه آزمون مجدد (ریست)</button>
                 </div>
             `).join("") || `<p style="text-align:center; color:#64748b; font-size:0.82rem;">کارنامه‌ای یافت نشد.</p>`;
+
+            container.querySelectorAll(".list-item").forEach(card => {
+                const ph = card.dataset.phone;
+                card.querySelector(".btn-ex-reset").addEventListener("click", () => resetCandidateExam(ph));
+            });
         }
     }
 
@@ -1880,14 +2354,14 @@
         if (!confirm(`آیا آزمون داوطلب با شماره ${phone} ریست شود تا مجدداً بتواند آزمون دهد؟`)) return;
         const res = await apiCall({ action: "adminManageParticipants", subAction: "resetExam", phone });
         showToast(res.message);
-        if (res.status === "success") refreshAllData();
+        if (res.status === "success") await refreshAllData(true);
     }
 
     async function deleteCandidate(phone) {
         if (!confirm(`رکورد ثبت‌نام شماره ${phone} حذف شود؟`)) return;
         const res = await apiCall({ action: "adminManageParticipants", subAction: "deleteRegistration", phone });
         showToast(res.message);
-        if (res.status === "success") refreshAllData();
+        if (res.status === "success") await refreshAllData(true);
     }
 
     function exportUsersCSV() {
@@ -1903,11 +2377,41 @@
                 csv += `"${e.code}","${e.fullName}","${e.phone}","${e.status}",${e.correct},${e.wrong},${e.blank},${e.score},${e.percentage},${e.durationSec},${e.violations}\n`;
             });
         }
-        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `seraj_${currentUserSubTab}_${Date.now()}.csv`;
-        link.click();
+        lastGeneratedCsv = { content: csv, filename: `seraj_${currentUserSubTab}_${Date.now()}.csv` };
+        document.getElementById("csv-preview-area").value = csv;
+        document.getElementById("csv-export-modal").classList.add("open");
+    }
+
+    async function shareOrDownloadCsv() {
+        const blob = new Blob([lastGeneratedCsv.content], { type: "text/csv;charset=utf-8;" });
+        try {
+            const file = new File([blob], lastGeneratedCsv.filename, { type: "text/csv" });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({ files: [file], title: "گزارش مسابقه کتابخوانی سراج" });
+                return;
+            }
+        } catch (err) {
+            if (err && err.name === "AbortError") return;
+        }
+        try {
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = lastGeneratedCsv.filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("✓ فایل گزارش آماده شد.");
+        } catch (e) {
+            showToast("از دکمه «کپی متن گزارش» استفاده کنید.");
+        }
+    }
+
+    function copyCsvText() {
+        const area = document.getElementById("csv-preview-area");
+        area.select();
+        document.execCommand("copy");
+        navigator.clipboard?.writeText(lastGeneratedCsv.content).catch(() => {});
+        showToast("✓ متن کامل گزارش کپی شد.");
     }
 
     // ==========================================
@@ -1951,7 +2455,7 @@
         document.getElementById("lottery-result-box").style.display = "block";
         document.getElementById("lottery-winners-list").innerHTML = lastLotteryWinners.map((w, i) => `
             <div style="border-bottom:1px dashed #fcd34d; padding:4px 0;">
-                <b>${i + 1}. ${w.name}</b> — کد: <span dir="ltr">${w.code}</span> | موبایل: <span dir="ltr">${w.phone}</span> <small>(${w.extra})</small>
+                <b>${i + 1}. ${escapeHTML(w.name)}</b> — کد: <span dir="ltr">${escapeHTML(w.code)}</span> | موبایل: <span dir="ltr">${escapeHTML(w.phone)}</span> <small>(${escapeHTML(w.extra)})</small>
             </div>
         `).join("");
         showToast(`🎉 قرعه‌کشی بین ${candidates.length} واجد شرایط انجام شد!`);
@@ -1967,21 +2471,38 @@
     // ==========================================
     // امنیت و لاگ‌ها
     // ==========================================
+    function toggleAdminPassVisibility() {
+        const inp = document.getElementById("sec-admin-pass");
+        inp.type = inp.type === "password" ? "text" : "password";
+    }
+
     async function saveSecuritySettings() {
         const newPass = document.getElementById("sec-admin-pass").value.trim();
         if (!newPass) { alert("رمز عبور نمی‌تواند خالی باشد."); return; }
+        const btn = document.getElementById("btn-save-sec");
+        btn.disabled = true;
+        btn.textContent = "در حال ذخیره تنظیمات امنیتی...";
+
         const updates = {
             admin_password: newPass,
             admin_eitaa_ids: document.getElementById("sec-admin-ids").value.trim(),
             eitaa_bot_token: document.getElementById("sec-bot-token").value.trim()
         };
-        const res = await apiCall({ action: "adminSaveSettings", updates });
-        if (res.status === "success") {
-            adminSession.password = newPass;
-            sessionStorage.setItem("seraj_admin_pass", newPass);
-            showToast("✓ تنظیمات امنیتی ذخیره شد.");
-        } else {
-            alert(res.message);
+        try {
+            const res = await apiCall({ action: "adminSaveSettings", updates });
+            if (res.status === "success") {
+                adminSession.password = newPass;
+                sessionStorage.setItem("seraj_admin_pass", newPass);
+                clearDirtyState();
+                showToast("✓ تنظیمات امنیتی ذخیره شد.");
+            } else {
+                alert(res.message);
+            }
+        } catch (e) {
+            showToast("❌ خطا در ارتباط با سرور");
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "💾 ذخیره تنظیمات امنیتی";
         }
     }
 
@@ -1989,8 +2510,8 @@
         const container = document.getElementById("security-logs-container");
         container.innerHTML = appState.securityLogs.map(l => `
             <div style="border-bottom:1px solid #f1f5f9; padding:6px 0;">
-                <span class="badge badge-blue">${l[1]}</span> <b>${l[2]}</b>: ${l[3]}
-                <div style="font-size:0.72rem; color:#94a3b8;" dir="ltr">${l[0]}</div>
+                <span class="badge badge-blue">${escapeHTML(l[1])}</span> <b>${escapeHTML(l[2])}</b>: ${escapeHTML(l[3])}
+                <div style="font-size:0.72rem; color:#94a3b8;" dir="ltr">${escapeHTML(l[0])}</div>
             </div>
         `).join("") || "لاگی ثبت نشده است.";
     }
