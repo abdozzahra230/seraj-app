@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>سلسله مسابقات کتابخوانی سراج | ثبت‌نام</title>
+    <title>سلسله مسابقات کتابخوانی سراج | سامانه ثبت‌نام</title>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v3.4.0/dist/font-face.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
@@ -36,12 +36,18 @@
             min-height: 100vh;
             color: var(--text-dark);
             margin: 0;
-            padding: 12px 12px 32px 12px;
+            padding: 12px 12px 36px 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             user-select: none;
             -webkit-user-select: none;
+        }
+
+        /* بازگرداندن قابلیت انتخاب متن برای فیلدها و کد پیگیری جهت سازگاری کامل با WebView */
+        input, select, textarea, .selectable-text {
+            user-select: text !important;
+            -webkit-user-select: text !important;
         }
 
         .container {
@@ -163,12 +169,27 @@
         }
 
         .form-card, .status-card {
-            background: rgba(255, 255, 255, 0.96);
+            background: rgba(255, 255, 255, 0.97);
             backdrop-filter: blur(14px);
             border-radius: 26px;
             padding: 22px 18px;
             box-shadow: var(--card-shadow);
             border: 1px solid rgba(255, 255, 255, 0.9);
+        }
+
+        .offline-banner {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            color: #92400e;
+            border-radius: 14px;
+            padding: 8px 12px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
         }
 
         .form-title {
@@ -219,13 +240,23 @@
             background: #faf7f2;
             color: var(--text-dark);
             outline: none;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
         }
 
         .form-control:focus {
             border-color: var(--seraj-purple-mid);
             background: #ffffff;
             box-shadow: 0 0 0 3px rgba(91, 23, 116, 0.12);
+        }
+
+        /* فیلد تله ضدربات (خارج از دید کاربر انسانی) */
+        .hp-trap {
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
         }
 
         .gender-selector-wrapper {
@@ -248,7 +279,7 @@
             cursor: pointer;
             font-family: inherit;
             color: #64748b;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -277,7 +308,8 @@
             transition: all 0.2s ease;
             margin-top: 6px;
         }
-        .submit-btn:active { transform: scale(0.98); }
+        .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+        .submit-btn:active:not(:disabled) { transform: scale(0.98); }
 
         .countdown-grid {
             display: grid;
@@ -327,7 +359,7 @@
             padding: 10px 12px;
             font-size: 0.78rem;
             color: #1e40af;
-            line-height: 1.6;
+            line-height: 1.65;
             text-align: right;
             margin-bottom: 14px;
         }
@@ -389,6 +421,7 @@
             box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
             margin-top: 10px;
         }
+        .confirm-btn:disabled { opacity: 0.65; cursor: not-allowed; }
 
         .ticket-card {
             background: #ffffff;
@@ -425,7 +458,7 @@
         }
 
         .ticket-code {
-            font-size: 1.6rem;
+            font-size: 1.65rem;
             font-weight: 900;
             color: var(--seraj-purple);
             letter-spacing: 2px;
@@ -435,35 +468,54 @@
         .ticket-barcode {
             display: flex;
             justify-content: center;
-            gap: 3px;
-            height: 26px;
-            margin-top: 8px;
-            opacity: 0.75;
+            align-items: stretch;
+            gap: 2.5px;
+            height: 28px;
+            margin-top: 10px;
+            opacity: 0.82;
         }
         .bar { background: #2a0835; border-radius: 1px; }
 
         .ticket-row {
             display: flex;
             justify-content: space-between;
+            gap: 10px;
             padding: 9px 0;
             border-bottom: 1px solid #f1f5f9;
             font-size: 0.88rem;
+            text-align: right;
         }
         .ticket-row:last-child { border-bottom: none; }
-        .ticket-label { color: var(--text-muted); font-weight: 700; }
-        .ticket-val { font-weight: 800; color: var(--text-dark); }
+        .ticket-label { color: var(--text-muted); font-weight: 700; flex-shrink: 0; }
+        .ticket-val { font-weight: 800; color: var(--text-dark); text-align: left; }
+
+        .vault-switcher {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 8px 10px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 0.78rem;
+        }
 
         .action-btn {
             width: 100%;
-            padding: 14px;
+            padding: 13px;
             border-radius: 16px;
             font-weight: 800;
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             cursor: pointer;
             font-family: inherit;
             border: none;
             margin-top: 8px;
+            transition: 0.18s;
         }
+        .action-btn:active { transform: scale(0.98); }
+        .btn-download-img { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: #ffffff; font-weight: 900; }
         .btn-copy { background: var(--seraj-purple); color: #ffffff; }
         .btn-exam-jump { background: var(--seraj-gold-gradient); color: #1e0329; font-weight: 900; }
         .btn-re-register { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; font-size: 0.8rem; padding: 10px; }
@@ -492,7 +544,7 @@
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(35, 4, 48, 0.95);
+            background: rgba(35, 4, 48, 0.96);
             color: #fde68a;
             padding: 11px 22px;
             border-radius: 24px;
@@ -501,7 +553,7 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.3);
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.25s ease;
             z-index: 999;
             white-space: nowrap;
         }
@@ -511,7 +563,7 @@
 <body>
 
 <div class="container">
-    <div class="header-card">
+    <div id="header-card" class="header-card">
         <div class="bookmark-ribbon"></div>
         <svg class="book-watermark" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5">
             <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
@@ -560,13 +612,27 @@
             </div>
         </div>
 
-        <button type="button" id="btn-view-existing-ticket" class="action-btn btn-copy" style="display: none;" onclick="showSavedTicket()">مشاهده کارت ثبت‌نام قبلی من</button>
+        <button type="button" id="btn-view-existing-ticket" class="action-btn btn-copy" style="display: none;" onclick="showSavedTicket()">🎫 مشاهده کارت ثبت‌نام ذخیره‌شده من</button>
     </div>
 
     <!-- مرحله ۱: فرم ثبت مشخصات پویا -->
     <div id="form-section" class="form-card" style="display: none;">
+        <div id="fallback-warning-banner" class="offline-banner" style="display: none;">
+            <span>⚠️ ارتباط با سرور کند است؛ فرم با تنظیمات پایه بارگذاری شد.</span>
+            <button type="button" style="background:#f59e0b; color:#1e0329; border:none; border-radius:8px; padding:4px 8px; font-family:inherit; font-weight:800; font-size:0.72rem; cursor:pointer;" onclick="location.reload()">تلاش مجدد</button>
+        </div>
+
+        <div id="quick-ticket-shortcut" style="display: none; margin-bottom: 12px;">
+            <button type="button" class="action-btn btn-re-register" style="margin-top:0; background:#fef3c7; color:#92400e; border-color:#fcd34d;" onclick="showSavedTicket()">
+                🎫 مشاهده کارت ورود ثبت‌شده روی این گوشی
+            </button>
+        </div>
+
         <div class="form-title">فرم ثبت‌نام داوطلب</div>
-        <form id="reg-form" onsubmit="handleInitialStep(event)">
+        <form id="reg-form" onsubmit="handleInitialStep(event)" novalidate>
+            <!-- فیلد تله ضدربات -->
+            <input type="text" id="hp-website" class="hp-trap" tabindex="-1" autocomplete="off">
+
             <div id="dynamic-fields-container"></div>
             <button type="submit" id="btn-submit" class="submit-btn">ادامه و تکمیل نهایی ثبت‌نام</button>
         </form>
@@ -586,12 +652,18 @@
 
         <div id="dynamic-gates-container"></div>
 
-        <button id="btn-confirm-final" class="confirm-btn" onclick="finalizeRegistration()">✓ عضو شدم؛ ثبت‌نام نهایی و صدور کارت</button>
+        <button type="button" id="btn-confirm-final" class="confirm-btn" onclick="finalizeRegistration()">✓ عضو شدم؛ ثبت‌نام نهایی و صدور کارت</button>
         <button type="button" class="action-btn btn-re-register" onclick="backToEditForm()">بازگشت و ویرایش مشخصات</button>
     </div>
 
     <!-- مرحله ۳: کارت رسمی داوطلب -->
     <div id="ticket-section" class="ticket-card" style="display: none;">
+        <!-- انتخابگر کارت در صورت ثبت چندین عضو خانواده روی یک گوشی -->
+        <div id="vault-switcher-box" class="vault-switcher" style="display: none;">
+            <span style="font-weight: 800; color: var(--seraj-purple);">کارت‌های این گوشی:</span>
+            <select id="vault-select" class="form-control" style="padding: 5px 8px; font-size: 0.8rem; width: auto; flex: 1;" onchange="switchVaultTicket(this.value)"></select>
+        </div>
+
         <div class="ticket-header">
             <span class="ticket-badge-success">✓ ثبت‌نام قطعی شد</span>
             <h3 style="margin: 4px 0; color: var(--seraj-purple); font-size: 1.25rem; font-weight: 900;">کارت ورود به مسابقه سراج</h3>
@@ -600,47 +672,54 @@
 
         <div class="ticket-code-box">
             <span style="font-size: 0.78rem; color: #64748b; display: block; font-weight: 700;">کد پیگیری اختصاصی داوطلب:</span>
-            <div id="ticket-code" class="ticket-code">---</div>
-            <div class="ticket-barcode">
-                <div class="bar" style="width: 2px;"></div>
-                <div class="bar" style="width: 4px;"></div>
-                <div class="bar" style="width: 1px;"></div>
-                <div class="bar" style="width: 6px;"></div>
-                <div class="bar" style="width: 2px;"></div>
-                <div class="bar" style="width: 5px;"></div>
-                <div class="bar" style="width: 3px;"></div>
-                <div class="bar" style="width: 1px;"></div>
-                <div class="bar" style="width: 4px;"></div>
-                <div class="bar" style="width: 2px;"></div>
-                <div class="bar" style="width: 5px;"></div>
-                <div class="bar" style="width: 3px;"></div>
-                <div class="bar" style="width: 2px;"></div>
-                <div class="bar" style="width: 6px;"></div>
-                <div class="bar" style="width: 1px;"></div>
-                <div class="bar" style="width: 4px;"></div>
-            </div>
+            <div id="ticket-code" class="ticket-code selectable-text">---</div>
+            <div id="ticket-barcode" class="ticket-barcode"></div>
         </div>
 
         <div class="ticket-row"><span class="ticket-label">نام داوطلب:</span><span id="ticket-name" class="ticket-val">---</span></div>
-        <div class="ticket-row"><span class="ticket-label">شماره همراه:</span><span id="ticket-phone" class="ticket-val" dir="ltr">---</span></div>
+        <div class="ticket-row"><span class="ticket-label">شماره همراه:</span><span id="ticket-phone" class="ticket-val selectable-text" dir="ltr">---</span></div>
         <div class="ticket-row"><span class="ticket-label">جنسیت:</span><span id="ticket-gender" class="ticket-val">---</span></div>
         <div class="ticket-row"><span class="ticket-label">استان و شهر:</span><span id="ticket-location" class="ticket-val">---</span></div>
         <div class="ticket-row"><span class="ticket-label">دوره مسابقه:</span><span id="ticket-round-name" class="ticket-val">---</span></div>
+        <div id="ticket-extra-rows"></div>
 
         <div style="margin-top: 16px;">
-            <button class="action-btn btn-copy" onclick="copyTicketInfo()">📋 کپی مشخصات و کد پیگیری</button>
-            <button id="btn-go-exam" class="action-btn btn-exam-jump" style="display: none;" onclick="goToExamApp()">📝 ورود به صفحه آزمون آنلاین</button>
-            <button class="action-btn btn-re-register" onclick="resetFormForNewUser()">ثبت‌نام داوطلب جدید</button>
+            <button type="button" class="action-btn btn-download-img" onclick="downloadTicketAsPng()">🖼️ ذخیره تصویر کارت در گالری (PNG)</button>
+            <button type="button" class="action-btn btn-copy" onclick="copyTicketInfo()">📋 کپی مشخصات و کد پیگیری</button>
+            <button type="button" id="btn-go-exam" class="action-btn btn-exam-jump" style="display: none;" onclick="goToExamApp()">📝 ورود به صفحه آزمون آنلاین</button>
+            <button type="button" class="action-btn btn-re-register" onclick="resetFormForNewUser()">+ ثبت‌نام داوطلب جدید (عضو دیگر خانواده)</button>
         </div>
     </div>
 
     <div id="footer-note" class="footer-note">دبیرخانه سلسله مسابقات کتابخوانی سراج • مجموعه فرهنگی الهدی</div>
 </div>
 
+<!-- بوم مخفی تولید کارت تصویری باکیفیت -->
+<canvas id="ticket-export-canvas" width="900" height="1180" style="display:none;"></canvas>
+
 <div id="toast-msg" class="toast">پیام سیستم</div>
 
 <script>
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzHjsAvRMmjZ_NaCrgXG6-qumHzlTfwEFq17gZmKuZVUXw6M-36HH0FRse3LAZil6G2/exec";
+
+    const STORAGE_KEYS = {
+        ACTIVE_TICKET: "seraj_reg_final_v8",
+        TICKETS_VAULT: "seraj_tickets_vault_v1",
+        VISITED_GATES: "seraj_visited_gates_v1",
+        FORM_DRAFT: "seraj_form_draft_v1"
+    };
+
+    const DEFAULT_FORM_FIELDS = [
+        { id: "firstName", label: "نام", type: "text", options: [], required: true, placeholder: "مثال: علیرضا" },
+        { id: "lastName", label: "نام خانوادگی", type: "text", options: [], required: true, placeholder: "مثال: محمدی" },
+        { id: "phone", label: "شماره همراه (دارای ایتا)", type: "tel", options: [], required: true, placeholder: "۰۹۱۲۳۴۵۶۷۸۹" },
+        { id: "gender", label: "جنسیت داوطلب", type: "gender", options: ["آقا", "خانم"], required: true, placeholder: "" },
+        {
+            id: "province", label: "استان سکونت", type: "select", required: true, placeholder: "-- انتخاب استان --",
+            options: ["تهران","خراسان رضوی","اصفهان","فارس","خوزستان","آذربایجان شرقی","مازندران","گیلان","کرمان","سیستان و بلوچستان","البرز","همدان","کرمانشاه","لرستان","یزد","قزوین","زنجان","بوشهر","قم","مرکزی","کردستان","گلستان","هرمزگان","چهارمحال و بختیاری","خراسان جنوبی","کهگیلویه و بویراحمد","خراسان شمالی","سمنان","ایلام","اردبیل","آذربایجان غربی"]
+        },
+        { id: "city", label: "شهر سکونت", type: "text", options: [], required: true, placeholder: "نام شهر یا شهرستان" }
+    ];
 
     const tg = window.Eitaa?.WebApp || window.Telegram?.WebApp;
     if (tg) { tg.ready(); tg.expand(); }
@@ -649,22 +728,74 @@
         roundNumber: "دوره چهارم",
         bookTitle: "خون دلی که لعل شد",
         roundFullName: "دوره چهارم (خون دلی که لعل شد)",
-        slogans: ["مسابقه بزرگ کتابخوانی سراج 📚"],
+        cardFooterNote: "دبیرخانه سلسله مسابقات کتابخوانی سراج • مجموعه فرهنگی الهدی",
+        slogans: ["مسابقه بزرگ کتابخوانی سراج 📚", "مطالعه هدفمند؛ گامی به سوی دانایی 🌱"],
         gates: [],
         regSchedule: { isOpen: true, state: "open" },
         examSchedule: { isOpen: false }
     };
+
     let formFieldsList = [];
     let selectedGender = "آقا";
     let tempRegistrationData = null;
-    let visitedGates = {};
+    let visitedGates = loadSessionJson(STORAGE_KEYS.VISITED_GATES, {});
     let countdownTimerId = null;
+    let isSubmitting = false;
+    let currentDisplayedTicket = null;
+    let isHeaderVisible = true;
+
+    // ==========================================
+    // توابع کمکی امنیتی و ذخیره‌سازی
+    // ==========================================
+    function escapeHTML(str) {
+        if (str === null || str === undefined) return "";
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    function sanitizeUrl(url) {
+        const clean = String(url || "").trim();
+        if (/^(https?:\/\/|eitaa:\/\/)/i.test(clean)) return clean;
+        return "https://eitaa.com/";
+    }
 
     function normalizeDigits(str) {
         return String(str || "")
             .replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d))
             .replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d))
             .trim();
+    }
+
+    function loadSessionJson(key, fallback) {
+        try {
+            const raw = sessionStorage.getItem(key);
+            return raw ? JSON.parse(raw) : fallback;
+        } catch (e) { return fallback; }
+    }
+
+    function saveSessionJson(key, obj) {
+        try { sessionStorage.setItem(key, JSON.stringify(obj)); } catch (e) {}
+    }
+
+    function loadVault() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEYS.TICKETS_VAULT);
+            return raw ? JSON.parse(raw) : {};
+        } catch (e) { return {}; }
+    }
+
+    function saveTicketToVault(ticketObj) {
+        if (!ticketObj || !ticketObj.phone) return;
+        try {
+            const vault = loadVault();
+            vault[ticketObj.phone] = ticketObj;
+            localStorage.setItem(STORAGE_KEYS.TICKETS_VAULT, JSON.stringify(vault));
+            localStorage.setItem(STORAGE_KEYS.ACTIVE_TICKET, JSON.stringify(ticketObj));
+        } catch (e) {}
     }
 
     function showToast(text) {
@@ -674,12 +805,52 @@
         setTimeout(() => toast.classList.remove("show"), 3200);
     }
 
-    // ماشین‌تحریر پویا
+    // ارتباط مقاوم با سرور همراه با Timeout و تلاش مجدد خودکار
+    async function fetchWithRetry(payload, retries = 2, timeoutMs = 11000) {
+        for (let attempt = 0; attempt <= retries; attempt++) {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), timeoutMs);
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+                clearTimeout(timer);
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                return await res.json();
+            } catch (err) {
+                clearTimeout(timer);
+                if (attempt === retries) throw err;
+                await new Promise(r => setTimeout(r, 900 * (attempt + 1)));
+            }
+        }
+    }
+
+    // ==========================================
+    // انیمیشن ماشین‌تحریر هوشمند (توقف خودکار در پس‌زمینه)
+    // ==========================================
     let sloganIdx = 0, charIdx = 0, isDeleting = false;
     const typewriterEl = document.getElementById("typewriter-text");
+
+    if ("IntersectionObserver" in window) {
+        const obs = new IntersectionObserver(entries => {
+            isHeaderVisible = entries[0].isIntersecting;
+        });
+        obs.observe(document.getElementById("header-card"));
+    }
+
     function typeWriterLoop() {
-        const list = liveConfig.slogans && liveConfig.slogans.length > 0 ? liveConfig.slogans : ["مسابقه بزرگ کتابخوانی سراج 📚"];
+        if (document.hidden || !isHeaderVisible) {
+            setTimeout(typeWriterLoop, 700);
+            return;
+        }
+        const list = (liveConfig.slogans && liveConfig.slogans.length > 0)
+            ? liveConfig.slogans
+            : ["مسابقه بزرگ کتابخوانی سراج 📚"];
         const currentSentence = list[sloganIdx % list.length];
+
         if (isDeleting) {
             typewriterEl.textContent = currentSentence.substring(0, charIdx - 1);
             charIdx--;
@@ -687,69 +858,89 @@
             typewriterEl.textContent = currentSentence.substring(0, charIdx + 1);
             charIdx++;
         }
-        let speed = isDeleting ? 25 : 55;
+
+        let speed = isDeleting ? 24 : 52;
         if (!isDeleting && charIdx === currentSentence.length) {
-            speed = 2200;
+            speed = 2300;
             isDeleting = true;
         } else if (isDeleting && charIdx === 0) {
             isDeleting = false;
             sloganIdx = (sloganIdx + 1) % list.length;
-            speed = 400;
+            speed = 350;
         }
         setTimeout(typeWriterLoop, speed);
     }
     typeWriterLoop();
 
-    // دریافت تنظیمات زنده و ساختار فرم از سرور
+    // ==========================================
+    // راه‌اندازی اولیه و بارگذاری تنظیمات زنده
+    // ==========================================
     async function bootstrapApp() {
+        let usedFallback = false;
         try {
-            const res = await fetch(GOOGLE_SCRIPT_URL, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain;charset=utf-8" },
-                body: JSON.stringify({ action: "getPublicConfig" })
-            });
-            const data = await res.json();
-            if (data.status === "success") {
-                liveConfig = data.config;
-                formFieldsList = data.formFields || [];
+            const data = await fetchWithRetry({ action: "getPublicConfig" }, 2, 10000);
+            if (data && data.status === "success") {
+                liveConfig = data.config || liveConfig;
+                formFieldsList = (Array.isArray(data.formFields) && data.formFields.length > 0)
+                    ? data.formFields
+                    : DEFAULT_FORM_FIELDS;
+            } else {
+                throw new Error("Invalid config response");
             }
         } catch (e) {
-            console.warn("Using fallback config", e);
+            usedFallback = true;
+            formFieldsList = DEFAULT_FORM_FIELDS;
         }
 
-        document.getElementById("ui-book-title").textContent = `کتاب محور: «${liveConfig.bookTitle}» (${liveConfig.roundNumber})`;
+        document.getElementById("ui-book-title").textContent =
+            `کتاب محور: «${liveConfig.bookTitle}» (${liveConfig.roundNumber})`;
         if (liveConfig.cardFooterNote) {
             document.getElementById("footer-note").textContent = liveConfig.cardFooterNote;
         }
 
         document.getElementById("loading-section").style.display = "none";
 
-        // بررسی کارت ثبت‌نام ذخیره‌شده قبلی در همین دوره
-        const finalSaved = localStorage.getItem("seraj_reg_final_v8");
-        if (finalSaved) {
-            try {
-                const parsed = JSON.parse(finalSaved);
-                if (parsed.roundName === liveConfig.roundFullName) {
-                    renderTicket(parsed);
-                    return;
-                }
-            } catch (e) {}
+        // بررسی کارت‌های ذخیره‌شده در این دستگاه
+        const vault = loadVault();
+        const activeSavedRaw = localStorage.getItem(STORAGE_KEYS.ACTIVE_TICKET);
+        let activeSaved = null;
+        try { activeSaved = activeSavedRaw ? JSON.parse(activeSavedRaw) : null; } catch (e) {}
+
+        const matchingTickets = Object.values(vault).filter(t => t.roundName === liveConfig.roundFullName);
+        if (activeSaved && activeSaved.roundName === liveConfig.roundFullName && !matchingTickets.find(t => t.phone === activeSaved.phone)) {
+            matchingTickets.push(activeSaved);
         }
 
-        // بررسی وضعیت باز یا بسته بودن ثبت‌نام بر اساس ساعت سرور
-        const sch = liveConfig.regSchedule || { isOpen: true, state: "open" };
-        if (!sch.isOpen) {
-            showClosedView(sch, !!finalSaved);
+        if (matchingTickets.length > 0) {
+            const toShow = (activeSaved && activeSaved.roundName === liveConfig.roundFullName)
+                ? activeSaved
+                : matchingTickets[matchingTickets.length - 1];
+            renderTicket(toShow);
             return;
         }
 
+        // بررسی باز یا بسته بودن زمان‌بندی ثبت‌نام از سرور
+        const sch = liveConfig.regSchedule || { isOpen: true, state: "open" };
+        if (!sch.isOpen) {
+            showClosedView(sch, Object.keys(vault).length > 0);
+            return;
+        }
+
+        if (usedFallback) {
+            document.getElementById("fallback-warning-banner").style.display = "flex";
+        }
+        if (Object.keys(vault).length > 0) {
+            document.getElementById("quick-ticket-shortcut").style.display = "block";
+        }
+
         renderDynamicForm();
+        restoreFormDraft();
         document.getElementById("form-section").style.display = "block";
     }
 
-    function showClosedView(sch, hasOldTicket) {
+    function showClosedView(sch, hasAnySavedTicket) {
         document.getElementById("closed-section").style.display = "block";
-        if (hasOldTicket) {
+        if (hasAnySavedTicket) {
             document.getElementById("btn-view-existing-ticket").style.display = "block";
         }
 
@@ -761,21 +952,16 @@
 
             const serverOffset = sch.serverNowMs - Date.now();
             countdownTimerId = setInterval(() => {
-                const nowServer = Date.now() + serverOffset;
-                const diff = sch.startMs - nowServer;
+                const diff = sch.startMs - (Date.now() + serverOffset);
                 if (diff <= 0) {
                     clearInterval(countdownTimerId);
                     location.reload();
                     return;
                 }
-                const d = Math.floor(diff / 86400000);
-                const h = Math.floor((diff % 86400000) / 3600000);
-                const m = Math.floor((diff % 3600000) / 60000);
-                const s = Math.floor((diff % 60000) / 1000);
-                document.getElementById("cd-days").textContent = String(d).padStart(2, "0");
-                document.getElementById("cd-hours").textContent = String(h).padStart(2, "0");
-                document.getElementById("cd-mins").textContent = String(m).padStart(2, "0");
-                document.getElementById("cd-secs").textContent = String(s).padStart(2, "0");
+                document.getElementById("cd-days").textContent = String(Math.floor(diff / 86400000)).padStart(2, "0");
+                document.getElementById("cd-hours").textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, "0");
+                document.getElementById("cd-mins").textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0");
+                document.getElementById("cd-secs").textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, "0");
             }, 1000);
         } else {
             document.getElementById("closed-badge").textContent = "🔒 پایان مهلت ثبت‌نام";
@@ -785,16 +971,25 @@
     }
 
     function showSavedTicket() {
+        const vault = loadVault();
+        const keys = Object.keys(vault);
+        let target = null;
         try {
-            const parsed = JSON.parse(localStorage.getItem("seraj_reg_final_v8"));
-            if (parsed) {
-                document.getElementById("closed-section").style.display = "none";
-                renderTicket(parsed);
-            }
+            const act = JSON.parse(localStorage.getItem(STORAGE_KEYS.ACTIVE_TICKET));
+            if (act) target = act;
         } catch (e) {}
+        if (!target && keys.length > 0) target = vault[keys[keys.length - 1]];
+
+        if (target) {
+            document.getElementById("closed-section").style.display = "none";
+            document.getElementById("form-section").style.display = "none";
+            renderTicket(target);
+        }
     }
 
-    // رندر پویا و هوشمند فیلدهای فرم
+    // ==========================================
+    // رندر پویا و ایمن فرم ثبت‌نام + ذخیره خودکار پیش‌نویس
+    // ==========================================
     function renderDynamicForm() {
         const container = document.getElementById("dynamic-fields-container");
         let html = "";
@@ -804,7 +999,6 @@
             const f = formFieldsList[i];
             const nextF = formFieldsList[i + 1];
 
-            // قرار دادن نام و نام خانوادگی کنار هم در یک ردیف
             if (f.id === "firstName" && nextF && nextF.id === "lastName") {
                 html += `<div class="form-row">${buildSingleFieldHTML(f)}${buildSingleFieldHTML(nextF)}</div>`;
                 i += 2;
@@ -814,11 +1008,21 @@
             i++;
         }
         container.innerHTML = html;
+
+        // اتصال شنونده ذخیره خودکار پیش‌نویس
+        container.querySelectorAll("input, select").forEach(el => {
+            el.addEventListener("input", persistFormDraft);
+            el.addEventListener("change", persistFormDraft);
+        });
     }
 
     function buildSingleFieldHTML(f) {
+        const safeId = escapeHTML(f.id);
+        const safeLabel = escapeHTML(f.label);
+        const safePlaceholder = escapeHTML(f.placeholder || "");
         const reqMark = f.required ? `<span class="req">*</span>` : "";
         const reqAttr = f.required ? "required" : "";
+
         let icon = "📝";
         if (f.id === "firstName") icon = "👤";
         else if (f.id === "phone") icon = "📱";
@@ -829,7 +1033,7 @@
         if (f.type === "gender") {
             return `
                 <div class="form-group">
-                    <label class="form-label"><span>${icon}</span><span>${f.label}:</span>${reqMark}</label>
+                    <label class="form-label"><span>${icon}</span><span>${safeLabel}:</span>${reqMark}</label>
                     <div class="gender-selector-wrapper">
                         <button type="button" id="btn-male" class="gender-option active" onclick="setGender('آقا')"><span>👨</span><span>آقا</span></button>
                         <button type="button" id="btn-female" class="gender-option" onclick="setGender('خانم')"><span>👩</span><span>بانو (خانم)</span></button>
@@ -838,36 +1042,73 @@
         }
 
         if (f.type === "select") {
-            const optsHtml = (f.options || []).map(o => `<option value="${o}">${o}</option>`).join("");
+            const optsHtml = (f.options || []).map(o => {
+                const safeOpt = escapeHTML(o);
+                return `<option value="${safeOpt}">${safeOpt}</option>`;
+            }).join("");
             return `
                 <div class="form-group">
-                    <label class="form-label"><span>${icon}</span><span>${f.label}:</span>${reqMark}</label>
-                    <select id="field-${f.id}" class="form-control" ${reqAttr}>
-                        <option value="">${f.placeholder || "-- انتخاب کنید --"}</option>
+                    <label class="form-label"><span>${icon}</span><span>${safeLabel}:</span>${reqMark}</label>
+                    <select id="field-${safeId}" class="form-control" ${reqAttr}>
+                        <option value="">${safePlaceholder || "-- انتخاب کنید --"}</option>
                         ${optsHtml}
                     </select>
                 </div>`;
         }
 
-        const inputType = f.type === "tel" ? "tel" : (f.type === "number" ? "number" : "text");
+        const inputType = f.type === "tel" ? "tel" : (f.type === "number" ? "text" : "text");
+        const inputMode = (f.type === "tel" || f.type === "number") ? 'inputmode="numeric"' : "";
         const dirAttr = (f.type === "tel" || f.type === "number") ? 'dir="ltr"' : "";
         const maxLen = f.type === "tel" ? 'maxlength="11"' : "";
+        const autoComp = f.id === "firstName" ? 'autocomplete="given-name"' : (f.id === "lastName" ? 'autocomplete="family-name"' : (f.type === "tel" ? 'autocomplete="tel"' : ""));
 
         return `
             <div class="form-group">
-                <label class="form-label"><span>${icon}</span><span>${f.label}:</span>${reqMark}</label>
-                <input type="${inputType}" id="field-${f.id}" class="form-control" placeholder="${f.placeholder || ""}" ${dirAttr} ${maxLen} ${reqAttr}>
+                <label class="form-label"><span>${icon}</span><span>${safeLabel}:</span>${reqMark}</label>
+                <input type="${inputType}" id="field-${safeId}" class="form-control" placeholder="${safePlaceholder}" ${inputMode} ${dirAttr} ${maxLen} ${autoComp} ${reqAttr}>
             </div>`;
+    }
+
+    function persistFormDraft() {
+        const draft = { gender: selectedGender, fields: {} };
+        formFieldsList.forEach(f => {
+            if (f.type !== "gender") {
+                const el = document.getElementById(`field-${f.id}`);
+                if (el) draft.fields[f.id] = el.value;
+            }
+        });
+        saveSessionJson(STORAGE_KEYS.FORM_DRAFT, draft);
+    }
+
+    function restoreFormDraft() {
+        const draft = loadSessionJson(STORAGE_KEYS.FORM_DRAFT, null);
+        if (!draft) return;
+        if (draft.gender) setGender(draft.gender);
+        if (draft.fields) {
+            Object.keys(draft.fields).forEach(fid => {
+                const el = document.getElementById(`field-${fid}`);
+                if (el && draft.fields[fid]) el.value = draft.fields[fid];
+            });
+        }
     }
 
     function setGender(g) {
         selectedGender = g;
         document.getElementById("btn-male")?.classList.toggle("active", g === "آقا");
         document.getElementById("btn-female")?.classList.toggle("active", g === "خانم");
+        persistFormDraft();
     }
 
+    // ==========================================
+    // اعتبارسنجی مرحله اول و انتقال به گیت عضویت
+    // ==========================================
     function handleInitialStep(e) {
         e.preventDefault();
+
+        // بررسی تله ضدربات
+        if (document.getElementById("hp-website")?.value) {
+            return;
+        }
 
         const standardIds = ["firstName", "lastName", "phone", "gender", "province", "city"];
         const values = {};
@@ -879,7 +1120,19 @@
                 continue;
             }
             const el = document.getElementById(`field-${f.id}`);
-            const val = el ? el.value.trim() : "";
+            let val = el ? el.value.trim() : "";
+
+            // نرمال‌سازی ارقام برای تمام فیلدهای عددی و تلفنی
+            if (f.type === "tel" || f.type === "number") {
+                val = normalizeDigits(val);
+            }
+
+            if (f.required && !val) {
+                showToast(`⚠️ لطفاً فیلد «${f.label}» را تکمیل کنید.`);
+                el?.focus();
+                return;
+            }
+
             if (standardIds.includes(f.id)) {
                 values[f.id] = val;
             } else if (val) {
@@ -890,7 +1143,8 @@
         let phone = normalizeDigits(values.phone || "").replace(/[^0-9]/g, "");
         if (phone.length === 10 && phone.startsWith("9")) phone = "0" + phone;
         if (!/^09[0-9]{9}$/.test(phone)) {
-            alert("لطفاً شماره همراه معتبر ۱۱ رقمی (شروع با ۰۹) وارد کنید.");
+            showToast("⚠️ شماره همراه باید ۱۱ رقمی و با ۰۹ شروع شود.");
+            document.getElementById("field-phone")?.focus();
             return;
         }
 
@@ -904,7 +1158,7 @@
             province: values.province || "",
             city: values.city || "",
             extraFields: extraFields,
-            userId: tg?.initDataUnsafe?.user?.id || "مستقیم"
+            userId: tg?.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : "مستقیم"
         };
 
         const applicableGates = getApplicableGates(tempRegistrationData.gender);
@@ -927,29 +1181,50 @@
         container.innerHTML = gates.map(g => {
             const isWomen = g.target === "خانم" || g.style === "purple";
             const isVisited = !!visitedGates[g.id];
+            const safeGid = escapeHTML(g.id);
+            const safeUrl = escapeHTML(sanitizeUrl(g.url));
+            const safeTitle = escapeHTML(g.title);
+            const safeDesc = escapeHTML(g.desc || "");
+            const safeBtn = escapeHTML(g.btnText || "عضویت در ایتا ↗");
+
             return `
                 <div class="gate-box ${isWomen ? "women" : ""}">
                     <div class="gate-box-title">
                         <span>${isWomen ? "🌸" : "📢"}</span>
-                        <span>${g.title}</span>
+                        <span>${safeTitle}</span>
                     </div>
-                    <div class="gate-box-text">${g.desc || ""}</div>
-                    <button type="button" id="gate-btn-${g.id}" class="join-btn ${isWomen ? "women-btn" : ""} ${isVisited ? "visited" : ""}" onclick="openGateLink('${g.id}', '${g.url}')">
-                        <span>${isVisited ? "✓ مشاهده شد (ورود مجدد)" : (g.btnText || "عضویت در ایتا ↗")}</span>
+                    <div class="gate-box-text">${safeDesc}</div>
+                    <button type="button"
+                            id="gate-btn-${safeGid}"
+                            data-gate-id="${safeGid}"
+                            data-gate-url="${safeUrl}"
+                            class="join-btn ${isWomen ? "women-btn" : ""} ${isVisited ? "visited" : ""}">
+                        <span>${isVisited ? "✓ مشاهده شد (ورود مجدد)" : safeBtn}</span>
                     </button>
                 </div>`;
         }).join("");
 
+        // Event Delegation ایمن برای دکمه‌های گیت
+        container.querySelectorAll(".join-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                openGateLink(btn.dataset.gateId, btn.dataset.gateUrl);
+            });
+        });
+
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    function openGateLink(gateId, url) {
+    function openGateLink(gateId, rawUrl) {
+        const url = sanitizeUrl(rawUrl);
         visitedGates[gateId] = true;
+        saveSessionJson(STORAGE_KEYS.VISITED_GATES, visitedGates);
+
         const btn = document.getElementById(`gate-btn-${gateId}`);
         if (btn) {
             btn.classList.add("visited");
             btn.innerHTML = "<span>✓ مشاهده شد (ورود مجدد)</span>";
         }
+
         if (tg && tg.openTelegramLink) tg.openTelegramLink(url);
         else if (tg && tg.openLink) tg.openLink(url);
         else window.location.href = url;
@@ -960,8 +1235,11 @@
         document.getElementById("form-section").style.display = "block";
     }
 
+    // ==========================================
+    // ثبت نهایی در سرور و صدور کارت ورود
+    // ==========================================
     async function finalizeRegistration(skipGateCheck = false) {
-        if (!tempRegistrationData) return;
+        if (!tempRegistrationData || isSubmitting) return;
 
         if (!skipGateCheck) {
             const gates = getApplicableGates(tempRegistrationData.gender);
@@ -972,28 +1250,26 @@
             }
         }
 
+        isSubmitting = true;
         const confirmBtn = document.getElementById("btn-confirm-final");
         const submitBtn = document.getElementById("btn-submit");
         if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.textContent = "در حال ثبت قطعی و صدور کارت..."; }
         if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "در حال ثبت قطعی..."; }
 
         try {
-            const response = await fetch(GOOGLE_SCRIPT_URL, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain;charset=utf-8" },
-                body: JSON.stringify(tempRegistrationData)
-            });
-            const resJson = await response.json();
+            const resJson = await fetchWithRetry(tempRegistrationData, 2, 12000);
 
             if (resJson.status === "closed") {
-                alert(resJson.message || "مهلت ثبت‌نام به پایان رسیده است.");
-                location.reload();
+                showToast("⚠️ مهلت ثبت‌نام به پایان رسیده است.");
+                setTimeout(() => location.reload(), 1200);
                 return;
             }
 
             if (resJson.status === "already_registered") {
-                showToast("⚠️ شما قبلاً با این شماره ثبت‌نام کرده‌اید!");
-                localStorage.setItem("seraj_reg_final_v8", JSON.stringify(resJson));
+                showToast("⚠️ شما قبلاً ثبت‌نام کرده‌اید؛ کارت شما بازیابی شد.");
+                resJson.extraFields = tempRegistrationData.extraFields || {};
+                saveTicketToVault(resJson);
+                sessionStorage.removeItem(STORAGE_KEYS.FORM_DRAFT);
                 renderTicket(resJson);
                 return;
             }
@@ -1004,10 +1280,14 @@
                 tempRegistrationData.loyaltyLabel = resJson.loyaltyLabel;
                 tempRegistrationData.roundName = resJson.roundName || liveConfig.roundFullName;
 
-                localStorage.setItem("seraj_reg_final_v8", JSON.stringify(tempRegistrationData));
+                saveTicketToVault(tempRegistrationData);
+                sessionStorage.removeItem(STORAGE_KEYS.FORM_DRAFT);
                 renderTicket(tempRegistrationData);
                 showToast("✓ ثبت‌نام با موفقیت قطعی شد و کارت ورود صادر گردید.");
 
+                if (tg && tg.HapticFeedback) {
+                    try { tg.HapticFeedback.notificationOccurred("success"); } catch (e) {}
+                }
                 if (tg && tg.sendData) {
                     try {
                         tg.sendData(`ثبت‌نام قطعی مسابقه سراج\nداوطلب: ${tempRegistrationData.firstName} ${tempRegistrationData.lastName}\nکد پیگیری: ${resJson.trackingCode}`);
@@ -1017,29 +1297,78 @@
                 throw new Error(resJson.message || "خطای سرور");
             }
         } catch (err) {
-            alert("خطا در ارتباط با سرور. لطفاً مجدداً تلاش کنید.");
+            showToast("❌ خطا در ارتباط با سرور. لطفاً دوباره دکمه ثبت را بزنید.");
+        } finally {
+            isSubmitting = false;
             if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.textContent = "✓ عضو شدم؛ ثبت‌نام نهایی و صدور کارت"; }
             if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "ادامه و تکمیل نهایی ثبت‌نام"; }
         }
     }
 
+    // ==========================================
+    // رندر کارت رسمی + بارکد یکتا + خروجی تصویر PNG
+    // ==========================================
+    function renderDeterministicBarcode(code) {
+        const container = document.getElementById("ticket-barcode");
+        const str = String(code || "SRJ-100");
+        let barsHtml = "";
+        for (let i = 0; i < 24; i++) {
+            const charCode = str.charCodeAt(i % str.length) + i * 7;
+            const width = (charCode % 4) + 1;
+            const opacity = (charCode % 3 === 0) ? 0.65 : 0.95;
+            barsHtml += `<div class="bar" style="width:${width}px; opacity:${opacity};"></div>`;
+        }
+        container.innerHTML = barsHtml;
+    }
+
     function renderTicket(data) {
+        currentDisplayedTicket = data;
         document.getElementById("form-section").style.display = "none";
         document.getElementById("gate-section").style.display = "none";
         document.getElementById("closed-section").style.display = "none";
         document.getElementById("ticket-section").style.display = "block";
 
+        // نمایش انتخابگر کارت در صورت وجود چند کارت روی یک گوشی
+        const vault = loadVault();
+        const vaultList = Object.values(vault);
+        const switcherBox = document.getElementById("vault-switcher-box");
+        if (vaultList.length > 1) {
+            switcherBox.style.display = "flex";
+            const sel = document.getElementById("vault-select");
+            sel.innerHTML = vaultList.map(item =>
+                `<option value="${escapeHTML(item.phone)}" ${item.phone === data.phone ? "selected" : ""}>${escapeHTML(item.firstName)} ${escapeHTML(item.lastName)} (${escapeHTML(item.trackingCode)})</option>`
+            ).join("");
+        } else {
+            switcherBox.style.display = "none";
+        }
+
         document.getElementById("ticket-code").textContent = data.trackingCode;
+        renderDeterministicBarcode(data.trackingCode);
+
         document.getElementById("ticket-name").textContent = `${data.firstName} ${data.lastName}`;
         document.getElementById("ticket-phone").textContent = data.phone;
         document.getElementById("ticket-gender").textContent = data.gender;
         document.getElementById("ticket-location").textContent = `${data.province} - ${data.city}`;
         document.getElementById("ticket-round-name").textContent = data.roundName || liveConfig.roundFullName;
 
+        // نمایش فیلدهای اضافی فرم‌ساز روی کارت (در صورت وجود)
+        const extraContainer = document.getElementById("ticket-extra-rows");
+        if (data.extraFields && typeof data.extraFields === "object") {
+            const entries = Object.entries(data.extraFields);
+            extraContainer.innerHTML = entries.map(([k, v]) => `
+                <div class="ticket-row">
+                    <span class="ticket-label">${escapeHTML(k)}:</span>
+                    <span class="ticket-val">${escapeHTML(v)}</span>
+                </div>
+            `).join("");
+        } else {
+            extraContainer.innerHTML = "";
+        }
+
         if (Number(data.participationCount) > 1) {
             document.getElementById("ticket-loyalty").textContent = `★ داوطلب وفادار مسابقات سراج (${data.participationCount} دوره)`;
         } else {
-            document.getElementById("ticket-loyalty").textContent = "داوطلب جدید مسابقات سراج";
+            document.getElementById("ticket-loyalty").textContent = "داوطلب رسمی مسابقات کتابخوانی سراج";
         }
 
         if (liveConfig.examSchedule && liveConfig.examSchedule.isOpen) {
@@ -1047,14 +1376,125 @@
         }
     }
 
+    function switchVaultTicket(phone) {
+        const vault = loadVault();
+        if (vault[phone]) {
+            localStorage.setItem(STORAGE_KEYS.ACTIVE_TICKET, JSON.stringify(vault[phone]));
+            renderTicket(vault[phone]);
+        }
+    }
+
+    async function downloadTicketAsPng() {
+        if (!currentDisplayedTicket) return;
+        const d = currentDisplayedTicket;
+        if (document.fonts && document.fonts.ready) {
+            try { await document.fonts.ready; } catch (e) {}
+        }
+
+        const canvas = document.getElementById("ticket-export-canvas");
+        const ctx = canvas.getContext("2d");
+        const w = canvas.width, h = canvas.height;
+
+        // پس‌زمینه کرم روشن
+        ctx.fillStyle = "#faf6f0";
+        ctx.fillRect(0, 0, w, h);
+
+        // قاب بیرونی طلایی و بنفش
+        ctx.strokeStyle = "#1e0329";
+        ctx.lineWidth = 18;
+        ctx.strokeRect(24, 24, w - 48, h - 48);
+
+        ctx.strokeStyle = "#f59e0b";
+        ctx.lineWidth = 5;
+        ctx.strokeRect(46, 46, w - 92, h - 92);
+
+        // سربرگ بنفش اشرافی
+        const grad = ctx.createLinearGradient(0, 60, w, 320);
+        grad.addColorStop(0, "#1e0329");
+        grad.addColorStop(1, "#4a135e");
+        ctx.fillStyle = grad;
+        ctx.fillRect(64, 64, w - 128, 250);
+
+        ctx.fillStyle = "#fde68a";
+        ctx.font = "800 26px Sahel, Vazirmatn, Tahoma";
+        ctx.textAlign = "center";
+        ctx.fillText("سلسله مسابقات کتابخوانی سراج", w / 2, 130);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "900 44px Sahel, Vazirmatn, Tahoma";
+        ctx.fillText("کارت ورود رسمی داوطلب", w / 2, 200);
+
+        ctx.fillStyle = "#fcd34d";
+        ctx.font = "800 24px Sahel, Vazirmatn, Tahoma";
+        ctx.fillText(d.roundName || liveConfig.roundFullName, w / 2, 265);
+
+        // باکس کد پیگیری
+        ctx.fillStyle = "#fffbeb";
+        ctx.fillRect(110, 350, w - 220, 175);
+        ctx.strokeStyle = "#f59e0b";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(110, 350, w - 220, 175);
+
+        ctx.fillStyle = "#64748b";
+        ctx.font = "700 22px Sahel, Vazirmatn, Tahoma";
+        ctx.fillText("کد پیگیری اختصاصی داوطلب:", w / 2, 395);
+
+        ctx.fillStyle = "#3d0e4f";
+        ctx.font = "900 50px Tahoma, sans-serif";
+        ctx.fillText(d.trackingCode, w / 2, 465);
+
+        // مشخصات داوطلب
+        const rows = [
+            ["نام و نام خانوادگی:", `${d.firstName} ${d.lastName}`],
+            ["شماره همراه ثبت‌شده:", d.phone],
+            ["جنسیت:", d.gender],
+            ["استان و شهر سکونت:", `${d.province} - ${d.city}`],
+            ["وضعیت حضور:", Number(d.participationCount) > 1 ? `شرکت‌کننده وفادار (${d.participationCount} دوره)` : "داوطلب رسمی دوره"]
+        ];
+
+        let y = 600;
+        rows.forEach(([lbl, val]) => {
+            ctx.fillStyle = "#64748b";
+            ctx.font = "700 25px Sahel, Vazirmatn, Tahoma";
+            ctx.textAlign = "right";
+            ctx.fillText(lbl, w - 110, y);
+
+            ctx.fillStyle = "#1a1622";
+            ctx.font = "900 26px Sahel, Vazirmatn, Tahoma";
+            ctx.textAlign = "left";
+            ctx.fillText(String(val), 110, y);
+
+            ctx.strokeStyle = "#e2e8f0";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(110, y + 24);
+            ctx.lineTo(w - 110, y + 24);
+            ctx.stroke();
+
+            y += 78;
+        });
+
+        // پاورقی کارت
+        ctx.fillStyle = "#6b6375";
+        ctx.font = "700 20px Sahel, Vazirmatn, Tahoma";
+        ctx.textAlign = "center";
+        ctx.fillText(liveConfig.cardFooterNote || "دبیرخانه سلسله مسابقات کتابخوانی سراج", w / 2, 1085);
+
+        const link = document.createElement("a");
+        link.download = `Seraj-Ticket-${d.trackingCode}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        showToast("✓ تصویر کارت ورود آماده و دانلود شد.");
+    }
+
     function goToExamApp() {
         window.location.href = "exam.html";
     }
 
     function copyTicketInfo() {
-        const code = document.getElementById("ticket-code").textContent;
-        const name = document.getElementById("ticket-name").textContent;
-        const text = `کارت شرکت در مسابقه کتابخوانی سراج (${liveConfig.roundNumber})\nداوطلب: ${name}\nکد پیگیری: ${code}\n${liveConfig.cardFooterNote || ""}`;
+        if (!currentDisplayedTicket) return;
+        const d = currentDisplayedTicket;
+        const text = `کارت شرکت در مسابقه کتابخوانی سراج (${liveConfig.roundNumber})\nداوطلب: ${d.firstName} ${d.lastName}\nکد پیگیری: ${d.trackingCode}\n${liveConfig.cardFooterNote || ""}`;
 
         let copied = false;
         try {
@@ -1076,17 +1516,22 @@
     }
 
     function resetFormForNewUser() {
-        if (confirm("آیا قصد دارید داوطلب دیگری را ثبت‌نام کنید؟")) {
-            localStorage.removeItem("seraj_reg_final_v8");
-            visitedGates = {};
-            tempRegistrationData = null;
-            document.getElementById("ticket-section").style.display = "none";
-            renderDynamicForm();
-            setGender("آقا");
-            document.getElementById("form-section").style.display = "block";
-            document.getElementById("btn-confirm-final").disabled = false;
-            document.getElementById("btn-confirm-final").textContent = "✓ عضو شدم؛ ثبت‌نام نهایی و صدور کارت";
+        visitedGates = {};
+        sessionStorage.removeItem(STORAGE_KEYS.VISITED_GATES);
+        sessionStorage.removeItem(STORAGE_KEYS.FORM_DRAFT);
+        tempRegistrationData = null;
+
+        document.getElementById("ticket-section").style.display = "none";
+        if (Object.keys(loadVault()).length > 0) {
+            document.getElementById("quick-ticket-shortcut").style.display = "block";
         }
+
+        renderDynamicForm();
+        setGender("آقا");
+        document.getElementById("form-section").style.display = "block";
+        document.getElementById("btn-confirm-final").disabled = false;
+        document.getElementById("btn-confirm-final").textContent = "✓ عضو شدم؛ ثبت‌نام نهایی و صدور کارت";
+        window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     bootstrapApp();
