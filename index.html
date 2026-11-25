@@ -694,9 +694,20 @@
     <div id="footer-note" class="footer-note">دبیرخانه سلسله مسابقات کتابخوانی سراج • مجموعه فرهنگی الهدی</div>
 </div>
 
-<!-- بوم مخفی تولید کارت تصویری باکیفیت -->
+<!-- بوم تولید کارت و پنجره پیش‌نمایش سازگار با ایتا -->
 <canvas id="ticket-export-canvas" width="900" height="1180" style="display:none;"></canvas>
 
+<div id="ticket-img-modal" style="display:none; position:fixed; inset:0; background:rgba(15,3,22,0.88); z-index:9998; padding:16px; flex-direction:column; align-items:center; justify-content:center; backdrop-filter:blur(4px);">
+    <div style="background:#fff; border-radius:22px; padding:14px; max-width:380px; width:100%; text-align:center; border:2px solid #f59e0b; box-shadow:0 20px 40px rgba(0,0,0,0.4);">
+        <div style="font-size:0.9rem; font-weight:900; color:#3d0e4f; margin-bottom:8px;">🖼️ تصویر کارت ورود شما آماده شد</div>
+        <img id="ticket-preview-img" alt="کارت ورود سراج" style="width:100%; max-height:54vh; object-fit:contain; border-radius:14px; border:1px solid #e2e8f0; display:block; margin:0 auto 10px auto;">
+        <div style="font-size:0.75rem; color:#475569; background:#fffbeb; border:1px dashed #f59e0b; border-radius:10px; padding:7px; margin-bottom:10px; line-height:1.6;">
+            💡 برای ذخیره در گوشی، دکمه سبز زیر را بزنید یا <b>انگشت خود را ۲ ثانیه روی عکس نگه دارید</b> و گزینه <b>ذخیره تصویر</b> را انتخاب کنید.
+        </div>
+        <button type="button" class="action-btn btn-download-img" style="margin-top:0;" onclick="shareOrSaveTicketImage()">📤 ذخیره در گالری / ارسال به ایتا</button>
+        <button type="button" class="action-btn btn-re-register" onclick="closeTicketImgModal()">بستن پیش‌نمایش</button>
+    </div>
+</div>
 <div id="toast-msg" class="toast">پیام سیستم</div>
 
 <script>
@@ -1384,9 +1395,14 @@
         }
     }
 
+let lastGeneratedTicketBlob = null;
+    let lastGeneratedTicketFileName = "Seraj-Ticket.png";
+
     async function downloadTicketAsPng() {
         if (!currentDisplayedTicket) return;
         const d = currentDisplayedTicket;
+        showToast("⏳ در حال آماده‌سازی تصویر کارت...");
+
         if (document.fonts && document.fonts.ready) {
             try { await document.fonts.ready; } catch (e) {}
         }
@@ -1395,11 +1411,9 @@
         const ctx = canvas.getContext("2d");
         const w = canvas.width, h = canvas.height;
 
-        // پس‌زمینه کرم روشن
         ctx.fillStyle = "#faf6f0";
         ctx.fillRect(0, 0, w, h);
 
-        // قاب بیرونی طلایی و بنفش
         ctx.strokeStyle = "#1e0329";
         ctx.lineWidth = 18;
         ctx.strokeRect(24, 24, w - 48, h - 48);
@@ -1408,7 +1422,6 @@
         ctx.lineWidth = 5;
         ctx.strokeRect(46, 46, w - 92, h - 92);
 
-        // سربرگ بنفش اشرافی
         const grad = ctx.createLinearGradient(0, 60, w, 320);
         grad.addColorStop(0, "#1e0329");
         grad.addColorStop(1, "#4a135e");
@@ -1428,7 +1441,6 @@
         ctx.font = "800 24px Sahel, Vazirmatn, Tahoma";
         ctx.fillText(d.roundName || liveConfig.roundFullName, w / 2, 265);
 
-        // باکس کد پیگیری
         ctx.fillStyle = "#fffbeb";
         ctx.fillRect(110, 350, w - 220, 175);
         ctx.strokeStyle = "#f59e0b";
@@ -1443,7 +1455,6 @@
         ctx.font = "900 50px Tahoma, sans-serif";
         ctx.fillText(d.trackingCode, w / 2, 465);
 
-        // مشخصات داوطلب
         const rows = [
             ["نام و نام خانوادگی:", `${d.firstName} ${d.lastName}`],
             ["شماره همراه ثبت‌شده:", d.phone],
@@ -1474,17 +1485,54 @@
             y += 78;
         });
 
-        // پاورقی کارت
         ctx.fillStyle = "#6b6375";
         ctx.font = "700 20px Sahel, Vazirmatn, Tahoma";
         ctx.textAlign = "center";
         ctx.fillText(liveConfig.cardFooterNote || "دبیرخانه سلسله مسابقات کتابخوانی سراج", w / 2, 1085);
 
-        const link = document.createElement("a");
-        link.download = `Seraj-Ticket-${d.trackingCode}.png`;
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-        showToast("✓ تصویر کارت ورود آماده و دانلود شد.");
+        const dataUrl = canvas.toDataURL("image/png");
+        lastGeneratedTicketFileName = `Seraj-Ticket-${d.trackingCode}.png`;
+
+        canvas.toBlob((blob) => {
+            lastGeneratedTicketBlob = blob;
+            document.getElementById("ticket-preview-img").src = dataUrl;
+            document.getElementById("ticket-img-modal").style.display = "flex";
+
+            if (blob && !window.Eitaa?.WebApp) {
+                try {
+                    const blobUrl = URL.createObjectURL(blob);
+                    const link = document.createElement("a");
+                    link.href = blobUrl;
+                    link.download = lastGeneratedTicketFileName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    setTimeout(() => URL.revokeObjectURL(blobUrl), 4000);
+                } catch (e) {}
+            }
+        }, "image/png");
+    }
+
+    async function shareOrSaveTicketImage() {
+        if (!lastGeneratedTicketBlob) return;
+        try {
+            const file = new File([lastGeneratedTicketBlob], lastGeneratedTicketFileName, { type: "image/png" });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    files: [file],
+                    title: "کارت ورود مسابقه کتابخوانی سراج",
+                    text: `کارت ورود ${currentDisplayedTicket?.firstName || ""} ${currentDisplayedTicket?.lastName || ""} - کد پیگیری: ${currentDisplayedTicket?.trackingCode || ""}`
+                });
+                return;
+            }
+        } catch (err) {
+            if (err && err.name === "AbortError") return;
+        }
+        showToast("انگشت خود را ۲ ثانیه روی تصویر نگه دارید و «ذخیره تصویر» را بزنید.");
+    }
+
+    function closeTicketImgModal() {
+        document.getElementById("ticket-img-modal").style.display = "none";
     }
 
     function goToExamApp() {
