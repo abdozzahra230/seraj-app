@@ -929,8 +929,8 @@
                     <button type="button" id="btn-save-q-top" class="btn btn-primary btn-sm" style="width: auto;" onclick="saveAllQuestionsToServer()">💾 ذخیره در سرور</button>
                 </div>
 
-                <!-- جستجو و فیلتر سطح در بانک سوالات -->
-                <div class="grid-2" style="margin-bottom: 10px;">
+ <!-- جستجو و فیلتر سطح در بانک سوالات -->
+                <div class="grid-2" style="margin-bottom: 8px;">
                     <input type="text" id="q-search-inp" class="form-control" placeholder="🔍 جستجو در متن یا گزینه‌های سوال..." oninput="renderQuestionsList()">
                     <select id="q-level-filter" class="form-control" onchange="renderQuestionsList()">
                         <option value="all">همه سطوح سختی</option>
@@ -938,6 +938,18 @@
                         <option value="متوسط">فقط سوالات متوسط</option>
                         <option value="دشوار">فقط سوالات دشوار</option>
                     </select>
+                </div>
+
+                <!-- نوار ابزار انتخاب و حذف گروهی سوالات -->
+                <div style="background: #fff1f2; border: 1.5px solid #fecdd3; border-radius: 14px; padding: 9px 10px; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+                        <button type="button" id="btn-toggle-select-all" class="btn btn-info btn-sm" onclick="toggleSelectAllQuestions()">☑️ انتخاب همه نمایش‌داده‌شده‌ها</button>
+                        <button type="button" id="btn-select-last-batch" class="btn btn-gold btn-sm" style="width: auto; display: none;" onclick="selectLastBulkBatch()">📌 انتخاب آخرین ورود گروهی (<span id="last-batch-count">0</span>)</button>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+                        <button type="button" id="btn-delete-selected-q" class="btn btn-danger btn-sm" style="display: none; font-weight: 900;" onclick="deleteSelectedQuestions()">🗑️ حذف انتخاب‌شده‌ها (<span id="selected-q-count">0</span>)</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteAllRoundQuestions()">🧹 حذف کل سوالات این دوره</button>
+                    </div>
                 </div>
 
                 <div id="questions-list-container"></div>
@@ -1984,10 +1996,62 @@
         ).join("");
     }
 
+   let selectedQuestionIds = new Set();
+    let lastBulkBatchIds = new Set();
+
     function onTargetRoundChange() {
         appState.selectedQuestionRound = document.getElementById("q-target-round-select").value;
+        selectedQuestionIds.clear();
+        lastBulkBatchIds.clear();
         resetQuestionForm();
         renderQuestionsList();
+    }
+
+    function parseBulkQuestions() {
+        const raw = document.getElementById("bulk-q-text").value.trim();
+        if (!raw) return;
+        const lines = raw.split("\n").map(l => l.trim()).filter(Boolean);
+        let added = 0, errors = 0;
+        const currentBatch = new Set();
+
+        lines.forEach((line, idx) => {
+            const parts = line.split("|").map(p => p.trim());
+            if (parts.length >= 6 && parts[0] && parts[1] && parts[2]) {
+                let rawLevel = parts[6] || "متوسط";
+                if (["ساده", "متوسط", "دشوار"].indexOf(rawLevel) === -1) rawLevel = "متوسط";
+                const corr = Number(parts[5]);
+                const newId = "Q-" + Date.now() + "-" + idx + "-" + Math.floor(Math.random() * 9999);
+
+                appState.allQuestions.push({
+                    id: newId,
+                    text: parts[0],
+                    opt1: parts[1],
+                    opt2: parts[2],
+                    opt3: parts[3] || "",
+                    opt4: parts[4] || "",
+                    correct: (corr >= 1 && corr <= 4) ? corr : 1,
+                    level: rawLevel,
+                    score: Number(parts[7]) || 1,
+                    explanation: parts[8] || "",
+                    active: true,
+                    round: appState.selectedQuestionRound
+                });
+                currentBatch.add(newId);
+                added++;
+            } else {
+                errors++;
+            }
+        });
+
+        if (added > 0) {
+            lastBulkBatchIds = currentBatch;
+            markDirty();
+        }
+        document.getElementById("bulk-q-text").value = "";
+        toggleBulkBox();
+        renderQuestionsList();
+        updateActiveRoundInventoryBadge();
+        showToast(`✓ ${added} سوال اضافه شد${errors > 0 ? ` (${errors} خط نامعتبر نادیده گرفته شد)` : ""}.`);
     }
 
     async function createNewExamRoundProfile() {
@@ -2019,21 +2083,34 @@
         showToast("✓ نمونه قالب درج شد.");
     }
 
+  let selectedQuestionIds = new Set();
+    let lastBulkBatchIds = new Set();
+
+    function onTargetRoundChange() {
+        appState.selectedQuestionRound = document.getElementById("q-target-round-select").value;
+        selectedQuestionIds.clear();
+        lastBulkBatchIds.clear();
+        resetQuestionForm();
+        renderQuestionsList();
+    }
+
     function parseBulkQuestions() {
         const raw = document.getElementById("bulk-q-text").value.trim();
         if (!raw) return;
         const lines = raw.split("\n").map(l => l.trim()).filter(Boolean);
         let added = 0, errors = 0;
+        const currentBatch = new Set();
 
-        lines.forEach(line => {
+        lines.forEach((line, idx) => {
             const parts = line.split("|").map(p => p.trim());
             if (parts.length >= 6 && parts[0] && parts[1] && parts[2]) {
                 let rawLevel = parts[6] || "متوسط";
                 if (["ساده", "متوسط", "دشوار"].indexOf(rawLevel) === -1) rawLevel = "متوسط";
                 const corr = Number(parts[5]);
+                const newId = "Q-" + Date.now() + "-" + idx + "-" + Math.floor(Math.random() * 9999);
 
                 appState.allQuestions.push({
-                    id: "Q-" + Date.now() + "-" + Math.floor(Math.random() * 9999),
+                    id: newId,
                     text: parts[0],
                     opt1: parts[1],
                     opt2: parts[2],
@@ -2046,15 +2123,19 @@
                     active: true,
                     round: appState.selectedQuestionRound
                 });
+                currentBatch.add(newId);
                 added++;
             } else {
                 errors++;
             }
         });
 
+        if (added > 0) {
+            lastBulkBatchIds = currentBatch;
+            markDirty();
+        }
         document.getElementById("bulk-q-text").value = "";
         toggleBulkBox();
-        if (added > 0) markDirty();
         renderQuestionsList();
         updateActiveRoundInventoryBadge();
         showToast(`✓ ${added} سوال اضافه شد${errors > 0 ? ` (${errors} خط نامعتبر نادیده گرفته شد)` : ""}.`);
@@ -2132,6 +2213,96 @@
         document.getElementById("btn-cancel-q-edit").style.display = "none";
     }
 
+  function getFilteredRoundQuestions() {
+        const roundQs = getQuestionsForSelectedRound();
+        const qSearch = (document.getElementById("q-search-inp")?.value || "").trim().toLowerCase();
+        const qLvlFilter = document.getElementById("q-level-filter")?.value || "all";
+
+        return roundQs.filter(q => {
+            const matchLvl = (qLvlFilter === "all" || q.level === qLvlFilter);
+            const matchTxt = !qSearch || `${q.text} ${q.opt1} ${q.opt2} ${q.opt3} ${q.opt4}`.toLowerCase().includes(qSearch);
+            return matchLvl && matchTxt;
+        });
+    }
+
+    function updateBulkToolbarUI() {
+        const roundIds = new Set(getQuestionsForSelectedRound().map(q => q.id));
+        // پاکسازی شناسه‌هایی که دیگر در این دوره نیستند
+        selectedQuestionIds.forEach(id => { if (!roundIds.has(id)) selectedQuestionIds.delete(id); });
+        lastBulkBatchIds.forEach(id => { if (!roundIds.has(id)) lastBulkBatchIds.delete(id); });
+
+        const selCount = selectedQuestionIds.size;
+        const delSelBtn = document.getElementById("btn-delete-selected-q");
+        const selCountSpan = document.getElementById("selected-q-count");
+        if (delSelBtn && selCountSpan) {
+            selCountSpan.textContent = selCount;
+            delSelBtn.style.display = selCount > 0 ? "inline-flex" : "none";
+        }
+
+        const batchBtn = document.getElementById("btn-select-last-batch");
+        const batchSpan = document.getElementById("last-batch-count");
+        if (batchBtn && batchSpan) {
+            batchSpan.textContent = lastBulkBatchIds.size;
+            batchBtn.style.display = lastBulkBatchIds.size > 0 ? "inline-flex" : "none";
+        }
+
+        const visibleQs = getFilteredRoundQuestions();
+        const allVisibleSelected = visibleQs.length > 0 && visibleQs.every(q => selectedQuestionIds.has(q.id));
+        const toggleAllBtn = document.getElementById("btn-toggle-select-all");
+        if (toggleAllBtn) {
+            toggleAllBtn.textContent = allVisibleSelected ? "⬜ لغو انتخاب همه" : "☑️ انتخاب همه نمایش‌داده‌شده‌ها";
+        }
+    }
+
+    function toggleSelectAllQuestions() {
+        const visibleQs = getFilteredRoundQuestions();
+        if (visibleQs.length === 0) return;
+        const allSelected = visibleQs.every(q => selectedQuestionIds.has(q.id));
+        if (allSelected) {
+            visibleQs.forEach(q => selectedQuestionIds.delete(q.id));
+        } else {
+            visibleQs.forEach(q => selectedQuestionIds.add(q.id));
+        }
+        renderQuestionsList();
+    }
+
+    function selectLastBulkBatch() {
+        if (lastBulkBatchIds.size === 0) return;
+        lastBulkBatchIds.forEach(id => selectedQuestionIds.add(id));
+        renderQuestionsList();
+        showToast(`✓ ${lastBulkBatchIds.size} سوال آخرین ورود گروهی انتخاب شدند.`);
+    }
+
+    function deleteSelectedQuestions() {
+        const count = selectedQuestionIds.size;
+        if (count === 0) return;
+        if (!confirm(`آیا از حذف گروهی ${count} سوال انتخاب‌شده مطمئن هستید؟\n(پس از تایید، برای ثبت نهایی در گوگل شیت دکمه «ذخیره در سرور» را بزنید.)`)) return;
+
+        appState.allQuestions = appState.allQuestions.filter(q => !selectedQuestionIds.has(q.id));
+        selectedQuestionIds.clear();
+        markDirty();
+        renderQuestionsList();
+        updateActiveRoundInventoryBadge();
+        showToast(`✓ ${count} سوال حذف شد. دکمه «ذخیره در سرور» را بزنید.`);
+    }
+
+    function deleteAllRoundQuestions() {
+        const roundQs = getQuestionsForSelectedRound();
+        if (roundQs.length === 0) {
+            showToast("سوالی برای حذف در این دوره وجود ندارد.");
+            return;
+        }
+        if (!confirm(`هشدار: تمام ${roundQs.length} سوال مربوط به «${appState.selectedQuestionRound}» حذف خواهند شد. ادامه می‌دهید؟`)) return;
+
+        appState.allQuestions = appState.allQuestions.filter(q => q.round !== appState.selectedQuestionRound);
+        selectedQuestionIds.clear();
+        lastBulkBatchIds.clear();
+        markDirty();
+        renderQuestionsList();
+        updateActiveRoundInventoryBadge();
+        showToast("✓ کل سوالات این دوره پاک شد. دکمه «ذخیره در سرور» را بزنید.");
+    }
+
     function renderQuestionsList() {
         const roundQs = getQuestionsForSelectedRound();
         document.getElementById("total-q-badge").textContent = roundQs.length;
@@ -2142,14 +2313,8 @@
         document.getElementById("selected-round-inventory").innerHTML =
             `سوالات فعال این دوره: <span class="badge badge-green">ساده: ${easy}</span> <span class="badge badge-blue">متوسط: ${med}</span> <span class="badge badge-red">دشوار: ${hard}</span>`;
 
-        const qSearch = (document.getElementById("q-search-inp")?.value || "").trim().toLowerCase();
-        const qLvlFilter = document.getElementById("q-level-filter")?.value || "all";
-
-        const filteredQs = roundQs.filter(q => {
-            const matchLvl = (qLvlFilter === "all" || q.level === qLvlFilter);
-            const matchTxt = !qSearch || `${q.text} ${q.opt1} ${q.opt2} ${q.opt3} ${q.opt4}`.toLowerCase().includes(qSearch);
-            return matchLvl && matchTxt;
-        });
+        const filteredQs = getFilteredRoundQuestions();
+        updateBulkToolbarUI();
 
         const container = document.getElementById("questions-list-container");
         if (filteredQs.length === 0) {
@@ -2162,11 +2327,18 @@
                 ? `<span class="badge badge-blue">📊 پاسخ صحیح: ${Math.round((st.correct / st.attempts) * 100)}% (${st.attempts} نفر)</span>`
                 : "";
             const safeQid = escapeHTML(q.id);
+            const isChecked = selectedQuestionIds.has(q.id);
+            const isFromLastBatch = lastBulkBatchIds.has(q.id);
+
             return `
-            <div class="list-item" data-qid="${safeQid}">
+            <div class="list-item" data-qid="${safeQid}" style="${isChecked ? 'border-color:#dc2626; background:#fff1f2;' : ''}">
                 <div class="list-item-header">
-                    <b style="font-size:0.88rem; color:var(--seraj-purple);">${idx + 1}. ${escapeHTML(q.text)}</b>
-                    <div>
+                    <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer; flex:1;">
+                        <input type="checkbox" class="q-select-chk" style="width:18px; height:18px; margin-top:2px; accent-color:#dc2626;" ${isChecked ? "checked" : ""}>
+                        <b style="font-size:0.88rem; color:var(--seraj-purple);">${idx + 1}. ${escapeHTML(q.text)}</b>
+                    </label>
+                    <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                        ${isFromLastBatch ? `<span class="badge badge-blue">ورود گروهی</span>` : ""}
                         <span class="badge badge-gold">${escapeHTML(q.level)} | ${q.score} نمره</span>
                         ${statBadge}
                     </div>
@@ -2191,6 +2363,11 @@
 
         container.querySelectorAll(".list-item").forEach(card => {
             const qid = card.dataset.qid;
+            card.querySelector(".q-select-chk").addEventListener("change", e => {
+                if (e.target.checked) selectedQuestionIds.add(qid);
+                else selectedQuestionIds.delete(qid);
+                renderQuestionsList();
+            });
             card.querySelector(".q-act-chk").addEventListener("change", e => {
                 const targetQ = appState.allQuestions.find(item => item.id === qid);
                 if (targetQ) targetQ.active = e.target.checked;
@@ -2202,6 +2379,8 @@
             card.querySelector(".btn-q-del").addEventListener("click", () => {
                 if (!confirm("این سوال حذف شود؟")) return;
                 appState.allQuestions = appState.allQuestions.filter(item => item.id !== qid);
+                selectedQuestionIds.delete(qid);
+                lastBulkBatchIds.delete(qid);
                 markDirty();
                 renderQuestionsList();
                 updateActiveRoundInventoryBadge();
