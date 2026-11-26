@@ -43,7 +43,6 @@
 
         .container { width: 100%; max-width: 680px; display: flex; flex-direction: column; gap: 12px; }
 
-        /* سربرگ یکپارچه با هویت بصری سراج */
         .admin-header {
             background: linear-gradient(145deg, var(--seraj-dark) 0%, var(--seraj-purple) 65%, #4a135e 100%);
             color: #fff;
@@ -99,7 +98,6 @@
         }
         .icon-btn:active { transform: scale(0.96); }
 
-        /* نوار هشدار تغییرات ذخیره‌نشده */
         .unsaved-bar {
             display: none;
             background: #fef3c7;
@@ -116,7 +114,6 @@
         }
         .unsaved-bar.visible { display: flex; }
 
-        /* منوی دو ستونه بهینه */
         .nav-tabs {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -205,7 +202,6 @@
         }
         .help-popover.open { display: block; }
 
-        /* انتخابگر هوشمند تاریخ و ساعت شمسی */
         .shamsi-picker-box {
             background: #faf7f2;
             border: 1.5px solid #dfd5c7;
@@ -282,7 +278,6 @@
         .btn-info { background: #e0f2fe; color: var(--info); border: 1px solid #bae6fd; }
         .btn-sm { padding: 6px 10px; font-size: 0.75rem; border-radius: 10px; }
 
-        /* شاخص‌های آماری و نوارهای تحلیلی داشبورد */
         .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         @media (min-width: 520px) { .kpi-grid { grid-template-columns: repeat(4, 1fr); } }
 
@@ -376,7 +371,6 @@
             margin-top: 12px;
         }
 
-        /* پنجره‌های مودال (ویرایش داوطلب و خروجی اکسل سازگار با ایتا) */
         .modal-backdrop {
             display: none;
             position: fixed;
@@ -500,7 +494,6 @@
                     <div class="kpi-box"><div class="kpi-num" id="kpi-exam-pass">0</div><div class="kpi-lbl">قبول‌شدگان</div></div>
                 </div>
 
-                <!-- نوارهای تحلیلی نسبت جنسیتی و نرخ قبولی -->
                 <div class="analytics-bar-wrap">
                     <div style="display:flex; justify-content:space-between; font-size:0.76rem; font-weight:800;">
                         <span style="color:#a21caf;" id="lbl-women-pct">بانوان: 0%</span>
@@ -596,7 +589,6 @@
                     <textarea id="cfg-slogans" class="form-control" rows="3" oninput="markDirty()"></textarea>
                 </div>
 
-                <!-- بخش گیت‌های عضویت + بانک گیت‌های ذخیره‌شده -->
                 <div class="card-title" style="margin-top: 16px;">
                     <span>گیت‌های عضویت دوره <button type="button" class="help-trigger" onclick="toggleHelp('h-gates')">?</button></span>
                     <button type="button" class="btn btn-info btn-sm" onclick="addGateItem()">+ گیت جدید</button>
@@ -684,7 +676,7 @@
                 </div>
             </div>
 
-            <!-- نوبت‌های زمانی برگزاری آزمون (Multi-Slot) -->
+            <!-- نوبت‌های زمانی برگزاری آزمون -->
             <div class="card" style="margin-bottom: 12px; border: 2px solid #bae6fd;">
                 <div class="card-title">
                     <span>🕒 نوبت‌های زمانی برگزاری آزمون (چندنوبتی) <button type="button" class="help-trigger" onclick="toggleHelp('h-exam-slots')">?</button></span>
@@ -740,7 +732,6 @@
                         <option value="all_fixed">۴. نمایش تمام سوالات فعال دوره با ترتیب ثابت</option>
                     </select>
 
-                    <!-- تنظیمات حالت ۱: تفکیک سطح سختی -->
                     <div id="box-random-level" style="margin-top: 10px;">
                         <div class="level-inventory-bar" id="active-round-inventory">موجودی بانک دوره فعال: ---</div>
                         <div class="grid-3">
@@ -767,7 +758,6 @@
                         </div>
                     </div>
 
-                    <!-- تنظیمات حالت ۲ -->
                     <div id="box-random-total" style="display: none; margin-top: 10px;">
                         <label class="form-label">تعداد کل سوالاتی که به تصادف برای هر داوطلب انتخاب شود:</label>
                         <input type="number" id="cfg-random-total-count" class="form-control" style="background: #fff;" min="1" max="200" oninput="markDirty()">
@@ -929,7 +919,6 @@
                     <button type="button" id="btn-save-q-top" class="btn btn-primary btn-sm" style="width: auto;" onclick="saveAllQuestionsToServer()">💾 ذخیره در سرور</button>
                 </div>
 
- <!-- جستجو و فیلتر سطح در بانک سوالات -->
                 <div class="grid-2" style="margin-bottom: 8px;">
                     <input type="text" id="q-search-inp" class="form-control" placeholder="🔍 جستجو در متن یا گزینه‌های سوال..." oninput="renderQuestionsList()">
                     <select id="q-level-filter" class="form-control" onchange="renderQuestionsList()">
@@ -1012,7 +1001,7 @@
     </div>
 </div>
 
-<!-- مودال ویرایش مشخصات داوطلب (بدون از دست رفتن موقعیت اسکرول) -->
+<!-- مودال ویرایش مشخصات داوطلب -->
 <div id="edit-user-modal" class="modal-backdrop">
     <div class="modal-box">
         <div class="card-title" style="margin-bottom: 10px;">
@@ -1041,7 +1030,7 @@
     </div>
 </div>
 
-<!-- مودال خروجی اکسل / CSV سازگار با مرورگر داخلی ایتا -->
+<!-- مودال خروجی اکسل / CSV -->
 <div id="csv-export-modal" class="modal-backdrop">
     <div class="modal-box">
         <div class="card-title" style="margin-bottom: 8px;">
@@ -1089,12 +1078,11 @@
     let lastLotteryWinners = [];
     let hasUnsavedChanges = false;
     let lastGeneratedCsv = { content: "", filename: "seraj_report.csv" };
+    let selectedQuestionIds = new Set();
+    let lastBulkBatchIds = new Set();
 
     const SHAMSI_MONTHS = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
 
-    // ==========================================
-    // توابع امنیتی و مدیریت وضعیت تغییرات
-    // ==========================================
     function escapeHTML(str) {
         if (str === null || str === undefined) return "";
         return String(str)
@@ -1122,9 +1110,6 @@
         }
     });
 
-    // ==========================================
-    // تقویم شمسی دقیق (با کنترل طول ماه و سال کبیسه)
-    // ==========================================
     function isJalaliLeapYear(jy) {
         return [1, 5, 9, 13, 17, 22, 26, 30].includes(((jy % 33) + 33) % 33);
     }
@@ -1286,7 +1271,6 @@
         showToast("✓ شناسه ایتای شما کپی شد: " + currentEitaaUserId);
     }
 
-    // ارتباط مقاوم با سرور (Timeout + Retry)
     async function apiCall(payload, retries = 1, timeoutMs = 13000) {
         payload.adminPassword = adminSession.password;
         payload.eitaaUserId = adminSession.eitaaUserId;
@@ -1414,7 +1398,6 @@
 
         document.getElementById("header-round-info").textContent = `دوره فعال: ${activeRoundFull}`;
 
-        // داشبورد تحلیلی
         const totalReg = appState.registrations.length;
         const womenCount = appState.registrations.filter(r => r.gender === "خانم").length;
         const menCount = appState.registrations.filter(r => r.gender === "آقا").length;
@@ -1427,7 +1410,6 @@
         document.getElementById("kpi-exam-done").textContent = completedExams.length;
         document.getElementById("kpi-exam-pass").textContent = passedCount;
 
-        // نوارهای بصری جنسیت و قبولی
         const womenPct = totalReg > 0 ? Math.round((womenCount / totalReg) * 100) : 50;
         const menPct = totalReg > 0 ? (100 - womenPct) : 50;
         document.getElementById("lbl-women-pct").textContent = `بانوان: ${totalReg > 0 ? womenPct : 0}% (${womenCount} نفر)`;
@@ -1450,7 +1432,6 @@
             ? "<b>استان‌های پیشتاز:</b> " + topProvs.map(p => `${escapeHTML(p[0])} (${p[1]} نفر)`).join(" • ")
             : "هنوز ثبت‌نامی ثبت نشده است.";
 
-        // دوره و گیت‌ها
         document.getElementById("cfg-round-num").value = s.round_number || "";
         document.getElementById("cfg-book-title").value = s.book_title || "";
         document.getElementById("cfg-round-full").value = activeRoundFull;
@@ -1461,10 +1442,8 @@
         renderSavedGatesDropdown();
         renderGatesEditor();
 
-        // فرم‌ساز
         renderFormFieldsEditor();
 
-        // زمان‌بندی ثبت‌نام و نوبت‌های آزمون
         document.getElementById("cfg-reg-mode").value = s.reg_mode || "auto";
         setPickerValue("rs", s.reg_start);
         setPickerValue("re", s.reg_end);
@@ -1500,16 +1479,13 @@
         document.getElementById("cfg-cert-title").value = s.certificate_title || "گواهی‌نامه موفقیت در مسابقه کتابخوانی سراج";
         document.getElementById("cfg-exam-rules").value = s.exam_rules_text || "";
 
-        // بانک سوالات
         renderRoundSelectorDropdown();
         renderQuestionsList();
 
-        // داوطلبان
         document.getElementById("cnt-reg").textContent = appState.registrations.length;
         document.getElementById("cnt-exam").textContent = appState.examResults.length;
         renderUsersList();
 
-        // امنیت
         document.getElementById("sec-admin-pass").value = s.admin_password || "";
         document.getElementById("sec-admin-ids").value = s.admin_eitaa_ids || "";
         document.getElementById("sec-bot-token").value = s.eitaa_bot_token || "";
@@ -1987,7 +1963,7 @@
     }
 
     // ==========================================
-    // بانک سوالات مجزا برای هر دوره + جستجو و فیلتر
+    // بانک سوالات مجزا برای هر دوره + انتخاب و حذف گروهی
     // ==========================================
     function renderRoundSelectorDropdown() {
         const sel = document.getElementById("q-target-round-select");
@@ -1995,9 +1971,6 @@
             `<option value="${escapeHTML(r)}" ${r === appState.selectedQuestionRound ? "selected" : ""}>${escapeHTML(r)}</option>`
         ).join("");
     }
-
-   let selectedQuestionIds = new Set();
-    let lastBulkBatchIds = new Set();
 
     function onTargetRoundChange() {
         appState.selectedQuestionRound = document.getElementById("q-target-round-select").value;
@@ -2007,59 +1980,14 @@
         renderQuestionsList();
     }
 
-    function parseBulkQuestions() {
-        const raw = document.getElementById("bulk-q-text").value.trim();
-        if (!raw) return;
-        const lines = raw.split("\n").map(l => l.trim()).filter(Boolean);
-        let added = 0, errors = 0;
-        const currentBatch = new Set();
-
-        lines.forEach((line, idx) => {
-            const parts = line.split("|").map(p => p.trim());
-            if (parts.length >= 6 && parts[0] && parts[1] && parts[2]) {
-                let rawLevel = parts[6] || "متوسط";
-                if (["ساده", "متوسط", "دشوار"].indexOf(rawLevel) === -1) rawLevel = "متوسط";
-                const corr = Number(parts[5]);
-                const newId = "Q-" + Date.now() + "-" + idx + "-" + Math.floor(Math.random() * 9999);
-
-                appState.allQuestions.push({
-                    id: newId,
-                    text: parts[0],
-                    opt1: parts[1],
-                    opt2: parts[2],
-                    opt3: parts[3] || "",
-                    opt4: parts[4] || "",
-                    correct: (corr >= 1 && corr <= 4) ? corr : 1,
-                    level: rawLevel,
-                    score: Number(parts[7]) || 1,
-                    explanation: parts[8] || "",
-                    active: true,
-                    round: appState.selectedQuestionRound
-                });
-                currentBatch.add(newId);
-                added++;
-            } else {
-                errors++;
-            }
-        });
-
-        if (added > 0) {
-            lastBulkBatchIds = currentBatch;
-            markDirty();
-        }
-        document.getElementById("bulk-q-text").value = "";
-        toggleBulkBox();
-        renderQuestionsList();
-        updateActiveRoundInventoryBadge();
-        showToast(`✓ ${added} سوال اضافه شد${errors > 0 ? ` (${errors} خط نامعتبر نادیده گرفته شد)` : ""}.`);
-    }
-
     async function createNewExamRoundProfile() {
         const name = prompt("نام کامل دوره یا آزمون جدید را وارد کنید (مثلاً: دوره پنجم (نام کتاب)):");
         if (!name || !name.trim()) return;
         const cleanName = name.trim();
         if (appState.roundsList.indexOf(cleanName) === -1) appState.roundsList.push(cleanName);
         appState.selectedQuestionRound = cleanName;
+        selectedQuestionIds.clear();
+        lastBulkBatchIds.clear();
         renderRoundSelectorDropdown();
         renderQuestionsList();
         await apiCall({ action: "adminSaveSettings", updates: { rounds_list_json: JSON.stringify(appState.roundsList) } });
@@ -2081,17 +2009,6 @@
 ماجرای اصلی کتاب مربوط به کدام دوره تاریخی است؟ | دوران دفاع مقدس | دوران مبارزات پیش از انقلاب | دهه هفتاد | مشروطه | 2 | متوسط | 2 | فصل اول، صفحه ۱۸`;
         document.getElementById("bulk-q-text").value = sample;
         showToast("✓ نمونه قالب درج شد.");
-    }
-
-  let selectedQuestionIds = new Set();
-    let lastBulkBatchIds = new Set();
-
-    function onTargetRoundChange() {
-        appState.selectedQuestionRound = document.getElementById("q-target-round-select").value;
-        selectedQuestionIds.clear();
-        lastBulkBatchIds.clear();
-        resetQuestionForm();
-        renderQuestionsList();
     }
 
     function parseBulkQuestions() {
@@ -2213,7 +2130,7 @@
         document.getElementById("btn-cancel-q-edit").style.display = "none";
     }
 
-  function getFilteredRoundQuestions() {
+    function getFilteredRoundQuestions() {
         const roundQs = getQuestionsForSelectedRound();
         const qSearch = (document.getElementById("q-search-inp")?.value || "").trim().toLowerCase();
         const qLvlFilter = document.getElementById("q-level-filter")?.value || "all";
@@ -2227,7 +2144,6 @@
 
     function updateBulkToolbarUI() {
         const roundIds = new Set(getQuestionsForSelectedRound().map(q => q.id));
-        // پاکسازی شناسه‌هایی که دیگر در این دوره نیستند
         selectedQuestionIds.forEach(id => { if (!roundIds.has(id)) selectedQuestionIds.delete(id); });
         lastBulkBatchIds.forEach(id => { if (!roundIds.has(id)) lastBulkBatchIds.delete(id); });
 
